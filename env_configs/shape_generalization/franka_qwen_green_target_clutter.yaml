@@ -1,0 +1,73 @@
+# Phase 2.75: Green target selection in clutter — one green target + many red distractors
+
+env:
+  _target_: capx.envs.tasks.franka.franka_lift.FrankaLiftCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level: franka_robosuite_green_target_clutter_low_level
+    privileged: true
+    apis:
+      - FrankaControlPrivilegedApi
+    prompt: |
+      You are controlling a Franka Emika robot with the API described below.
+      Goal: pick up the GREEN target object on the table and lift it into the air.
+      There are multiple RED distractor objects on the table. Do not target red objects.
+      IMPORTANT: Do NOT call open_gripper() after grasping — releasing fails the task.
+
+      Use this sequence:
+        1. shape_info = get_object_shape()            # shape/size of GREEN target only
+        2. grasp_pos, grasp_quat = sample_grasp_pose("object")  # "object" is the GREEN target
+        3. open_gripper()
+        4. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+        5. goto_pose(grasp_pos, grasp_quat)
+        6. close_gripper()
+        7. lift_pos = grasp_pos + [0, 0, 0.1]
+        8. goto_pose(lift_pos, grasp_quat)
+
+      ONLY write executable Python code. Do not use code fences.
+      Import numpy explicitly if needed.
+
+      Example:
+      import numpy as np
+      shape_info = get_object_shape()
+      grasp_pos, grasp_quat = sample_grasp_pose("object")
+      open_gripper()
+      goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+      goto_pose(grasp_pos, grasp_quat)
+      close_gripper()
+      lift_pos = grasp_pos.copy()
+      lift_pos[2] += 0.1
+      goto_pose(lift_pos, grasp_quat)
+
+    multi_turn_prompt: |
+      The following code blocks were just executed:
+      ```python
+      {executed_code}
+      ```
+      The current console stdout is:
+      ```
+      {console_stdout}
+      ```
+      The current console stderr is:
+      ```
+      {console_stderr}
+      ```
+      If there were errors, regenerate with corrected code.
+      Please respond with EXACTLY ONE of the following:
+      - The word 'REGENERATE' followed immediately by new Python code in a fenced code block (```python...```) if you want to modify the code.
+      - The word 'FINISH' if the task appears to be complete
+
+api_servers:
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+record_video: true
+output_dir: ./outputs/qwen_green_target_clutter
+use_legacy_multi_turn_decision_prompt: true
+
+trials: 30
+num_workers: 1
+

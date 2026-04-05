@@ -72,11 +72,15 @@ class FrankaControlPrivilegedApi(ApiBase):
             bbox_extent: (3,) object extent in meters of x, y, z axes respectively in the world frame (full side length, not half-length extent). If return_bbox_extent is False, returns None.
         """
         obs = self._env.get_observation()
+        name = object_name.lower().strip()
+        has_secondary = "cube_poses" in obs and "secondary" in obs["cube_poses"]
 
         # Accept any name that refers to the primary object
         is_primary = (
-            ("red" in object_name and "cube" in object_name)
-            or object_name in ("object", "red_object", "red object", "cube")
+            ("red" in name and "cube" in name)
+            or name in ("object", "red_object", "red object", "cube")
+            or (not has_secondary and ("green" in name))
+            or (not has_secondary and name in ("target", "green object", "green cube"))
         )
         if is_primary:
             bbox = self._get_primary_bbox()
@@ -85,7 +89,7 @@ class FrankaControlPrivilegedApi(ApiBase):
                 obs["cube_poses"]["primary"][3:],
                 bbox,
             )
-        elif "green" in object_name and "cube" in object_name:
+        elif "green" in name and "cube" in name:
             return (
                 obs["cube_poses"]["secondary"][:3],
                 obs["cube_poses"]["secondary"][3:],
@@ -173,14 +177,18 @@ class FrankaControlPrivilegedApi(ApiBase):
             quaternion_wxyz: (4,) WXYZ unit quaternion.
         """
         obs = self._env.get_observation()
+        name = object_name.lower().strip()
+        has_secondary = "cube_poses" in obs and "secondary" in obs["cube_poses"]
 
         is_primary = (
-            ("red" in object_name and "cube" in object_name)
-            or object_name in ("object", "red_object", "red object", "cube")
+            ("red" in name and "cube" in name)
+            or name in ("object", "red_object", "red object", "cube")
+            or (not has_secondary and ("green" in name))
+            or (not has_secondary and name in ("target", "green object", "green cube"))
         )
         if is_primary:
             return obs["cube_poses"]["primary"][:3], np.array([0, 0, 1, 0])
-        elif "green" in object_name and "cube" in object_name:
+        elif "green" in name and "cube" in name:
             return obs["cube_poses"]["secondary"][:3], np.array([0, 0, 1, 0])
         else:
             raise ValueError(f"Invalid object name: {object_name}")
