@@ -77,6 +77,7 @@ Last updated: 2026-04-05
 - Latest staged-prompt result: the model executed the intended two-stage descent and reinforcement grasp without sandbox errors, but it also redefined provided API names locally; the smoke prompt now explicitly forbids shadowing those APIs
 - Prompt wording fix in progress: the Inspire smoke config now explicitly forbids `open_gripper()` / `close_gripper()` so the dexterous-hand path is exclusive rather than optional
 - Prompt tightened further: the Inspire smoke config now requires a straight-line script order and explicitly forbids defining helper functions or classes, reducing the chance that the model shadows the real APIs again
+- Literal-prompt smoke result: the model now stays on the real Inspire-hand API path, performs real IK-driven approach motion, and no longer falls back to placeholder functions or legacy Panda helpers; however, the grasp still failed with reward `0.0`
 
 ## Current local artifacts
 
@@ -104,6 +105,7 @@ Last updated: 2026-04-05
 - Measure whether the safer staged prompt improves the Inspire smoke result before changing `sample_grasp_pose(...)`
 - Confirm that the tightened staged prompt stops sandbox failures from invented helper checks and then compare its grasp outcome against the earlier richer-hand trial
 - Confirm that the revised prompt keeps the model on the real Inspire-hand API path and does not fall back to legacy Panda helpers
+- Improve the actual grasp target / pose selection next, since prompt tightening alone now produces the intended motion sequence but not a successful lift
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant
