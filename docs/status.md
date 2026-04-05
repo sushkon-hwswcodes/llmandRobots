@@ -62,6 +62,7 @@ Last updated: 2026-04-05
 - Motion result: the existing privileged API can execute `goto_pose(...)` against the dexterous-hand profile when the standard Panda Pyroki server is running
 - Added opt-in smoke config: `env_configs/shape_generalization/franka_qwen_shape_inspire_smoke.yaml`
 - Updated smoke result: with `PandaDexRH`, the saved trial video now shows the hand visibly attached in both close-up and overview views
+- Corrected 3-trial smoke benchmark result: `1/3` task-complete with average reward `0.333` using the unchanged binary open/close lift policy
 - Caveat: policy behavior is still binary open / close, so the first five-finger benchmark will likely be a compatibility test before any dexterous-hand policy upgrade
 
 ## Current local artifacts
@@ -84,8 +85,8 @@ Last updated: 2026-04-05
 ## What still needs attention
 
 - Standardize the first five-finger profile around `PandaDexRH` and propagate that profile through the smoke config and future benchmark configs
-- Check whether the current IK / end-effector assumptions still hold across full grasp attempts, not just a single `goto_pose`
-- Decide whether the first five-finger evaluation should keep the binary open/close API for comparability or expose richer hand actions immediately
+- Review the success and failure videos from the corrected `PandaDexRH` smoke run to identify the dominant five-finger failure mode
+- Decide whether to keep the binary open/close API for a larger comparability benchmark or switch immediately to richer hand actions
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant

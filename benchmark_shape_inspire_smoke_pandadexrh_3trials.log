@@ -1,0 +1,177 @@
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+API server on 127.0.0.1:8116 already running, skipping
+Time taken to query model: 6.75 seconds
+Code block 1 done
+Number of code blocks: 1
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00.mp4 (174 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined.mp4 (175 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00_overview.mp4 (174 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined_overview.mp4 (175 frames)
+Trial 1 took 135.62 seconds
+Time taken to query model: 4.23 seconds
+Code block 1 done
+Number of code blocks: 1
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (174 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (175 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (174 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (175 frames)
+Trial 2 took 132.00 seconds
+Time taken to query model: 3.34 seconds
+Code block 1 done
+Number of code blocks: 1
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00.mp4 (174 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined.mp4 (175 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00_overview.mp4 (174 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined_overview.mp4 (175 frames)
+Trial 3 took 124.02 seconds
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+def pick_up_and_lift_object():
+    # Step 1: Get the shape information of the object
+    shape_info = get_object_shape()
+    
+    # Step 2: Sample a grasp pose for the object
+    grasp_pos, grasp_quat = sample_grasp_pose("object")
+    
+    # Step 3: Open the gripper
+    open_gripper()
+    
+    # Step 4: Move to the approach position above the object
+    goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+    
+    # Step 5: Move to the grasp position
+    goto_pose(grasp_pos, grasp_quat)
+    
+    # Step 6: Close the gripper
+    close_gripper()
+    
+    # Step 7: Calculate the lift position
+    lift_pos = grasp_pos + np.array([0, 0, 0.1])
+    
+    # Step 8: Move to the lift position
+    goto_pose(lift_pos, grasp_quat)
+
+# Call the function to execute the sequence
+pick_up_and_lift_object()
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.0
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 0
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+def pick_up_and_lift_object():
+    # Step 1: Get the object shape information
+    shape_info = get_object_shape()
+    
+    # Step 2: Sample a grasp pose for the object
+    grasp_pos, grasp_quat = sample_grasp_pose("object")
+    
+    # Step 3: Open the gripper
+    open_gripper()
+    
+    # Step 4: Move to the approach position above the object
+    goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+    
+    # Step 5: Move to the grasp position
+    goto_pose(grasp_pos, grasp_quat)
+    
+    # Step 6: Close the gripper
+    close_gripper()
+    
+    # Step 7: Define the lift position (10 cm above the grasp position)
+    lift_pos = grasp_pos + [0, 0, 0.1]
+    
+    # Step 8: Move to the lift position
+    goto_pose(lift_pos, grasp_quat)
+
+# Call the function to execute the sequence
+pick_up_and_lift_object()
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 0
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the object shape information
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 3: Open the gripper
+open_gripper()
+
+# Step 4: Go to the approach position with z_approach of 0.1 meters
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 5: Move to the grasp position
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 6: Close the gripper
+close_gripper()
+
+# Step 7: Define the lift position (10 cm above the grasp position)
+lift_pos = grasp_pos + [0, 0, 0.1]
+
+# Step 8: Go to the lift position
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.0
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 0
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/code.py
+
+Summary Statistics:
+Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+Config Path: env_configs/shape_generalization/franka_qwen_shape_inspire_smoke.yaml
+Git Commit: 25811eb (Dirty: True)
+Total number of trials: 3
+Code generation success rate / Average reward / Task completed: 
+1.000/0.333/1
+Average code blocks: 1.000
+Average regenerations: 0.000
+Average finishes: 0.000
+Elapsed time: 395.63 seconds

@@ -8,8 +8,8 @@ Last updated: 2026-04-05
 2. Use the new hand-config plumbing to define the first non-Panda-hand candidate profile without changing existing benchmark YAML behavior.
 3. Standardize on `PandaDexRH` as the first five-finger simulation target, since Robosuite already provides the correct Inspire-hand mount composition for Panda.
 4. Keep the smoke config and future hand benchmarks aligned to that profile: `robot_name: PandaDexRH`, `robosuite_gripper_type: default`, and the existing Panda IK server settings.
-5. Use the corrected `franka_qwen_shape_inspire_smoke.yaml` config to validate grasp behavior now that the hand is visibly present in the scene.
-6. Only after that smoke benchmark is informative, decide whether to benchmark the five-finger hand with the existing binary open/close policy or expose richer hand actions first.
+5. Use the corrected `franka_qwen_shape_inspire_smoke.yaml` config to review the `1/3` smoke benchmark and identify what separates the single success from the two failures.
+6. Based on that review, decide whether to benchmark the five-finger hand with the existing binary open/close policy for comparability or expose richer hand actions first.
 7. Keep the clutter-failure review and YCB target-clutter follow-up as the next benchmark tasks once the hand path is stable.
 
 ## Short-term goals
