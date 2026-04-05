@@ -8,7 +8,7 @@ Last updated: 2026-04-05
 2. Use the new hand-config plumbing to define the first non-Panda-hand candidate profile without changing existing benchmark YAML behavior.
 3. Evaluate `Panda + InspireRightHand` as the first five-finger simulation target because Robosuite already ships the Inspire hand assets and gripper class.
 4. Identify the exact mount/frame values needed for that profile: Robosuite gripper type, end-effector body name, IK target link, and TCP offset.
-5. Follow the successful `Panda + InspireRightHand` instantiation smoke test with a motion / grasp compatibility smoke test before changing any task prompts or benchmark YAMLs.
+5. Follow the successful `Panda + InspireRightHand` instantiation smoke test with an IK / motion-command compatibility smoke test before changing any task prompts or benchmark YAMLs.
 6. Only after that smoke test succeeds, decide whether to benchmark the five-finger hand with the existing binary open/close policy or expose richer hand actions first.
 7. Keep the clutter-failure review and YCB target-clutter follow-up as the next benchmark tasks once the hand path is stable.
 

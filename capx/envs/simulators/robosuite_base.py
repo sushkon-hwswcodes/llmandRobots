@@ -37,8 +37,6 @@ class RobosuiteBaseEnv(BaseEnv):
 
     # Subclasses can override these defaults
     _SUBSAMPLE_RATE: int = 5
-    _ACTION_SLICE: int = -1  # action[:-1] for most envs, action[:-2] for spill_wipe
-
     def __init__(
         self,
         controller_cfg: str = "capx/integrations/robosuite/controllers/config/robots/panda_joint_ctrl.json",
@@ -154,7 +152,7 @@ class RobosuiteBaseEnv(BaseEnv):
 
     def _do_robosuite_step(self, action: np.ndarray) -> None:
         """Step robosuite with the given action, handling render skipping."""
-        sliced = action[:self._ACTION_SLICE] if self._ACTION_SLICE != 0 else action
+        sliced = action[: self.robosuite_env.action_dim]
         need_render = (self._record_frames and self._sim_step_count % self._subsample_rate == 0) or hasattr(self, "viser_server")
         if need_render:
             self.robosuite_env.step(sliced)
