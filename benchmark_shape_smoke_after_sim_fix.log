@@ -1,0 +1,71 @@
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+API server {'_target_': 'capx.serving.launch_pyroki_server.main', 'port': 8116, 'host': '127.0.0.1', 'robot': 'panda_description', 'target_link': 'panda_hand'} started
+API server on 127.0.0.1:8116 is ready
+Time taken to query model: 3.83 seconds
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+INFO:     127.0.0.1:39692 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39696 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46108 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46922 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.56 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/video_turn_00.mp4 (79 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/video_combined.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/video_turn_00_overview.mp4 (79 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/video_combined_overview.mp4 (80 frames)
+Trial 1 took 42.92 seconds
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+obj_pos, _, _ = get_object_pose("object")
+grasp_quat = np.array([0, 0, 1, 0])
+grasp_pos = obj_pos.copy()
+
+if shape_info['shape'] == 'cylinder':
+    grasp_pos[2] = obj_pos[2] + shape_info['size']['height'] / 2 + 0.01
+elif shape_info['shape'] == 'box':
+    grasp_pos[2] = obj_pos[2] + shape_info['size']['z'] / 2 + 0.01
+else:
+    grasp_pos[2] = obj_pos[2] + shape_info['size']['diameter'] / 2 + 0.01
+
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.032983174120315706
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/code.py
+
+Summary Statistics:
+Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+Config Path: env_configs/shape_generalization/franka_qwen_shape.yaml
+Git Commit: 2c7f47d (Dirty: True)
+Total number of trials: 1
+Code generation success rate / Average reward / Task completed: 
+1.000/0.033/0
+Average code blocks: 1.000
+Average regenerations: 0.000
+Average finishes: 1.000
+Elapsed time: 53.97 seconds

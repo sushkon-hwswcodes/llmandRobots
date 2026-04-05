@@ -66,6 +66,7 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
             )
 
         self.robosuite_env = LiftShape(**lift_kwargs)
+        self._initial_cube_height: float | None = None
         self._init_robot_links()
 
     def reset(
@@ -84,6 +85,11 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
             self.robosuite_env.sim.forward()
             self.robosuite_env.sim.step()
             self._set_gripper(1.0)
+
+        # Baseline object height after settling; used for robust lift success across varying shape sizes.
+        self._initial_cube_height = float(
+            self.robosuite_env.sim.data.body_xpos[self.robosuite_env.cube_body_id][2]
+        )
 
         robosuite_obs = self.robosuite_env._get_observations()
         self._current_joints = np.array(robosuite_obs["robot0_joint_pos"], dtype=np.float64)
@@ -123,10 +129,35 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
         }
 
     def compute_reward(self) -> float:
-        return self.robosuite_env.reward()
+        if self.task_completed():
+            return 1.0
+
+        # Dense shaping: progress is measured by lift above reset baseline (not absolute table height).
+        cube_height = float(
+            self.robosuite_env.sim.data.body_xpos[self.robosuite_env.cube_body_id][2]
+        )
+        baseline = (
+            self._initial_cube_height
+            if self._initial_cube_height is not None
+            else float(self.robosuite_env.model.mujoco_arena.table_offset[2])
+        )
+        return float(np.clip((cube_height - baseline) / 0.04, 0.0, 1.0))
 
     def task_completed(self) -> bool:
-        return self.robosuite_env._check_success()
+        cube_height = float(
+            self.robosuite_env.sim.data.body_xpos[self.robosuite_env.cube_body_id][2]
+        )
+        baseline = (
+            self._initial_cube_height
+            if self._initial_cube_height is not None
+            else float(self.robosuite_env.model.mujoco_arena.table_offset[2])
+        )
+        lifted = cube_height > (baseline + 0.04)
+        grasped = self.robosuite_env._check_grasp(
+            gripper=self.robosuite_env.robots[0].gripper,
+            object_geoms=self.robosuite_env.cube,
+        )
+        return bool(lifted and grasped)
 
     def get_observation(self) -> dict[str, Any]:
         robosuite_obs = self.robosuite_env._get_observations()
