@@ -1,0 +1,28 @@
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Sample a grasp pose for the red cube
+grasp_pos, grasp_quat = sample_grasp_pose("red_cube")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
