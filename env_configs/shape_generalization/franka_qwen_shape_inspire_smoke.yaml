@@ -1,0 +1,50 @@
+# Smoke config for testing a five-finger hand path while preserving the Panda baseline configs.
+
+env:
+  _target_: capx.envs.tasks.franka.franka_lift.FrankaLiftCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level: franka_robosuite_shape_lift_low_level
+    low_level_kwargs:
+      robot_name: Panda
+      hand_name: inspire_right
+      robosuite_gripper_type: InspireRightHand
+      ik_robot_name: panda_description
+      ik_target_link_name: panda_hand
+      eef_body_name: gripper0_right_eef
+      tcp_offset: [0.0, 0.0, -0.107]
+    privileged: true
+    apis:
+      - FrankaControlPrivilegedApi
+    prompt: |
+      You are controlling a Franka Emika robot with the API described below.
+      Goal: pick up the object on the table and lift it into the air.
+      The robot is using a five-finger hand, but the current API is still binary open / close.
+      Use the standard lift sequence and do not release the object after grasping.
+
+      Use this sequence:
+        1. shape_info = get_object_shape()
+        2. grasp_pos, grasp_quat = sample_grasp_pose("object")
+        3. open_gripper()
+        4. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+        5. goto_pose(grasp_pos, grasp_quat)
+        6. close_gripper()
+        7. lift_pos = grasp_pos + [0, 0, 0.1]
+        8. goto_pose(lift_pos, grasp_quat)
+
+      ONLY write executable Python code. Do not use code fences.
+      Import numpy explicitly if needed.
+
+api_servers:
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+record_video: true
+output_dir: ./outputs/qwen_shape_inspire_smoke
+use_legacy_multi_turn_decision_prompt: true
+
+trials: 3
+num_workers: 1

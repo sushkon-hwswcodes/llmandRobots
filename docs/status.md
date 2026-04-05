@@ -59,6 +59,8 @@ Last updated: 2026-04-05
 - Current best candidate for the first five-finger profile: `Panda + InspireRightHand`, because Robosuite already includes Inspire hand assets and a gripper class
 - Smoke result: `Panda + InspireRightHand` successfully instantiated and reset in the existing shape-lift low-level env, with Robosuite action dimension increasing to `13`
 - Follow-up compatibility result: the shared Robosuite wrapper now steps correctly with the Inspire hand after fixing the old hard-coded action slicing assumption
+- Motion result: the existing privileged API can execute `goto_pose(...)` against the Inspire-hand profile when the standard Panda Pyroki server is running
+- Added opt-in smoke config: `env_configs/shape_generalization/franka_qwen_shape_inspire_smoke.yaml`
 - Caveat: policy behavior is still binary open / close, so the first five-finger benchmark will likely be a compatibility test before any dexterous-hand policy upgrade
 
 ## Current local artifacts
@@ -81,7 +83,7 @@ Last updated: 2026-04-05
 ## What still needs attention
 
 - Determine the correct mount/frame parameters for the first five-finger profile, likely `Panda + InspireRightHand`, now that reset and simulator stepping both work
-- Check whether the current IK / end-effector assumptions still hold when the Inspire hand is used for actual motion commands
+- Check whether the current IK / end-effector assumptions still hold across full grasp attempts, not just a single `goto_pose`
 - Decide whether the first five-finger evaluation should keep the binary open/close API for comparability or expose richer hand actions immediately
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
