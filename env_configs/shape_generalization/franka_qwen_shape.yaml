@@ -15,15 +15,12 @@ env:
       IMPORTANT: Do NOT call open_gripper() — releasing the object fails the task. Keep the gripper closed once you have grasped the object.
 
       Before writing grasp code, call get_object_shape() to learn the shape and size of the object.
-      Use the shape and size to set the correct grasp height:
-        - box:      grasp_pos[2] = object_pos[2] + size['z']/2 + 0.01
-        - cylinder: grasp_pos[2] = object_pos[2] + size['height']/2 + 0.01
-        - ball:     grasp_pos[2] = object_pos[2] + size['diameter']/2 + 0.01
+      Use shape info for reasoning and safety checks, but get the actual grasp target from sample_grasp_pose("object").
+      Do not derive grasp_z only from object pose + size; that often hovers above the object and misses contact.
 
       The correct sequence is:
         1. shape_info = get_object_shape()
-        2. obj_pos, obj_quat, _ = get_object_pose("object")
-        3. Compute grasp_pos from obj_pos and shape_info
+        2. grasp_pos, grasp_quat = sample_grasp_pose("object")
         4. open_gripper()
         5. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
         6. goto_pose(grasp_pos, grasp_quat)
@@ -34,18 +31,10 @@ env:
       After execution you will see stdout/stderr and may regenerate if something went wrong.
       The functions below are already imported. Import numpy explicitly if needed.
 
-      Example for a cylinder (diameter=0.06, height=0.10):
+      Example:
       import numpy as np
       shape_info = get_object_shape()
-      obj_pos, _, _ = get_object_pose("object")
-      grasp_quat = np.array([0, 0, 1, 0])
-      grasp_pos = obj_pos.copy()
-      if shape_info['shape'] == 'cylinder':
-          grasp_pos[2] = obj_pos[2] + shape_info['size']['height'] / 2 + 0.01
-      elif shape_info['shape'] == 'box':
-          grasp_pos[2] = obj_pos[2] + shape_info['size']['z'] / 2 + 0.01
-      else:
-          grasp_pos[2] = obj_pos[2] + shape_info['size']['diameter'] / 2 + 0.01
+      grasp_pos, grasp_quat = sample_grasp_pose("object")
       open_gripper()
       goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
       goto_pose(grasp_pos, grasp_quat)

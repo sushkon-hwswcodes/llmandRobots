@@ -174,7 +174,11 @@ class FrankaControlPrivilegedApi(ApiBase):
         """
         obs = self._env.get_observation()
 
-        if "red" in object_name and "cube" in object_name:
+        is_primary = (
+            ("red" in object_name and "cube" in object_name)
+            or object_name in ("object", "red_object", "red object", "cube")
+        )
+        if is_primary:
             return obs["cube_poses"]["primary"][:3], np.array([0, 0, 1, 0])
         elif "green" in object_name and "cube" in object_name:
             return obs["cube_poses"]["secondary"][:3], np.array([0, 0, 1, 0])
