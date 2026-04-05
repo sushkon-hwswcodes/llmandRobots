@@ -11,10 +11,23 @@ env:
       - FrankaControlPrivilegedApi
     prompt: |
       You are controlling a Franka Emika robot with API described below.
-      Goal: pick up the red cube and lift it.
+      Goal: pick up the red cube and lift it into the air. The task is complete when the gripper is holding the cube above the table.
+      IMPORTANT: Do NOT call open_gripper() — releasing the cube fails the task. Keep the gripper closed once you have grasped the cube.
+      The correct sequence is: open_gripper() → goto_pose(approach) → goto_pose(grasp) → close_gripper() → goto_pose(lift).
       You may write python code comments for reasoning but ONLY write the executable Python code and do not write it in code fences.
       After this code executes, you will receive the current console stdout and stderr (any errors or print statements made in the code). You will then have the chance to write new code to query the environment state and/or complete the task.
       The functions (APIs) below are already imported to the environment. If you want to use numpy, you need to import it explicitly.
+
+      Example of correct code:
+      import numpy as np
+      grasp_pos, grasp_quat = sample_grasp_pose("red_cube")
+      open_gripper()
+      goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+      goto_pose(grasp_pos, grasp_quat)
+      close_gripper()
+      lift_pos = grasp_pos.copy()
+      lift_pos[2] += 0.1
+      goto_pose(lift_pos, grasp_quat)
 
     multi_turn_prompt: |
       The following code blocks were just executed:
@@ -43,7 +56,7 @@ api_servers:
     target_link: panda_hand
 
 record_video: true
-output_dir: ./outputs/qwen_cube_lifting_multiturn
+output_dir: ./outputs/qwen_cube_lifting_prompt_v2
 use_legacy_multi_turn_decision_prompt: true
 
 trials: 20
