@@ -34,18 +34,22 @@ env:
         2. hand_info = get_hand_capabilities()
         3. shape_info = get_object_shape()
         4. grasp_pos, grasp_quat = sample_grasp_pose("object")
-        5. set_hand_preshape("wide_enclose")
-        6. goto_pose(grasp_pos, grasp_quat, z_approach=0.12)
-        7. goto_pose(grasp_pos + np.array([0.0, 0.0, 0.01]), grasp_quat)
-        8. goto_pose(grasp_pos, grasp_quat)
-        9. set_hand_preshape("cylinder_wrap")
-        10. lift_pos = grasp_pos + np.array([0.0, 0.0, 0.10])
-        11. goto_pose(lift_pos, grasp_quat)
+        5. diameter = float(shape_info["size"]["diameter"])
+        6. lateral_offset = max(0.012, 0.35 * diameter)
+        7. preclose_pos = grasp_pos + np.array([lateral_offset, 0.0, 0.0])
+        8. enclosure_pos = preclose_pos + np.array([0.0, 0.0, -0.008])
+        9. set_hand_preshape("wide_enclose")
+        10. goto_pose(preclose_pos, grasp_quat, z_approach=0.12)
+        11. goto_pose(enclosure_pos, grasp_quat)
+        12. set_hand_preshape("cylinder_wrap")
+        13. lift_pos = enclosure_pos + np.array([0.0, 0.0, 0.10])
+        14. goto_pose(lift_pos, grasp_quat)
 
       Operational meaning for the grasp:
         - keep the hand opening wider than the cylinder before closing
-        - center the palm above the cylinder
-        - move the open hand to just above the cylinder first
+        - do not keep the palm center directly above the cylinder center during the final descent
+        - offset the open hand laterally so the fingers can land on opposite sides of the cylinder
+        - move the open hand to a point around-and-above the cylinder first
         - then move down so the cylinder is between the fingers
         - only then apply "cylinder_wrap"
 
@@ -54,12 +58,13 @@ env:
         - still call get_object_shape(), but do not branch on it
         - call sample_grasp_pose("object") exactly; do not pass "red cylinder" or any other natural-language object name
         - use numpy arrays for offsets
+        - compute `diameter`, `lateral_offset`, `preclose_pos`, and `enclosure_pos` exactly as shown above
         - do not call any functions other than the provided robot APIs and standard Python / numpy
         - do not define your own Python functions or classes
         - do not invent helper checks such as stability or contact tests
         - do not redefine or shadow provided robot API functions such as get_object_shape, sample_grasp_pose, goto_pose, get_hand_capabilities, open_gripper, close_gripper, set_hand_preshape, or set_hand_joints
         - never call open_gripper() or close_gripper() in this config
-        - default to exactly the cylinder sequence above
+        - default to exactly the cylinder sequence above and do not replace it with a center-over-object descent
 
       ONLY write executable Python code. Do not use code fences.
       Import numpy explicitly if needed.

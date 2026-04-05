@@ -94,6 +94,8 @@ Last updated: 2026-04-05
 - Orientation A/B result: the current pass restored the better non-regressed grasp height and added shape-specific Inspire grasp quaternions for boxes, cylinders, and balls; across 3 trials it produced rewards of `0.000`, `0.035`, and `0.035` with `0/3` task completions and `0.023` average reward, so the change improved partial lift quality in some cases but did not create a stable successful grasp
 - New debug path in progress: the shape-lift low-level env now supports an optional `fixed_shape` override, and a new Inspire cylinder-only smoke config has been added so we can test a cylinder-specific prompt without changing the shared generic-shape benchmark path
 - Cylinder-only debug result: after tightening the prompt to require `sample_grasp_pose("object")` exactly, the first fixed-cylinder Inspire smoke run executed the intended straight-line `wide_enclose -> approach -> small downward adjustment -> cylinder_wrap -> lift` sequence without sandbox errors, but it still ended at reward `0.000`, so object-specific wording alone did not solve the grasp
+- Cylinder-only follow-up in progress: the next fixed-cylinder prompt now explicitly computes a lateral pre-close offset from the cylinder diameter and forbids keeping the palm center directly above the object during the final descent, so this rerun isolates whether an around-the-cylinder entry path helps more than the previous centered descent
+- Cylinder-only lateral-offset result: the fixed-cylinder rerun followed the intended `wide_enclose -> laterally offset pre-close waypoint -> deeper enclosure waypoint -> cylinder_wrap -> lift` sequence exactly, but it still ended at reward `0.000`, so prompt-level cylinder geometry changes alone are no longer producing measurable progress
 
 ## Current local artifacts
 
@@ -133,6 +135,8 @@ Last updated: 2026-04-05
 - Hold the current prompt and named-preset structure fixed while testing one explicit enclosure change at a time, starting with a pre-close waypoint that places the open hand around the object before the wrap preset is applied
 - Measure whether an object-specific cylinder prompt plus a fixed cylinder scene improves behavior before adding more low-level geometry branches to the generic prompt
 - Use the cylinder-only video to inspect whether the failure is still “contact from above” or whether the new issue is the wrap timing / final descent depth before adding another low-level waypoint
+- Re-run the cylinder-only smoke with the new lateral-offset sequence and compare the video against the previous centered-descent cylinder attempt before changing low-level geometry in shared code
+- Move the next cylinder experiment into low-level pose generation or action semantics, since both the centered and laterally-offset cylinder prompts now execute cleanly but still fail at `0.000`
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant
