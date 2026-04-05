@@ -1,0 +1,29 @@
+```python
+import numpy as np
+
+# Get the pose of the red cube
+cube_pose, cube_quaternion, _ = get_object_pose("red_cube")
+cube_position = cube_pose[:3]
+
+# Sample a grasp pose for the red cube
+grasp_pose, grasp_quaternion = sample_grasp_pose("red_cube")
+grasp_position = grasp_pose[:3]
+grasp_quaternion = np.array([0, 0, 1, 0], dtype=np.float64)  # Use a fixed quaternion for simplicity
+
+# Go to the start position above the cube
+goto_pose(cube_position, grasp_quaternion, z_approach=0.2)
+
+# Close the gripper to pick up the cube
+close_gripper()
+
+# Lift the cube
+lift_position = cube_position.copy()
+lift_position[2] += 0.1
+goto_pose(lift_position, grasp_quaternion, z_approach=0.2)
+
+# Open the gripper to release the cube
+open_gripper()
+
+# Go back down to the starting position
+goto_pose(cube_position, grasp_quaternion, z_approach=0.2)
+```

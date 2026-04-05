@@ -1,0 +1,21 @@
+```python
+# Get the pose of the red cube
+red_cube_position, red_cube_quaternion, bbox_extent = get_object_pose('red cube')
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion = sample_grasp_pose('red cube')
+
+# Lift the cube (assuming we know where to lift it)
+lift_height = 0.18  # Adjust this height based on the actual placement height of the environment
+goto_pose(grasp_position + np.array([0, 0, lift_height]), grasp_quaternion)
+
+# Go to the grasp pose
+goto_pose(grasp_position, grasp_quaternion)
+
+# Close the gripper to pick up the cube
+close_gripper()
+
+# Lift the cube slightly above its new position
+lift_height += 0.1
+goto_pose(grasp_position + np.array([0, 0, lift_height]), grasp_quaternion)
+```

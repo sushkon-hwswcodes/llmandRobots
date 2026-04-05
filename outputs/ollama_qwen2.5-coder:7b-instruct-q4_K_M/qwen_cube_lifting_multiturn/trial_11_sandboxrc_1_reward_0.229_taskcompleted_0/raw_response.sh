@@ -1,0 +1,16 @@
+```python
+# Get the pose of the red cube
+red_cube_pose, red_cube_quaternion, _ = get_object_pose("red cube")
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion = sample_grasp_pose("red cube")
+
+# Approach to the red cube at a height of 0.1 meters above its current position
+goto_pose(red_cube_pose + [0, 0, 0.1], grasp_quaternion)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Lift the red cube by moving it to a height of 0.5 meters
+goto_pose(grasp_position, grasp_quaternion, z_approach=0.4)
+```

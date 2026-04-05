@@ -1,0 +1,1333 @@
+[robosuite WARNING] No private macro file found! (macros.py:57)
+[robosuite WARNING] It is recommended to use a private macro file (macros.py:58)
+[robosuite WARNING] To setup, run: python /opt/conda/lib/python3.10/site-packages/robosuite/scripts/setup_macros.py (macros.py:59)
+[robosuite WARNING] Could not import robosuite_models. Some robots may not be available. If you want to use these robots, please install robosuite_models from source (https://github.com/ARISE-Initiative/robosuite_models) or through pip install. (__init__.py:30)
+[robosuite WARNING] Could not load the mink-based whole-body IK. Make sure you install related import properly, otherwise you will not be able to use the default IK controller setting for GR1 robot. (__init__.py:40)
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+API server {'_target_': 'capx.serving.launch_pyroki_server.main', 'port': 8116, 'host': '127.0.0.1', 'robot': 'panda_description', 'target_link': 'panda_hand'} started
+[robosuite WARNING] No private macro file found! (macros.py:57)
+[robosuite WARNING] It is recommended to use a private macro file (macros.py:58)
+[robosuite WARNING] To setup, run: python /opt/conda/lib/python3.10/site-packages/robosuite/scripts/setup_macros.py (macros.py:59)
+[robosuite WARNING] Could not import robosuite_models. Some robots may not be available. If you want to use these robots, please install robosuite_models from source (https://github.com/ARISE-Initiative/robosuite_models) or through pip install. (__init__.py:30)
+[robosuite WARNING] Could not load the mink-based whole-body IK. Make sure you install related import properly, otherwise you will not be able to use the default IK controller setting for GR1 robot. (__init__.py:40)
+INFO:pyroki_server:Loading robot URDF 'panda_description' with Pyroki...
+INFO:2026-04-05 03:08:17,752:jax._src.xla_bridge:752: Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+INFO:jax._src.xla_bridge:Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+WARNING:2026-04-05 03:08:17,752:jax._src.xla_bridge:794: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+WARNING:jax._src.xla_bridge:An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+2026-04-05 03:08:18.339 | INFO     | pyroki.collision._robot_collision:from_sphere_decomposition:187 - Created RobotCollision (sphere mode) with 13 links, 41 total spheres, and 626 active pairs.
+INFO:pyroki_server:PyRoki loaded and ready!
+INFO:     Started server process [42557]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8116 (Press CTRL+C to quit)
+API server on 127.0.0.1:8116 is ready
+[robosuite INFO] Loading controller configuration from: capx/integrations/robosuite/controllers/config/robots/panda_joint_ctrl.json (composite_controller_factory.py:121)
+Running Trials:   0%|          | 0/20 [00:00<?, ?it/s]Time taken to query model: 5.41 seconds
+2026-04-05 03:08:29.024 | INFO     | jaxls._py310._problem:analyze:121 - Building optimization problem with 2 terms and 1 variables: 1 costs, 0 eq_zero, 1 leq_zero, 0 geq_zero
+2026-04-05 03:08:29.080 | INFO     | jaxls._py310._problem:analyze:221 - Vectorizing constraint group with 1 constraints (constraint_leq_zero), 1 variables each: augmented_limit_residual
+2026-04-05 03:08:29.280 | INFO     | jaxls._py310._problem:analyze:229 - Vectorizing group with 1 costs, 1 variables each: _pose_cost_analytical_jac
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+INFO:     127.0.0.1:53558 - "POST /ik HTTP/1.1" 200 OK
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 15, in <module>
+NameError: name 'np' is not defined
+Time taken to query model: 3.07 seconds
+Model chose to regenerate code
+Code block 1 done
+Number of code blocks: 2
+2026-04-05 03:08:46.556 | INFO     | jaxls._py310._problem:analyze:121 - Building optimization problem with 3 terms and 1 variables: 3 costs, 0 eq_zero, 0 leq_zero, 0 geq_zero
+2026-04-05 03:08:46.619 | INFO     | jaxls._py310._problem:analyze:229 - Vectorizing group with 1 costs, 1 variables each: _pose_cost_analytical_jac
+2026-04-05 03:08:46.640 | INFO     | jaxls._py310._problem:analyze:229 - Vectorizing group with 1 costs, 1 variables each: limit_residual
+2026-04-05 03:08:46.661 | INFO     | jaxls._py310._problem:analyze:229 - Vectorizing group with 1 costs, 1 variables each: limit_velocity_cost
+INFO:     127.0.0.1:39228 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57748 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.72 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_01_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (41 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_01_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_01.mp4 (47 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_01_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (89 frames)
+Trial 1 took 42.71 seconds
+Running Trials:   5%|▌         | 1/20 [00:43<13:38, 43.09s/it]Time taken to query model: 4.03 seconds
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 2, in <module>
+ModuleNotFoundError: No module named 'franka_api'
+Time taken to query model: 5.90 seconds
+Model chose to regenerate code
+Code block 1 done
+Number of code blocks: 2
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 1
+    except Exception as e:
+    ^^^^^^
+SyntaxError: invalid syntax
+Time taken to query model: 0.94 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_02_sandboxrc_1_reward_0.014_taskcompleted_0/video_combined.mp4 (1 frames)
+Trial 2 took 13.43 seconds
+Running Trials:  10%|█         | 2/20 [00:56<07:45, 25.84s/it]Time taken to query model: 2.09 seconds
+INFO:     127.0.0.1:46028 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43630 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.51 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00.mp4 (51 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined.mp4 (52 frames)
+Trial 3 took 18.11 seconds
+Running Trials:  15%|█▌        | 3/20 [01:15<06:21, 22.47s/it]Time taken to query model: 3.82 seconds
+INFO:     127.0.0.1:50624 - "POST /ik HTTP/1.1" 200 OK
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 16, in <module>
+  File "/root/vlaTraining/cap-x/capx/integrations/franka/control_privileged.py", line 91, in get_object_pose
+    raise ValueError(f"Invalid object name: {object_name}")
+ValueError: Invalid object name: base of environment
+Time taken to query model: 1.93 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_04_sandboxrc_1_reward_0.065_taskcompleted_0/video_turn_00.mp4 (40 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_04_sandboxrc_1_reward_0.065_taskcompleted_0/video_combined.mp4 (41 frames)
+Trial 4 took 18.14 seconds
+Running Trials:  20%|██        | 4/20 [01:33<05:34, 20.88s/it]Time taken to query model: 3.85 seconds
+INFO:     127.0.0.1:56464 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56472 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36994 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37006 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44710 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44718 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 1.44 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_05_sandboxrc_0_reward_0.355_taskcompleted_0/video_turn_00.mp4 (109 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_05_sandboxrc_0_reward_0.355_taskcompleted_0/video_combined.mp4 (110 frames)
+Trial 5 took 35.79 seconds
+Running Trials:  25%|██▌       | 5/20 [02:09<06:35, 26.38s/it]Time taken to query model: 3.26 seconds
+INFO:     127.0.0.1:56482 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56486 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 1.30 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_06_sandboxrc_0_reward_0.002_taskcompleted_0/video_turn_00.mp4 (51 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_06_sandboxrc_0_reward_0.002_taskcompleted_0/video_combined.mp4 (52 frames)
+Trial 6 took 19.81 seconds
+Running Trials:  30%|███       | 6/20 [02:30<05:39, 24.26s/it]Time taken to query model: 4.55 seconds
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'franka_gripper'
+Time taken to query model: 0.51 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_07_sandboxrc_1_reward_0.008_taskcompleted_0/video_combined.mp4 (1 frames)
+Trial 7 took 7.64 seconds
+Running Trials:  35%|███▌      | 7/20 [02:37<04:06, 18.93s/it]Time taken to query model: 3.57 seconds
+INFO:     127.0.0.1:36694 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34306 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51602 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35660 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.52 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_08_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (174 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_08_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (175 frames)
+Trial 8 took 52.97 seconds
+Running Trials:  40%|████      | 8/20 [03:31<05:58, 29.88s/it]Time taken to query model: 3.12 seconds
+INFO:     127.0.0.1:39846 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39862 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37500 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37512 - "POST /ik HTTP/1.1" 200 OK
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 20, in <module>
+NameError: name 'gray_position' is not defined. Did you mean: 'grasp_position'?
+Time taken to query model: 3.90 seconds
+Model chose to regenerate code
+Code block 1 done
+Number of code blocks: 2
+INFO:     127.0.0.1:54634 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55764 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55768 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59910 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53134 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.53 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_09_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (92 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_09_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_01.mp4 (102 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_09_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (195 frames)
+Trial 9 took 61.02 seconds
+Running Trials:  45%|████▌     | 9/20 [04:32<07:16, 39.71s/it]Time taken to query model: 3.73 seconds
+INFO:     127.0.0.1:34568 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34576 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47972 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47974 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.54 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_10_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (70 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_10_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (71 frames)
+Trial 10 took 25.22 seconds
+Running Trials:  50%|█████     | 10/20 [04:58<05:53, 35.32s/it]Time taken to query model: 2.58 seconds
+INFO:     127.0.0.1:37672 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51128 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51130 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 2.39 seconds
+Model chose to regenerate code
+Code block 1 done
+Number of code blocks: 2
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 2, in <module>
+NameError: name 'is_gripper_closed' is not defined
+Time taken to query model: 2.57 seconds
+Model chose to regenerate code
+Code block 2 done
+Number of code blocks: 3
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 2, in <module>
+NameError: name 'get_gripper_state' is not defined
+Time taken to query model: 0.48 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_11_sandboxrc_1_reward_0.229_taskcompleted_0/video_turn_00.mp4 (63 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_11_sandboxrc_1_reward_0.229_taskcompleted_0/video_combined.mp4 (64 frames)
+Trial 11 took 26.21 seconds
+Running Trials:  55%|█████▌    | 11/20 [05:24<04:53, 32.63s/it]Time taken to query model: 2.72 seconds
+INFO:     127.0.0.1:41762 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41770 - "POST /ik HTTP/1.1" 200 OK
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 14, in <module>
+NameError: name 'np' is not defined
+Time taken to query model: 2.94 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_12_sandboxrc_1_reward_0.505_taskcompleted_0/video_turn_00.mp4 (47 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_12_sandboxrc_1_reward_0.505_taskcompleted_0/video_combined.mp4 (48 frames)
+Trial 12 took 20.79 seconds
+Running Trials:  60%|██████    | 12/20 [05:45<03:53, 29.13s/it]Time taken to query model: 3.07 seconds
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 3, in <module>
+NameError: name 'np' is not defined
+Time taken to query model: 4.36 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_13_sandboxrc_1_reward_0.010_taskcompleted_0/video_combined.mp4 (1 frames)
+Trial 13 took 9.82 seconds
+Running Trials:  65%|██████▌   | 13/20 [05:55<02:43, 23.37s/it]Time taken to query model: 3.68 seconds
+INFO:     127.0.0.1:47186 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47190 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35138 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40144 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.55 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_14_sandboxrc_0_reward_0.504_taskcompleted_0/video_turn_00.mp4 (71 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_14_sandboxrc_0_reward_0.504_taskcompleted_0/video_combined.mp4 (72 frames)
+Trial 14 took 26.66 seconds
+Running Trials:  70%|███████   | 14/20 [06:22<02:26, 24.46s/it]Time taken to query model: 3.37 seconds
+INFO:     127.0.0.1:40018 - "POST /ik HTTP/1.1" 200 OK
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 16, in <module>
+IndexError: invalid index to scalar variable.
+Time taken to query model: 0.52 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_15_sandboxrc_1_reward_0.507_taskcompleted_0/video_turn_00.mp4 (41 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_15_sandboxrc_1_reward_0.507_taskcompleted_0/video_combined.mp4 (42 frames)
+Trial 15 took 18.21 seconds
+Running Trials:  75%|███████▌  | 15/20 [06:41<01:53, 22.66s/it]Time taken to query model: 3.08 seconds
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 9, in <module>
+NameError: name 'np' is not defined
+Time taken to query model: 3.54 seconds
+Model chose to regenerate code
+Code block 1 done
+Number of code blocks: 2
+INFO:     127.0.0.1:42838 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42850 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40332 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.52 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_16_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_01.mp4 (62 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_16_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (63 frames)
+Trial 16 took 26.48 seconds
+Running Trials:  80%|████████  | 16/20 [07:08<01:35, 23.91s/it]Time taken to query model: 2.59 seconds
+INFO:     127.0.0.1:56814 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56828 - "POST /ik HTTP/1.1" 200 OK
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 11, in <module>
+NameError: name 'numpy' is not defined
+Time taken to query model: 3.35 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_17_sandboxrc_1_reward_0.506_taskcompleted_0/video_turn_00.mp4 (48 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_17_sandboxrc_1_reward_0.506_taskcompleted_0/video_combined.mp4 (49 frames)
+Trial 17 took 21.98 seconds
+Running Trials:  85%|████████▌ | 17/20 [07:30<01:10, 23.45s/it]Time taken to query model: 3.27 seconds
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 8, in <module>
+NameError: name 'np' is not defined
+Time taken to query model: 4.09 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_18_sandboxrc_1_reward_0.012_taskcompleted_0/video_combined.mp4 (1 frames)
+Trial 18 took 10.02 seconds
+Running Trials:  90%|█████████ | 18/20 [07:41<00:39, 19.55s/it]Time taken to query model: 3.39 seconds
+INFO:     127.0.0.1:43700 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43716 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43726 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40400 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.54 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_19_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (68 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_19_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (69 frames)
+Trial 19 took 25.03 seconds
+Running Trials:  95%|█████████▌| 19/20 [08:06<00:21, 21.31s/it]Time taken to query model: 2.89 seconds
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 8, in <module>
+NameError: name 'np' is not defined
+Time taken to query model: 3.08 seconds
+Model chose to regenerate code
+Code block 1 done
+Number of code blocks: 2
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 4, in <module>
+  File "/root/vlaTraining/cap-x/capx/integrations/franka/control_privileged.py", line 91, in get_object_pose
+    raise ValueError(f"Invalid object name: {object_name}")
+ValueError: Invalid object name: gripper
+Time taken to query model: 3.26 seconds
+Model chose to regenerate code
+Code block 2 done
+Number of code blocks: 3
+INFO:     127.0.0.1:40892 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40898 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56646 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.55 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_20_sandboxrc_0_reward_0.002_taskcompleted_0/video_turn_02.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_20_sandboxrc_0_reward_0.002_taskcompleted_0/video_combined.mp4 (83 frames)
+Trial 20 took 31.74 seconds
+Running Trials: 100%|██████████| 20/20 [08:38<00:00, 24.55s/it]Running Trials: 100%|██████████| 20/20 [08:38<00:00, 25.93s/it]
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Get the pose of the red cube
+red_cube_position, _, _ = get_object_pose("red cube")
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion_wxyz = sample_grasp_pose("red cube")
+
+# Move the robot to the grasp position
+goto_pose(grasp_position, grasp_quaternion_wxyz)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Lift the red cube by moving slightly along the Z-axis
+lift_height = 0.1
+goto_pose(grasp_position + np.array([0, 0, lift_height]), grasp_quaternion_wxyz)
+
+# Code block 1
+import numpy as np
+
+# Get the pose of the red cube
+red_cube_position, _, _ = get_object_pose("red cube")
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion_wxyz = sample_grasp_pose("red cube")
+
+# Move the robot to the grasp position
+goto_pose(grasp_position, grasp_quaternion_wxyz)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Lift the red cube by moving slightly along the Z-axis
+lift_height = 0.1
+goto_pose(grasp_position + np.array([0, 0, lift_height]), grasp_quaternion_wxyz)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 15, in <module>
+NameError: name 'np' is not defined
+
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 1
+  Num Finishes: 1
+  Num Code Blocks: 2
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_01_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+from franka_api import get_object_pose, sample_grasp_pose, goto_pose, open_gripper, close_gripper
+
+# Step 1: Get the pose of the red cube
+red_cube_pose = get_object_pose("red cube")
+red_cube_position, _, _ = red_cube_pose
+
+# Step 2: Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion_wxyz = sample_grasp_pose("red cube")
+
+# Step 3: Move the robot to above the red cube
+goto_pose(grasp_position, grasp_quaternion_wxyz, z_approach=0.1)
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Close the gripper to pick up the red cube
+close_gripper()
+
+# Step 6: Move the robot above a target position (e.g., placing down the cube)
+target_position = np.array([0.5, 0, 0.3])  # Example target position
+goto_pose(target_position, grasp_quaternion_wxyz)
+
+# Step 7: Open the gripper to release the red cube
+open_gripper()
+
+# Code block 1
+except Exception as e:
+    print(f"Error occurred: {e}")
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 2, in <module>
+ModuleNotFoundError: No module named 'franka_api'
+
+
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 1
+    except Exception as e:
+    ^^^^^^
+SyntaxError: invalid syntax
+
+  Reward: 0.014040618732046933
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 1
+  Num Finishes: 1
+  Num Code Blocks: 2
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_02_sandboxrc_1_reward_0.014_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Get the pose of the red cube
+cube_position, _, _ = get_object_pose("red cube")
+
+# Go to a position slightly above the red cube
+goto_pose(cube_position + np.array([0, 0, 0.1]), np.array([0, 0, 1, 0]))
+
+# Lift over the cube
+close_gripper()
+goto_pose(cube_position + np.array([0, 0, 0.5]), np.array([0, 0, 1, 0]))
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 5.1446986961985644e-05
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Get the pose of the red cube
+cube_pose, cube_quaternion_wxyz, bbox_extent = get_object_pose("red cube")
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion_wxyz = sample_grasp_pose("red cube")
+
+# Move the arm to the grasp position
+goto_pose(grasp_position + np.array([0, 0, 0.1]), grasp_quaternion_wxyz)
+
+# Close the gripper to pick up the cube
+close_gripper()
+
+# Lift the cube
+new_position = get_object_pose("base of environment")[0] + np.array([0, 0, 0.2])
+goto_pose(new_position, get_grasped_object_quaternion())
+
+# Open the gripper to release the cube
+open_gripper()
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 16, in <module>
+  File "/root/vlaTraining/cap-x/capx/integrations/franka/control_privileged.py", line 91, in get_object_pose
+    raise ValueError(f"Invalid object name: {object_name}")
+ValueError: Invalid object name: base of environment
+
+  Reward: 0.064851316240778
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_04_sandboxrc_1_reward_0.065_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Get the pose of the red cube
+cube_pose, cube_quaternion, _ = get_object_pose("red_cube")
+cube_position = cube_pose[:3]
+
+# Sample a grasp pose for the red cube
+grasp_pose, grasp_quaternion = sample_grasp_pose("red_cube")
+grasp_position = grasp_pose[:3]
+grasp_quaternion = np.array([0, 0, 1, 0], dtype=np.float64)  # Use a fixed quaternion for simplicity
+
+# Go to the start position above the cube
+goto_pose(cube_position, grasp_quaternion, z_approach=0.2)
+
+# Close the gripper to pick up the cube
+close_gripper()
+
+# Lift the cube
+lift_position = cube_position.copy()
+lift_position[2] += 0.1
+goto_pose(lift_position, grasp_quaternion, z_approach=0.2)
+
+# Open the gripper to release the cube
+open_gripper()
+
+# Go back down to the starting position
+goto_pose(cube_position, grasp_quaternion, z_approach=0.2)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.3548149022863217
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_05_sandboxrc_0_reward_0.355_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Get the pose of the red cube
+red_cube_pose = get_object_pose("red cube", return_bbox_extent=True)
+red_cube_position, _, _ = red_cube_pose
+
+# Lift the cube by moving straight upwards
+lifted_pose = (red_cube_position[0], red_cube_position[1], red_cube_position[2] + 0.2)  # Move up by 20 cm
+goto_pose(lifted_pose, (0, 0, 1, 0))
+
+# Open the gripper to grab the cube
+close_gripper()
+
+# Lift the cube further while holding it
+lifted_pose = (red_cube_position[0], red_cube_position[1], red_cube_position[2] + 0.3)  # Move up by another 30 cm
+goto_pose(lifted_pose, (0, 0, 1, 0))
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.0018974150276822833
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_06_sandboxrc_0_reward_0.002_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+from franka_gripper import Grasp, Robotiq2FingerGripper
+from typing import Tuple
+import numpy as np
+
+# Define the object name
+object_name = "red_cube"
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion_wxyz = sample_grasp_pose(object_name)
+
+# Goto the sampled grasp pose with a small z_approach for better control
+goto_pose(grasp_position, grasp_quaternion_wxyz, z_approach=0.1)
+
+# Close the gripper to pick up the cube
+close_gripper()
+
+# Lift the object by changing its Z position while keeping the same orientation
+lift_height = 0.2  # Desired height above the original position
+lifted_robot_pose = np.array([grasp_position[0], grasp_position[1], grasp_position[2] + lift_height])
+goto_pose(lifted_robot_pose, grasp_quaternion_wxyz)
+
+# Open the gripper again to release the cube
+open_gripper()
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'franka_gripper'
+
+  Reward: 0.00816805250877269
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_07_sandboxrc_1_reward_0.008_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Move to a position near the red cube
+red_cube_pose = get_object_pose("red cube")
+position = red_cube_pose[0] - np.array([0, 0.1, 0])  # Adjust the offset based on robot reach and cube proximity
+quaternion_wxyz = (0, 0, 0, 1)  # Using a known orientation for simplicity
+
+goto_pose(position, quaternion_wxyz)
+
+# Open the gripper to prepare for picking up the red cube
+open_gripper()
+
+# Move closer to pick up the red cube
+z_approach = -0.05
+goto_pose(red_cube_pose[0], red_cube_pose[1], z_approach)
+
+# Close the gripper to grab the red cube
+close_gripper()
+
+# Lift the red cube slightly above its original position
+lift_height = 0.2
+new_position = red_cube_pose[0] + np.array([0, 0, lift_height])
+goto_pose(new_position, red_cube_pose[1])
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_08_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Get the pose of the red cube
+cube_position, quaternion_wxyz, bbox_extent = get_object_pose("red cube", return_bbox_extent=True)
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion_wxyz = sample_grasp_pose("red cube")
+
+# Go to the position of the red cube with an approach distance
+goto_pose(cube_position + [0, 0, 0.1], quaternion_wxyz, z_approach=0.1)
+
+# Open the gripper
+open_gripper()
+
+# Approach and pick up the red cube slightly above its position
+goto_pose(grasp_position, grasp_quaternion_wxyz, z_approach=0.2)
+
+# Close the gripper to grasp the red cube
+close_gripper()
+
+# Lift the red cube
+goto_pose(gray_position, grasp_quaternion_wxyz, z_approach=0.3)
+
+# Code block 1
+# Get the pose of the red cube
+cube_position, quaternion_wxyz, bbox_extent = get_object_pose("red cube", return_bbox_extent=True)
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion_wxyz = sample_grasp_pose("red cube")
+
+# Go to the position of the red cube with an approach distance
+goto_pose(cube_position + [0, 0, 0.1], quaternion_wxyz, z_approach=0.1)
+
+# Open the gripper
+open_gripper()
+
+# Approach and pick up the red cube slightly above its position
+goto_pose(grasp_position, grasp_quaternion_wxyz, z_approach=0.2)
+
+# Close the gripper to grasp the red cube
+close_gripper()
+
+# Lift the red cube
+lift_position = grasp_position.copy()
+lift_position[2] += 0.1  # Increase Z by 0.1 meters for lifting
+goto_pose(lift_position, grasp_quaternion_wxyz, z_approach=0)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 20, in <module>
+NameError: name 'gray_position' is not defined. Did you mean: 'grasp_position'?
+
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 1
+  Num Finishes: 1
+  Num Code Blocks: 2
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_09_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+def pick_up_red_cube():
+    # Sample a grasp pose for the red cube
+    cube_grasp_pose = sample_grasp_pose("red cube")
+    
+    # Move to the grasp position with a slight z-approach to ensure accurate placement
+    goto_pose(cube_grasp_pose[0], cube_grasp_pose[1], z_approach=0.1)
+    
+    # Close the gripper to pick up the red cube
+    close_gripper()
+    
+    # Define a lift position above the cube (z_offset can be adjusted as needed)
+    lift_position = np.array([cube_grasp_pose[0][0], cube_grasp_pose[0][1], cube_grasp_pose[0][2] + 0.2])
+    goto_pose(lift_position, quaternion_wxyz=(0, 0, 1, 0), z_approach=0.1)  # Using (0, 0, 1, 0) as a reliable down orientation
+
+# Call the function to pick up the red cube
+pick_up_red_cube()
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_10_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Get the pose of the red cube
+red_cube_pose, red_cube_quaternion, _ = get_object_pose("red cube")
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion = sample_grasp_pose("red cube")
+
+# Approach to the red cube at a height of 0.1 meters above its current position
+goto_pose(red_cube_pose + [0, 0, 0.1], grasp_quaternion)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Lift the red cube by moving it to a height of 0.5 meters
+goto_pose(grasp_position, grasp_quaternion, z_approach=0.4)
+
+# Code block 1
+# Check if the gripper is fully closed
+if not is_gripper_closed():
+    close_gripper()
+
+# Lift the red cube by moving it to a height of 0.5 meters
+goto_pose(grasp_position, grasp_quaternion, z_approach=0.4)
+
+# Verify that the object has been lifted
+object_height = get_object_pose("red cube")[0][2]
+if object_height > 0.3:
+    print("Red cube picked up and lifted successfully.")
+else:
+    print("Failed to lift red cube. Current height:", object_height)
+
+# Code block 2
+# Verify that the gripper is fully closed
+if not get_gripper_state()[0]:
+    close_gripper()
+
+# Lift the red cube by moving it to a height of 0.5 meters
+goto_pose(grasp_position, grasp_quaternion, z_approach=0.4)
+
+# Verify that the object has been lifted
+new_red_cube_pose, _, _ = get_object_pose("red cube")
+if new_red_cube_pose[2] > 0.3:
+    print("Red cube picked up and lifted successfully.")
+else:
+    print("Failed to lift red cube. Current height:", new_red_cube_pose[2])
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 2, in <module>
+NameError: name 'is_gripper_closed' is not defined
+
+
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 2, in <module>
+NameError: name 'get_gripper_state' is not defined
+
+  Reward: 0.22949656465712268
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 2
+  Num Finishes: 1
+  Num Code Blocks: 3
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_11_sandboxrc_1_reward_0.229_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Sample a grasp pose for the red cube
+red_cube_pose = sample_grasp_pose("red cube")
+
+# Move to the sampled grasp pose with a small z approach to ensure we are above the object
+goto_pose(red_cube_pose[0], red_cube_pose[1], z_approach=0.05)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Define a lift height
+lift_height = 0.1
+
+# Move up after picking up the red cube
+final_position = red_cube_pose[0] + np.array([0, 0, lift_height])
+goto_pose(final_position, red_cube_pose[1])
+
+# Open the gripper to release the red cube above the current position
+open_gripper()
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 14, in <module>
+NameError: name 'np' is not defined
+
+  Reward: 0.5052245675676883
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_12_sandboxrc_1_reward_0.505_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Define the object we need to pick up and its target position
+target_object = "red_cube"
+target_position = np.array([0.5, 0.1, 0.8])  # Example target position above the red cube
+
+# Sample a grasp pose for the red cube
+grasp_pose = sample_grasp_pose(target_object)
+grasp_position = grasp_pose[0]
+grasp_quaternion = grasp_pose[1]
+
+# Goto the initial approach position with Z-approach
+goto_pose(grasp_position, grasp_quaternion, z_approach=0.05)
+
+# Close the gripper to pick up the object
+close_gripper()
+
+# Move to the target position above the red cube
+goto_pose(target_position, grasp_quaternion, z_approach=0.05)
+
+# Open the gripper to release the object
+open_gripper()
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 3, in <module>
+NameError: name 'np' is not defined
+
+  Reward: 0.00972306122726706
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_13_sandboxrc_1_reward_0.010_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+def get_red_cube_pose():
+    position, _, _ = get_object_pose("red cube")
+    return position
+
+def sample_grasp_pose_for_cube():
+    position, quaternion_wxyz = sample_grasp_pose("red cube")
+    return position, quaternion_wxyz
+
+def goto_and_grab(position, quaternion_wxyz):
+    z_approach = 0.1
+    goto_pose(position, quaternion_wxyz, z_approach)
+    close_gripper()
+
+def main():
+    # Get the pose of the red cube
+    red_cube_position = get_red_cube_pose()
+    
+    # Sample a grasp pose for the red cube
+    grasp_position, grasp_quaternion = sample_grasp_pose_for_cube()
+    
+    # Move to the grasp position and grab the red cube
+    goto_and_grab(grasp_position, grasp_quaternion)
+    
+    # Raise the cube (simple lift up along z-axis)
+    final_z_approach = 0.2
+    goto_pose(red_cube_position, [0, 0, 1, 0], final_z_approach)
+
+main()
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.5044276600022886
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_14_sandboxrc_0_reward_0.504_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Get the pose of the red cube
+red_cube_pose, _, _ = get_object_pose("red cube")
+
+# Sample a grasp pose for the red cube
+red_cube_grasp_pose = sample_grasp_pose("red cube")
+
+# Move to the grasp position of the red cube
+goto_pose(red_cube_grasp_pose[0], red_cube_grasp_pose[1])
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Sample a placement pose to lift the red cube
+lift_pose = np.array([red_cube_pose[0][0], red_cube_pose[0][1], red_cube_pose[0][2] + 5])  # Adjust the z-coordinate to lift the cube
+
+# Move to the lift position
+goto_pose(lift_pose, (0, 0, 1, 0))  # Use the z-up orientation for lifting
+
+# Open the gripper to release the red cube
+open_gripper()
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 16, in <module>
+IndexError: invalid index to scalar variable.
+
+  Reward: 0.5066134094399192
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_15_sandboxrc_1_reward_0.507_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Get the pose of the red cube
+red_cube_position, red_cube_quaternion, bbox_extent = get_object_pose('red cube')
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion = sample_grasp_pose('red cube')
+
+# Lift the cube (assuming we know where to lift it)
+lift_height = 0.18  # Adjust this height based on the actual placement height of the environment
+goto_pose(grasp_position + np.array([0, 0, lift_height]), grasp_quaternion)
+
+# Go to the grasp pose
+goto_pose(grasp_position, grasp_quaternion)
+
+# Close the gripper to pick up the cube
+close_gripper()
+
+# Lift the cube slightly above its new position
+lift_height += 0.1
+goto_pose(grasp_position + np.array([0, 0, lift_height]), grasp_quaternion)
+
+# Code block 1
+# Import numpy to perform numerical operations
+import numpy as np
+
+# Get the pose of the red cube
+red_cube_position, red_cube_quaternion, bbox_extent = get_object_pose('red cube')
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion = sample_grasp_pose('red cube')
+
+# Lift the cube (assuming we know where to lift it)
+lift_height = 0.18  # Adjust this height based on the actual placement height of the environment
+goto_pose(grasp_position + np.array([0, 0, lift_height]), grasp_quaternion)
+
+# Go to the grasp pose
+goto_pose(grasp_position, grasp_quaternion)
+
+# Close the gripper to pick up the cube
+close_gripper()
+
+# Lift the cube slightly above its new position
+lift_height += 0.1
+goto_pose(grasp_position + np.array([0, 0, lift_height]), grasp_quaternion)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 9, in <module>
+NameError: name 'np' is not defined
+
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 1
+  Num Finishes: 1
+  Num Code Blocks: 2
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_16_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Sample a grasp pose for the red cube
+red_cube_grasp_pose = sample_grasp_pose("red cube")
+
+# Go to the sampled grasp pose with a slight approach
+goto_pose(red_cube_grasp_pose[0], red_cube_grasp_pose[1], z_approach=0.1)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Lift the red cube by adjusting the position
+lift_position = red_cube_grasp_pose[0] + numpy.array([0, 0, 0.2])
+goto_pose(lift_position, red_cube_grasp_pose[1], z_approach=0)
+
+# Open the gripper to release the red cube
+open_gripper()
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 11, in <module>
+NameError: name 'numpy' is not defined
+
+  Reward: 0.5062289587570374
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_17_sandboxrc_1_reward_0.506_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Get the pose of the red cube
+red_cube_pose, red_cube_quaternion, _ = get_object_pose("red cube", return_bbox_extent=False)
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion_wxyz = sample_grasp_pose("red cube")
+
+# Approach and open the gripper above the red cube
+goto_pose(grasp_position + np.array([0, 0, 0.1]), np.array([0, 0, 1, 0]))
+open_gripper()
+
+# Move to the red cube pose
+goto_pose(red_cube_pose, grasp_quaternion_wxyz)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Lift the red cube by moving it above its current position
+goto_pose(grasp_position + np.array([0, 0, 0.2]), np.array([0, 0, 1, 0]))
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 8, in <module>
+NameError: name 'np' is not defined
+
+  Reward: 0.011952844755914861
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_18_sandboxrc_1_reward_0.012_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Get the pose of the red cube
+red_cube_position, _, _ = get_object_pose('red cube')
+
+# Sample a grasp pose for the red cube using the down orientation
+grasp_position, sample_quaternion_wxyz = sample_grasp_pose('red cube')
+grasp_orientation = np.array([0, 0, 1, 0])  # Down orientation
+
+# Go to a position slightly above the red cube to ready for grasping
+goto_pose(grasp_position + np.array([0, 0, 0.1]), grasp_orientation)
+
+# Approach to grab the red cube
+goto_pose(grasp_position, grasp_orientation, z_approach=0.05)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Lift the red cube a little bit higher
+lift_position = grasp_position + np.array([0, 0, 0.1])
+goto_pose(lift_position, grasp_orientation)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_19_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Get the pose of the red cube
+cube_position, _, _ = get_object_pose("red cube")
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion = sample_grasp_pose("red cube")
+
+# Move the robot to the grip position above the cube
+goto_pose(grasp_position + np.array([0, 0, 0.1]), grasp_quaternion, z_approach=0.2)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Lifting height
+lift_height = 0.3
+
+# Calculate the new position to lift the cube
+new_lift_position = cube_position + np.array([0, 0, lift_height])
+
+# Move the robot to lift the red cube
+goto_pose(new_lift_position, grasp_quaternion)
+
+# Code block 1
+import numpy as np
+
+# Get the current position of the gripper
+current_gripper_position, _, _ = get_object_pose("gripper")
+
+# Move the robot slightly up from the current position before lifting the cube again for stability
+goto_pose(current_gripper_position + np.array([0, 0, 0.1]), (0, 0, 1, 0), z_approach=0)
+
+# Lift the red cube above the initial hand position to avoid collision with ground or other objects
+lift_height = 0.3
+new_lift_position = current_gripper_position + np.array([0, 0, lift_height])
+goto_pose(new_lift_position, (0, 0, 1, 0))
+
+# Open the gripper to release the cube
+open_gripper()
+
+# Code block 2
+# Get the pose of the red cube
+cube_position, _, _ = get_object_pose("red cube")
+
+# Sample a grasp pose for the red cube
+grasp_position, grasp_quaternion = sample_grasp_pose("red cube")
+
+# Move the robot to the grip position above the cube
+goto_pose(grasp_position + np.array([0, 0, 0.1]), grasp_quaternion, z_approach=0.2)
+
+# Close the gripper to pick up the red cube
+close_gripper()
+
+# Lifting height
+lift_height = 0.3
+
+# Calculate the new position to lift the cube
+new_lift_position = cube_position + np.array([0, 0, lift_height])
+
+# Move the robot to lift the red cube
+goto_pose(new_lift_position, grasp_quaternion)
+
+# Open the gripper to release the cube
+open_gripper()
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 8, in <module>
+NameError: name 'np' is not defined
+
+
+Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 4, in <module>
+  File "/root/vlaTraining/cap-x/capx/integrations/franka/control_privileged.py", line 91, in get_object_pose
+    raise ValueError(f"Invalid object name: {object_name}")
+ValueError: Invalid object name: gripper
+
+  Reward: 0.0017787209717631627
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 2
+  Num Finishes: 1
+  Num Code Blocks: 3
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_cube_lifting_multiturn/trial_20_sandboxrc_0_reward_0.002_taskcompleted_0/code.py
+
+Summary Statistics:
+Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+Config Path: env_configs/cube_lifting_qwen/franka_qwen_privileged.yaml
+Git Commit: 0d7ac23 (Dirty: True)
+Total number of trials: 20
+Code generation success rate / Average reward / Task completed: 
+0.550/0.436/6
+Average code blocks: 1.400
+Average regenerations: 0.400
+Average finishes: 1.000
+Elapsed time: 529.02 seconds
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [42557]
