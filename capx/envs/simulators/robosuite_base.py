@@ -93,6 +93,7 @@ class RobosuiteBaseEnv(BaseEnv):
         self._current_joints = np.zeros(7, dtype=np.float64)
         self._gripper_fraction = 1.0  # 1.0 = open, 0.0 = closed
         self._gripper_action_dim = 2
+        self._gripper_command_override: np.ndarray | None = None
 
     def _init_robot_links(self) -> None:
         """Initialize robot link indices and base transforms. Call after robosuite_env is created."""
@@ -139,15 +140,36 @@ class RobosuiteBaseEnv(BaseEnv):
             fraction: 0.0 (closed) to 1.0 (open)
         """
         self._gripper_fraction = float(np.clip(fraction, 0.0, 1.0))
+        self._gripper_command_override = None
 
-    def _build_action(self) -> np.ndarray:
-        """Build a robosuite action array from current joints and gripper state."""
+    def _set_gripper_command(self, command: np.ndarray | list[float] | tuple[float, ...]) -> None:
+        """Set an explicit gripper command vector.
+
+        This keeps the existing scalar fraction path for parallel-jaw grippers while
+        allowing dexterous hands to receive per-DoF actuation targets.
+        """
+        command_arr = np.asarray(command, dtype=np.float64).reshape(-1)
+        if command_arr.size == 1:
+            command_arr = np.full(self._gripper_action_dim, float(command_arr[0]), dtype=np.float64)
+        if command_arr.size != self._gripper_action_dim:
+            raise ValueError(
+                f"Expected gripper command with {self._gripper_action_dim} values, got {command_arr.size}"
+            )
+        self._gripper_command_override = command_arr.copy()
+
+    def _current_gripper_command(self) -> np.ndarray:
+        """Return the active gripper command vector for the current control step."""
+        if self._gripper_command_override is not None:
+            return self._gripper_command_override.copy()
+
         gripper_cmd = self.gripper_closed_command + self._gripper_fraction * (
             self.gripper_open_command - self.gripper_closed_command
         )
-        action = np.concatenate(
-            [self._current_joints, np.full(self._gripper_action_dim, gripper_cmd, dtype=np.float64)]
-        )
+        return np.full(self._gripper_action_dim, gripper_cmd, dtype=np.float64)
+
+    def _build_action(self) -> np.ndarray:
+        """Build a robosuite action array from current joints and gripper state."""
+        action = np.concatenate([self._current_joints, self._current_gripper_command()])
         return action
 
     def _do_robosuite_step(self, action: np.ndarray) -> None:
@@ -180,12 +202,7 @@ class RobosuiteBaseEnv(BaseEnv):
     def move_to_joints_non_blocking(self, joints: np.ndarray) -> None:
         """Move to target joint positions using Robosuite's controller (non-blocking)."""
         target = np.asarray(joints, dtype=np.float64).reshape(7)
-        gripper_cmd = self.gripper_closed_command + self._gripper_fraction * (
-            self.gripper_open_command - self.gripper_closed_command
-        )
-        action = np.concatenate(
-            [target, np.full(self._gripper_action_dim, gripper_cmd, dtype=np.float64)]
-        )
+        action = np.concatenate([target, self._current_gripper_command()])
 
         self._do_robosuite_step(action)
 
@@ -219,12 +236,7 @@ class RobosuiteBaseEnv(BaseEnv):
             if error < tolerance:
                 break
 
-            gripper_cmd = self.gripper_closed_command + self._gripper_fraction * (
-                self.gripper_open_command - self.gripper_closed_command
-            )
-            action = np.concatenate(
-                [target, np.full(self._gripper_action_dim, gripper_cmd, dtype=np.float64)]
-            )
+            action = np.concatenate([target, self._current_gripper_command()])
 
             self._do_robosuite_step(action)
 

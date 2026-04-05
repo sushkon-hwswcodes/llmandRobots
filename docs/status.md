@@ -6,7 +6,7 @@ Last updated: 2026-04-05
 
 - Branch: `main`
 - Remote tracking: `origin/main`
-- Latest committed milestone: `8dcc9aa` "Add configurable hand parameters for Franka lift benchmarks"
+- Latest committed milestone: `8ef3c06` "Log PandaDexRH inspire-hand smoke benchmark result"
 
 ## Recent progress
 
@@ -63,13 +63,21 @@ Last updated: 2026-04-05
 - Added opt-in smoke config: `env_configs/shape_generalization/franka_qwen_shape_inspire_smoke.yaml`
 - Updated smoke result: with `PandaDexRH`, the saved trial video now shows the hand visibly attached in both close-up and overview views
 - Corrected 3-trial smoke benchmark result: `1/3` task-complete with average reward `0.333` using the unchanged binary open/close lift policy
-- Caveat: policy behavior is still binary open / close, so the first five-finger benchmark will likely be a compatibility test before any dexterous-hand policy upgrade
+- Added the first opt-in dexterous-hand control layer on top of the same low-level env path:
+  - `get_hand_capabilities()`
+  - `set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")`
+  - `set_hand_joints([...])` for explicit 6-value Inspire commands
+- Backward-compatibility preserved: Panda still uses the original scalar open / close path, and existing Panda benchmark configs were not changed
+- Direct control check: the Inspire hand now moves through named preshapes and explicit 6-value commands in simulation without changing the arm stack
+- First richer-hand prompt check: a 1-trial smoke run successfully used `get_hand_capabilities()` and `set_hand_preshape(...)` from the prompt, but still failed the lift with reward `0.033`
+- Current readout: the model can adopt richer hand actions immediately, but grasp robustness still appears to be the limiting factor rather than API discoverability
 
 ## Current local artifacts
 
 - `benchmark_green_target_clutter_30.log`: full 30-trial clutter benchmark output
 - `scripts/make_success_video_grids.py`: helper for assembling 4x2 success-video grids
 - `docs/hand_configuration.md`: notes on the new configurable hand path and the parameters that need to be swapped for a future five-finger hand
+- `benchmark_shape_inspire_smoke_richer_hand_1trial.log`: first prompt-level smoke artifact using the richer Inspire-hand API
 
 ## What is done
 
@@ -81,12 +89,13 @@ Last updated: 2026-04-05
 - Phase 3 target-object selection from real-object clutter has an initial implementation and smoke-test coverage
 - Phase 3 target-object selection from real-object clutter has now been benchmarked once at `9/30`
 - The hand path is now configurable without replacing Panda, and the current benchmark configs explicitly preserve Panda settings
+- The first richer-hand API pass is now implemented for the Inspire smoke path, and the model has already used it in a benchmark trial
 
 ## What still needs attention
 
 - Standardize the first five-finger profile around `PandaDexRH` and propagate that profile through the smoke config and future benchmark configs
-- Review the success and failure videos from the corrected `PandaDexRH` smoke run to identify the dominant five-finger failure mode
-- Decide whether to keep the binary open/close API for a larger comparability benchmark or switch immediately to richer hand actions
+- Review the richer-hand smoke video and compare it to the earlier binary-hand smoke artifacts to identify whether finger posture or approach motion is the main remaining limiter
+- Decide whether to tune the new hand preshapes first or improve grasp-pose / approach behavior first
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant

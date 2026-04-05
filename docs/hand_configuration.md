@@ -50,12 +50,16 @@ defines the necessary gripper mount quaternion offset in `PandaDexRH`.
 Current status:
 - `PandaDexRH` instantiates, resets, and steps correctly.
 - The hand is visibly attached in saved smoke-test video frames.
-- The policy is still binary open / close, so this is still a compatibility-first
-  dexterous-hand benchmark path rather than a full dexterous manipulation policy.
+- The first richer-hand control layer now exists for the Inspire smoke path:
+  - `get_hand_capabilities()`
+  - `set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")`
+  - `set_hand_joints([...])` with 6 values
+- Panda compatibility is preserved because the older `open_gripper()` and
+  `close_gripper()` helpers still exist and still drive the scalar Panda path.
 
 ## Current limitation
 
-The policy still uses a binary open / close abstraction. This means a new
-five-finger hand can be swapped in at the configuration level, but we should not
-expect dexterous-hand benefits until we expose richer grasp primitives and
-hand-aware grasp pose generation.
+The richer Inspire-hand API is available, but the grasp strategy is still mostly
+the same top-down one-shot lift sequence. This means the next performance gains
+are likely to come from better approach / grasp-pose behavior, not just from
+adding more hand joints or more named preshapes.

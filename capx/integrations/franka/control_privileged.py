@@ -10,6 +10,7 @@ from capx.integrations.base_api import ApiBase
 from capx.integrations.franka.common import (
     DEFAULT_TCP_OFFSET,
     apply_tcp_offset,
+    command_gripper as _command_gripper,
     close_gripper as _close_gripper,
     open_gripper as _open_gripper,
 )
@@ -49,6 +50,9 @@ class FrankaControlPrivilegedApi(ApiBase):
         if tcp_offset is None:
             tcp_offset = getattr(env, "tcp_offset", DEFAULT_TCP_OFFSET)
         self._tcp_offset = np.asarray(tcp_offset, dtype=np.float64)
+        self._hand_name = str(getattr(env, "hand_name", "panda"))
+        self._robot_name = str(getattr(env, "robot_name", "Panda"))
+        self._gripper_action_dim = int(getattr(env, "_gripper_action_dim", 1))
 
     def functions(self) -> dict[str, Any]:
         base_functions = {
@@ -56,6 +60,9 @@ class FrankaControlPrivilegedApi(ApiBase):
             "get_object_shape": self.get_object_shape,
             "sample_grasp_pose": self.sample_grasp_pose,
             "goto_pose": self.goto_pose,
+            "get_hand_capabilities": self.get_hand_capabilities,
+            "set_hand_joints": self.set_hand_joints,
+            "set_hand_preshape": self.set_hand_preshape,
             "open_gripper": self.open_gripper,
             "close_gripper": self.close_gripper,
             # "home_pose": self.home_pose,
@@ -285,12 +292,91 @@ class FrankaControlPrivilegedApi(ApiBase):
         joints = np.asarray(self.cfg[:-1], dtype=np.float64).reshape(7)
         self._env.move_to_joints_blocking(joints)
 
+    def _supports_dexterous_hand(self) -> bool:
+        return self._gripper_action_dim > 2 or "inspire" in self._hand_name or "Dex" in self._robot_name
+
+    def _inspire_open_pose(self) -> np.ndarray:
+        return np.array([-1.5, -1.5, -1.5, -1.5, -3.0, 3.0], dtype=np.float64)
+
+    def _inspire_closed_pose(self) -> np.ndarray:
+        return np.array([1.5, 1.5, 1.5, 1.5, 3.0, 3.0], dtype=np.float64)
+
+    def _interpolate_inspire_pose(self, closed_fraction: float) -> np.ndarray:
+        open_pose = self._inspire_open_pose()
+        closed_pose = self._inspire_closed_pose()
+        t = float(np.clip(closed_fraction, 0.0, 1.0))
+        return open_pose + t * (closed_pose - open_pose)
+
+    def _hand_presets(self) -> dict[str, np.ndarray]:
+        if self._supports_dexterous_hand():
+            return {
+                "open": self._inspire_open_pose(),
+                "pregrasp": self._interpolate_inspire_pose(0.35),
+                "grasp_soft": self._interpolate_inspire_pose(0.7),
+                "close": self._inspire_closed_pose(),
+            }
+        return {
+            "open": np.array([1.0], dtype=np.float64),
+            "close": np.array([0.0], dtype=np.float64),
+        }
+
+    def get_hand_capabilities(self) -> dict[str, Any]:
+        """Return the currently configured hand-control affordances."""
+        presets = self._hand_presets()
+        return {
+            "robot_name": self._robot_name,
+            "hand_name": self._hand_name,
+            "action_dim": self._gripper_action_dim,
+            "dexterous": self._supports_dexterous_hand(),
+            "available_preshapes": list(presets.keys()),
+            "recommended_open_preshape": "open",
+            "recommended_close_preshape": "close",
+        }
+
+    def set_hand_joints(self, joints: list[float] | np.ndarray, steps: int = 40) -> None:
+        """Set explicit hand-actuation targets.
+
+        For Panda-like grippers, a single scalar is accepted.
+        For dexterous hands such as Inspire, pass one value per gripper action DoF.
+        """
+        joints_arr = np.asarray(joints, dtype=np.float64).reshape(-1)
+        if self._supports_dexterous_hand():
+            if joints_arr.size != self._gripper_action_dim:
+                raise ValueError(
+                    f"Expected {self._gripper_action_dim} hand joint values, got {joints_arr.size}"
+                )
+            _command_gripper(self._env, joints_arr, steps=steps)
+            return
+
+        if joints_arr.size != 1:
+            raise ValueError("Parallel-jaw grippers only accept a single scalar hand command")
+        self._env._set_gripper(float(np.clip(joints_arr[0], 0.0, 1.0)))
+        for _ in range(steps):
+            self._env._step_once()
+
+    def set_hand_preshape(self, preshape_name: str, steps: int = 40) -> None:
+        """Move the current hand to a named preshape."""
+        presets = self._hand_presets()
+        key = preshape_name.strip().lower()
+        if key not in presets:
+            raise ValueError(f"Unknown hand preshape: {preshape_name}. Available: {sorted(presets)}")
+        preset = presets[key]
+        if self._supports_dexterous_hand():
+            _command_gripper(self._env, preset, steps=steps)
+        else:
+            self._env._set_gripper(float(preset[0]))
+            for _ in range(steps):
+                self._env._step_once()
+
     def open_gripper(self) -> None:
         """Open gripper fully.
 
         Args:
             None
         """
+        if self._supports_dexterous_hand():
+            self.set_hand_preshape("open", steps=40)
+            return
         _open_gripper(self._env, steps=40)
 
     def close_gripper(self) -> None:
@@ -299,6 +385,9 @@ class FrankaControlPrivilegedApi(ApiBase):
         Args:
             None
         """
+        if self._supports_dexterous_hand():
+            self.set_hand_preshape("close", steps=60)
+            return
         _close_gripper(self._env, steps=60)
 
     def home_pose(self) -> None:

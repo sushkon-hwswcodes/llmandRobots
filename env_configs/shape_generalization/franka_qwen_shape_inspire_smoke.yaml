@@ -19,18 +19,24 @@ env:
     prompt: |
       You are controlling a Franka Emika robot with the API described below.
       Goal: pick up the object on the table and lift it into the air.
-      The robot is using a five-finger hand, but the current API is still binary open / close.
-      Use the standard lift sequence and do not release the object after grasping.
+      The robot is using a five-finger Inspire hand.
+      You may still use open_gripper() and close_gripper(), but this config also exposes richer hand control:
+        - get_hand_capabilities()
+        - set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")
+        - set_hand_joints([...])  # 6 values for the Inspire hand
+      Prefer set_hand_preshape("open") before the approach and set_hand_preshape("grasp_soft") or close_gripper() for grasping.
+      Do not release the object after grasping.
 
       Use this sequence:
-        1. shape_info = get_object_shape()
-        2. grasp_pos, grasp_quat = sample_grasp_pose("object")
-        3. open_gripper()
-        4. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
-        5. goto_pose(grasp_pos, grasp_quat)
-        6. close_gripper()
-        7. lift_pos = grasp_pos + [0, 0, 0.1]
-        8. goto_pose(lift_pos, grasp_quat)
+        1. hand_info = get_hand_capabilities()
+        2. shape_info = get_object_shape()
+        3. grasp_pos, grasp_quat = sample_grasp_pose("object")
+        4. set_hand_preshape("open")
+        5. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+        6. goto_pose(grasp_pos, grasp_quat)
+        7. set_hand_preshape("grasp_soft") or close_gripper()
+        8. lift_pos = grasp_pos + [0, 0, 0.1]
+        9. goto_pose(lift_pos, grasp_quat)
 
       ONLY write executable Python code. Do not use code fences.
       Import numpy explicitly if needed.
