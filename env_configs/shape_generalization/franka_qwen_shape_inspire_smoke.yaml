@@ -52,41 +52,31 @@ env:
         4. then do the full 0.10 m lift
 
       Keep the code simple and deterministic:
+        - write one straight-line script, not helper functions
         - define helper variables like pregrasp_name and close_name from shape_info
         - use numpy arrays for lift offsets
         - include at most one reinforcement grasp
         - do not call any functions other than the provided robot APIs and standard Python / numpy
+        - do not define your own Python functions or classes
         - do not invent helper checks such as stability or contact tests
         - do not redefine or shadow provided robot API functions such as get_object_shape, sample_grasp_pose, goto_pose, get_hand_capabilities, open_gripper, close_gripper, set_hand_preshape, or set_hand_joints
         - never call open_gripper() or close_gripper() in this config
 
-      Example structure:
-        hand_info = get_hand_capabilities()
-        shape_info = get_object_shape()
-        grasp_pos, grasp_quat = sample_grasp_pose("object")
-
-        shape_name = shape_info.get("shape", "")
-        if shape_name == "box":
-            pregrasp_name = "open"
-            close_name = "grasp_soft"
-        elif shape_name == "ball":
-            pregrasp_name = "pregrasp"
-            close_name = "close"
-        else:
-            pregrasp_name = "pregrasp"
-            close_name = "grasp_soft"
-
-        set_hand_preshape(pregrasp_name)
-        goto_pose(grasp_pos, grasp_quat, z_approach=0.12)
-        goto_pose(grasp_pos, grasp_quat, z_approach=0.04)
-        goto_pose(grasp_pos, grasp_quat)
-        set_hand_preshape(close_name)
-        test_lift_pos = grasp_pos + np.array([0.0, 0.0, 0.04])
-        goto_pose(test_lift_pos, grasp_quat)
-        goto_pose(grasp_pos, grasp_quat)
-        set_hand_preshape("close")
-        lift_pos = grasp_pos + np.array([0.0, 0.0, 0.10])
-        goto_pose(lift_pos, grasp_quat)
+      Write code in this order:
+        1. import numpy as np
+        2. call get_hand_capabilities()
+        3. call get_object_shape()
+        4. call sample_grasp_pose("object")
+        5. choose pregrasp_name and close_name from shape_info["shape"]
+        6. call set_hand_preshape(pregrasp_name)
+        7. call goto_pose(grasp_pos, grasp_quat, z_approach=0.12)
+        8. call goto_pose(grasp_pos, grasp_quat, z_approach=0.04)
+        9. call goto_pose(grasp_pos, grasp_quat)
+        10. call set_hand_preshape(close_name)
+        11. lift by 0.04 m
+        12. return once to grasp_pos
+        13. call set_hand_preshape("close")
+        14. lift by 0.10 m
 
       ONLY write executable Python code. Do not use code fences.
       Import numpy explicitly if needed.

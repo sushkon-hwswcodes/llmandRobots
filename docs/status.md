@@ -76,6 +76,7 @@ Last updated: 2026-04-05
 - Prompt tightened again: the reinforcement grasp is now deterministic and the config explicitly forbids inventing helper checks beyond the exposed APIs
 - Latest staged-prompt result: the model executed the intended two-stage descent and reinforcement grasp without sandbox errors, but it also redefined provided API names locally; the smoke prompt now explicitly forbids shadowing those APIs
 - Prompt wording fix in progress: the Inspire smoke config now explicitly forbids `open_gripper()` / `close_gripper()` so the dexterous-hand path is exclusive rather than optional
+- Prompt tightened further: the Inspire smoke config now requires a straight-line script order and explicitly forbids defining helper functions or classes, reducing the chance that the model shadows the real APIs again
 
 ## Current local artifacts
 
