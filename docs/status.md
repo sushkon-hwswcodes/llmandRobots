@@ -46,7 +46,8 @@ Last updated: 2026-04-05
 - Added low-level env: `franka_robosuite_ycb_target_clutter_low_level`
 - Added config: `env_configs/real_objects/franka_qwen_ycb_target_clutter.yaml`
 - Current target-clutter behavior: the prompt names a specific YCB target object while `sample_grasp_pose("object")` still resolves to the target object pose
-- Early smoke result: the target-clutter env resets and runs, but grasp reliability in clutter is still below benchmark-ready levels
+- 30-trial benchmark: `9/30` task-complete with `0.394` average reward
+- Current readout: target selection appears to be working, but cluttered grasp reliability is still the dominant bottleneck
 
 ## Current local artifacts
 
@@ -60,6 +61,7 @@ Last updated: 2026-04-05
 - Phase 2.75 green-target clutter is implemented and benchmarked at `24/30`
 - Phase 3 real-world objects has started with a first YCB-backed lift environment and prompt/config bridge
 - Phase 3 target-object selection from real-object clutter has an initial implementation and smoke-test coverage
+- Phase 3 target-object selection from real-object clutter has now been benchmarked once at `9/30`
 
 ## What still needs attention
 
@@ -67,4 +69,5 @@ Last updated: 2026-04-05
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant
+- Improve grasp robustness for the YCB target-clutter variant before treating it as a stable benchmark tier
 - Turn representative successful trials into montage videos for easier review and sharing
