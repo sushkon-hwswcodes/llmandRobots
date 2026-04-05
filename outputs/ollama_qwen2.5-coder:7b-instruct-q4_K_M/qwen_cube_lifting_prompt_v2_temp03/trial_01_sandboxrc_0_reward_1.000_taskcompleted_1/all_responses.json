@@ -4,7 +4,7 @@
       0
     ],
     "code_blocks": [
-      "import numpy as np\n\n# Sample a grasp pose for the red cube\ngrasp_pos, grasp_quat = sample_grasp_pose(\"red_cube\")\n\n# Open the gripper to prepare for grasping\nopen_gripper()\n\n# Move the robot to an approach position above the cube\ngoto_pose(grasp_pos, grasp_quat, z_approach=0.1)\n\n# Move the robot to the grasp pose\ngoto_pose(grasp_pos, grasp_quat)\n\n# Close the gripper to grasp the cube\nclose_gripper()\n\n# Calculate a lift position above the table\nlift_pos = grasp_pos.copy()\nlift_pos[2] += 0.1\n\n# Move the robot to the lift position\ngoto_pose(lift_pos, grasp_quat)"
+      "import numpy as np\n\n# Sample a grasp pose for the red cube\ngrasp_pos, grasp_quat = sample_grasp_pose(\"red_cube\")\n\n# Open the gripper to prepare for picking up the cube\nopen_gripper()\n\n# Go to the approach position above the cube\ngoto_pose(grasp_pos, grasp_quat, z_approach=0.1)\n\n# Move to the exact grasp pose\ngoto_pose(grasp_pos, grasp_quat)\n\n# Close the gripper to pick up the cube\nclose_gripper()\n\n# Define the lift position above the table\nlift_pos = grasp_pos.copy()\nlift_pos[2] += 0.1\n\n# Go to the lift position\ngoto_pose(lift_pos, grasp_quat)"
     ],
     "decision": "initial",
     "initial_prompt": [

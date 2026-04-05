@@ -1,10 +1,10 @@
 Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
 Config Path: env_configs/cube_lifting_qwen/franka_qwen_privileged.yaml
-Git Commit: ab933df (Dirty: True)
-Total number of trials: 20
+Git Commit: 56c359e (Dirty: True)
+Total number of trials: 2
 Code generation success rate / Average reward / Task completed: 
-1.000/1.000/20
+1.000/1.000/2
 Average code blocks: 1.000
 Average regenerations: 0.000
 Average finishes: 1.000
-Elapsed time: 560.94 seconds
+Elapsed time: 94.87 seconds
