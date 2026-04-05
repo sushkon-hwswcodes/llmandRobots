@@ -41,6 +41,7 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
         tcp_offset: list[float] | tuple[float, float, float] | np.ndarray = (0.0, 0.0, -0.107),
         gripper_open_command: float = -1.0,
         gripper_closed_command: float = 1.0,
+        fixed_shape: str | None = None,
     ) -> None:
         super().__init__(
             controller_cfg=controller_cfg,
@@ -86,6 +87,12 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
 
         self.robosuite_env = LiftShape(**lift_kwargs)
         self._initial_cube_height: float | None = None
+        self._fixed_shape = fixed_shape.lower().strip() if fixed_shape is not None else None
+        self._valid_shapes = {"box", "cylinder", "ball"}
+        if self._fixed_shape is not None and self._fixed_shape not in self._valid_shapes:
+            raise ValueError(
+                f"Invalid fixed_shape: {fixed_shape}. Expected one of {sorted(self._valid_shapes)}"
+            )
         self._init_robot_links()
 
     def reset(
@@ -94,7 +101,7 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
         if seed is not None:
             self._rng = np.random.default_rng(seed)
 
-        self.robosuite_env.reset()
+        self._reset_to_requested_shape()
         self.robosuite_env.sim.data.qpos[6] -= np.pi
 
         self._step_count = 0
@@ -124,6 +131,20 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
 
         info = {"task_prompt": "Pick up the red object and lift it."}
         return obs, info
+
+    def _reset_to_requested_shape(self) -> None:
+        """Reset until the requested shape is sampled, if a fixed-shape override is active."""
+        max_resets = 32
+        for _ in range(max_resets):
+            self.robosuite_env.reset()
+            if self._fixed_shape is None:
+                return
+            current_shape = getattr(self.robosuite_env, "_current_shape", None)
+            if current_shape == self._fixed_shape:
+                return
+        raise RuntimeError(
+            f"Failed to sample fixed_shape={self._fixed_shape!r} after {max_resets} resets"
+        )
 
     def _object_pose_dict(self, robosuite_obs: dict[str, Any]) -> dict[str, list[float]]:
         base_link_wxyz_xyz = np.concatenate(

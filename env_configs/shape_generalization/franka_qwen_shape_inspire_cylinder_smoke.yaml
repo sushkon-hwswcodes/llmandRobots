@@ -1,0 +1,79 @@
+# Cylinder-only smoke config for debugging the five-finger Inspire grasp path.
+
+env:
+  _target_: capx.envs.tasks.franka.franka_lift.FrankaLiftCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level: franka_robosuite_shape_lift_low_level
+    low_level_kwargs:
+      robot_name: PandaDexRH
+      hand_name: inspire_right
+      robosuite_gripper_type: default
+      ik_robot_name: panda_description
+      ik_target_link_name: panda_hand
+      eef_body_name: gripper0_right_eef
+      tcp_offset: [0.0, 0.0, -0.107]
+      fixed_shape: cylinder
+    privileged: true
+    apis:
+      - FrankaControlPrivilegedApi
+    prompt: |
+      You are controlling a Franka Emika robot with the API described below.
+      Goal: pick up the red cylinder on the table and lift it into the air.
+      This task always uses a cylinder. Do not write shape-generic code.
+      The robot is using a five-finger Inspire hand.
+      For this Inspire-hand config, do NOT use open_gripper() or close_gripper().
+      Those are legacy Panda helpers and are not the hand-control path for this task.
+      Use only these Inspire-hand controls:
+        - get_hand_capabilities()
+        - set_hand_preshape("open" | "pregrasp" | "wide_enclose" | "grasp_soft" | "box_wrap" | "cylinder_wrap" | "ball_cup" | "close")
+        - set_hand_joints([...])  # 6 values for the Inspire hand
+
+      Follow this exact cylinder grasp sequence:
+        1. import numpy as np
+        2. hand_info = get_hand_capabilities()
+        3. shape_info = get_object_shape()
+        4. grasp_pos, grasp_quat = sample_grasp_pose("object")
+        5. set_hand_preshape("wide_enclose")
+        6. goto_pose(grasp_pos, grasp_quat, z_approach=0.12)
+        7. goto_pose(grasp_pos + np.array([0.0, 0.0, 0.01]), grasp_quat)
+        8. goto_pose(grasp_pos, grasp_quat)
+        9. set_hand_preshape("cylinder_wrap")
+        10. lift_pos = grasp_pos + np.array([0.0, 0.0, 0.10])
+        11. goto_pose(lift_pos, grasp_quat)
+
+      Operational meaning for the grasp:
+        - keep the hand opening wider than the cylinder before closing
+        - center the palm above the cylinder
+        - move the open hand to just above the cylinder first
+        - then move down so the cylinder is between the fingers
+        - only then apply "cylinder_wrap"
+
+      Keep the code simple and deterministic:
+        - write one straight-line script, not helper functions
+        - still call get_object_shape(), but do not branch on it
+        - call sample_grasp_pose("object") exactly; do not pass "red cylinder" or any other natural-language object name
+        - use numpy arrays for offsets
+        - do not call any functions other than the provided robot APIs and standard Python / numpy
+        - do not define your own Python functions or classes
+        - do not invent helper checks such as stability or contact tests
+        - do not redefine or shadow provided robot API functions such as get_object_shape, sample_grasp_pose, goto_pose, get_hand_capabilities, open_gripper, close_gripper, set_hand_preshape, or set_hand_joints
+        - never call open_gripper() or close_gripper() in this config
+        - default to exactly the cylinder sequence above
+
+      ONLY write executable Python code. Do not use code fences.
+      Import numpy explicitly if needed.
+
+api_servers:
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+record_video: true
+output_dir: ./outputs/qwen_shape_inspire_cylinder_smoke
+use_legacy_multi_turn_decision_prompt: true
+
+trials: 1
+num_workers: 1

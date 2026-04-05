@@ -92,6 +92,8 @@ Last updated: 2026-04-05
 - Timing readout from the smoke runs: query time is a small minority of wall-clock time, roughly `3%` to `14%`, while execution plus IK / simulation / video work is roughly `86%` to `97%`
 - Named-preset smoke result: the model used `wide_enclose` followed by a shape-specific wrap preset exactly as intended, but the 1-trial reward remained at about `0.033`, so the richer preset vocabulary improved controllability more than task success
 - Orientation A/B result: the current pass restored the better non-regressed grasp height and added shape-specific Inspire grasp quaternions for boxes, cylinders, and balls; across 3 trials it produced rewards of `0.000`, `0.035`, and `0.035` with `0/3` task completions and `0.023` average reward, so the change improved partial lift quality in some cases but did not create a stable successful grasp
+- New debug path in progress: the shape-lift low-level env now supports an optional `fixed_shape` override, and a new Inspire cylinder-only smoke config has been added so we can test a cylinder-specific prompt without changing the shared generic-shape benchmark path
+- Cylinder-only debug result: after tightening the prompt to require `sample_grasp_pose("object")` exactly, the first fixed-cylinder Inspire smoke run executed the intended straight-line `wide_enclose -> approach -> small downward adjustment -> cylinder_wrap -> lift` sequence without sandbox errors, but it still ended at reward `0.000`, so object-specific wording alone did not solve the grasp
 
 ## Current local artifacts
 
@@ -100,6 +102,8 @@ Last updated: 2026-04-05
 - `docs/hand_configuration.md`: notes on the new configurable hand path and the parameters that need to be swapped for a future five-finger hand
 - `benchmark_shape_inspire_smoke_richer_hand_1trial.log`: first prompt-level smoke artifact using the richer Inspire-hand API
 - `benchmark_shape_inspire_smoke_orientation_ab_3trials.log`: first 3-trial batch using shape-specific Inspire grasp quaternions with the template prompt and named presets
+- `env_configs/shape_generalization/franka_qwen_shape_inspire_cylinder_smoke.yaml`: cylinder-only Inspire smoke config for object-specific prompt debugging
+- `benchmark_shape_inspire_cylinder_smoke_1trial.log`: first fixed-cylinder Inspire smoke artifact
 
 ## What is done
 
@@ -127,6 +131,8 @@ Last updated: 2026-04-05
 - Improve the low-level grasp geometry next, since the prompt now reliably requests a wider enclosing pregrasp but the lift still does not complete
 - Keep the successful prompt changes, but tune low-level geometry more conservatively next since the first lowered-enclosure target regressed the reward
 - Hold the current prompt and named-preset structure fixed while testing one explicit enclosure change at a time, starting with a pre-close waypoint that places the open hand around the object before the wrap preset is applied
+- Measure whether an object-specific cylinder prompt plus a fixed cylinder scene improves behavior before adding more low-level geometry branches to the generic prompt
+- Use the cylinder-only video to inspect whether the failure is still “contact from above” or whether the new issue is the wrap timing / final descent depth before adding another low-level waypoint
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant
