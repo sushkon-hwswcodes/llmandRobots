@@ -41,6 +41,7 @@ Last updated: 2026-04-05
 - Added low-level env: `franka_robosuite_ycb_lift_low_level`
 - Added config: `env_configs/real_objects/franka_qwen_ycb.yaml`
 - Smoke test: env registration, reset, object metadata, and prompt-facing APIs all pass locally
+- Current workaround: the bridge uses YCB `textured.obj` meshes for collision because this MuJoCo setup would not load the provided `collision.ply` files
 
 ## Current local artifacts
 

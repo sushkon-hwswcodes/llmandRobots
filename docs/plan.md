@@ -17,7 +17,7 @@ Last updated: 2026-04-05
 2. Preserve the already-solved `20/20` privileged baseline while making clutter-specific changes.
 3. Add a lightweight regression or smoke check for the clutter environment so future prompt or API edits do not silently break it.
 4. Define the first real-world object set for Phase 3 so the transition is concrete instead of implicit.
-5. Improve the first YCB bridge by replacing the temporary OBJ-for-collision fallback if it becomes a stability bottleneck.
+5. Improve the first YCB bridge by replacing the temporary OBJ-for-collision fallback, which currently exists because MuJoCo would not load the provided YCB `collision.ply` files in this setup.
 
 ## Medium-term goals
 
