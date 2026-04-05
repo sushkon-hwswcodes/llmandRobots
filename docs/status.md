@@ -71,6 +71,10 @@ Last updated: 2026-04-05
 - Direct control check: the Inspire hand now moves through named preshapes and explicit 6-value commands in simulation without changing the arm stack
 - First richer-hand prompt check: a 1-trial smoke run successfully used `get_hand_capabilities()` and `set_hand_preshape(...)` from the prompt, but still failed the lift with reward `0.033`
 - Current readout: the model can adopt richer hand actions immediately, but grasp robustness still appears to be the limiting factor rather than API discoverability
+- New prompt direction in progress: the Inspire smoke config now emphasizes shape-based preshape choice, two-stage descent, a short test lift, and only one reinforcement grasp before the full lift
+- First staged-prompt smoke artifact: the model followed the staged structure closely, but the phrase "if the object seems unstable" led it to invent an unsupported `is_object_stable()` helper and fail in the sandbox
+- Prompt tightened again: the reinforcement grasp is now deterministic and the config explicitly forbids inventing helper checks beyond the exposed APIs
+- Latest staged-prompt result: the model executed the intended two-stage descent and reinforcement grasp without sandbox errors, but it also redefined provided API names locally; the smoke prompt now explicitly forbids shadowing those APIs
 
 ## Current local artifacts
 
@@ -95,7 +99,8 @@ Last updated: 2026-04-05
 
 - Standardize the first five-finger profile around `PandaDexRH` and propagate that profile through the smoke config and future benchmark configs
 - Review the richer-hand smoke video and compare it to the earlier binary-hand smoke artifacts to identify whether finger posture or approach motion is the main remaining limiter
-- Decide whether to tune the new hand preshapes first or improve grasp-pose / approach behavior first
+- Measure whether the safer staged prompt improves the Inspire smoke result before changing `sample_grasp_pose(...)`
+- Confirm that the tightened staged prompt stops sandbox failures from invented helper checks and then compare its grasp outcome against the earlier richer-hand trial
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant

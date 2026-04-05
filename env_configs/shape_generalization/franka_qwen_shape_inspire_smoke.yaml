@@ -24,19 +24,67 @@ env:
         - get_hand_capabilities()
         - set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")
         - set_hand_joints([...])  # 6 values for the Inspire hand
-      Prefer set_hand_preshape("open") before the approach and set_hand_preshape("grasp_soft") or close_gripper() for grasping.
+      Use the richer hand control instead of the old binary path unless there is a strong reason not to.
+      Do not use a single fast descend-and-close motion. Use a staged approach and a test lift.
       Do not release the object after grasping.
 
-      Use this sequence:
+      Use this strategy:
         1. hand_info = get_hand_capabilities()
         2. shape_info = get_object_shape()
         3. grasp_pos, grasp_quat = sample_grasp_pose("object")
-        4. set_hand_preshape("open")
-        5. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
-        6. goto_pose(grasp_pos, grasp_quat)
-        7. set_hand_preshape("grasp_soft") or close_gripper()
-        8. lift_pos = grasp_pos + [0, 0, 0.1]
-        9. goto_pose(lift_pos, grasp_quat)
+
+      Choose preshapes by object shape:
+        - ball: use "pregrasp" before approach, then "close" at the object
+        - cylinder: use "pregrasp" before approach, then "grasp_soft" first
+        - box: use "open" before approach, then "grasp_soft" first
+        - if unsure: use "pregrasp" before approach, then "grasp_soft"
+
+      Use a two-stage motion:
+        1. move to grasp_pos with z_approach=0.12
+        2. move to grasp_pos with z_approach=0.04
+        3. move to grasp_pos exactly
+
+      Use a two-stage grasp:
+        1. close to "grasp_soft" at the grasp pose unless the object is a ball
+        2. do a short test lift of only 0.03 to 0.05 m
+        3. return once to the grasp pose and reinforce with "close"
+        4. then do the full 0.10 m lift
+
+      Keep the code simple and deterministic:
+        - define helper variables like pregrasp_name and close_name from shape_info
+        - use numpy arrays for lift offsets
+        - include at most one reinforcement grasp
+        - do not call any functions other than the provided robot APIs and standard Python / numpy
+        - do not invent helper checks such as stability or contact tests
+        - do not redefine or shadow provided robot API functions such as get_object_shape, sample_grasp_pose, goto_pose, get_hand_capabilities, open_gripper, close_gripper, set_hand_preshape, or set_hand_joints
+
+      Example structure:
+        hand_info = get_hand_capabilities()
+        shape_info = get_object_shape()
+        grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+        shape_name = shape_info.get("shape", "")
+        if shape_name == "box":
+            pregrasp_name = "open"
+            close_name = "grasp_soft"
+        elif shape_name == "ball":
+            pregrasp_name = "pregrasp"
+            close_name = "close"
+        else:
+            pregrasp_name = "pregrasp"
+            close_name = "grasp_soft"
+
+        set_hand_preshape(pregrasp_name)
+        goto_pose(grasp_pos, grasp_quat, z_approach=0.12)
+        goto_pose(grasp_pos, grasp_quat, z_approach=0.04)
+        goto_pose(grasp_pos, grasp_quat)
+        set_hand_preshape(close_name)
+        test_lift_pos = grasp_pos + np.array([0.0, 0.0, 0.04])
+        goto_pose(test_lift_pos, grasp_quat)
+        goto_pose(grasp_pos, grasp_quat)
+        set_hand_preshape("close")
+        lift_pos = grasp_pos + np.array([0.0, 0.0, 0.10])
+        goto_pose(lift_pos, grasp_quat)
 
       ONLY write executable Python code. Do not use code fences.
       Import numpy explicitly if needed.
