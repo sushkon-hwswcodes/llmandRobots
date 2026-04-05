@@ -1,0 +1,32 @@
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+# Sample a grasp pose for the red cube
+cube_grasp_pos, cube_grasp_quat = sample_grasp_pose("red cube")
+
+# Move the robot to above the cube
+goto_pose(cube_grasp_pos + np.array([0, 0, 0.1]), cube_grasp_quat)
+
+# Close the gripper to grasp the cube
+close_gripper()
+
+# Lift the cube up by a small amount to ensure it's picked up
+goto_pose(cube_grasp_pos + np.array([0, 0, 0.2]), cube_grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 1
+  Stdout: 
+  Stderr: Traceback (most recent call last):
+  File "/root/vlaTraining/cap-x/capx/envs/tasks/base.py", line 174, in _exec_user_code
+    exec(code, self._exec_globals, self._exec_globals)
+  File "<string>", line 5, in <module>
+NameError: name 'np' is not defined
+
+  Reward: 0.012903537424671097
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 0
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
