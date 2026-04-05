@@ -187,6 +187,7 @@ uv run --no-sync --active capx/envs/launch.py \
 
 | Guide | Contents |
 | ----- | -------- |
+| [Setup And Prerequisites](docs/setup-prerequisites.md) | System packages, `uv` setup, env vars, Ollama, PyRoKi, and the current local Robosuite workflow |
 | [Adding Environments](docs/adding-environments.md) | Creating simulators, task environments, YAML configs |
 | [Adding APIs](docs/adding-apis.md) | Implementing and registering new robot control APIs |
 | [Configuration](docs/configuration.md) | YAML format, CLI flags, LLM provider setup |
@@ -198,6 +199,18 @@ uv run --no-sync --active capx/envs/launch.py \
 | [Project Status](docs/status.md) | Recent benchmark milestones, current branch status, active local artifacts |
 | [Project Plan](docs/plan.md) | Immediate next steps and decision rules for the next benchmark iteration |
 | [Skill Library Compilation](scripts/skill_library_compilation/README.md) | Analyze eval outputs, compile reusable skill libraries |
+
+## Current Local Workflow
+
+For the current benchmark work in this repo, the most relevant path is:
+
+1. Install the Robosuite environment with `uv sync --extra robosuite --extra dev`
+2. Start `ollama serve`
+3. Run Franka / Robosuite evaluations from the repo root
+
+If you want the exact prerequisites and commands for reproducing the current local
+Panda and Inspire-hand experiments, use
+[Setup And Prerequisites](docs/setup-prerequisites.md).
 
 ---
 

@@ -84,6 +84,7 @@ Last updated: 2026-04-05
 - Enclosing-pregrasp smoke result: the model adopted `pregrasp_name = "open"` across shapes and stayed on the intended real API path, but the 1-trial reward remained at roughly `0.033`, so the main remaining bottleneck appears to be low-level grasp geometry rather than prompt wording
 - New low-level enclosure change in progress: the Inspire final grasp target is being lowered from the object top surface toward the object body so the open fingers can straddle and close around it rather than just contact from above
 - Lowered-enclosure pose smoke result: lowering the Inspire final grasp target further around the object body caused the 1-trial smoke result to regress from `0.033` back to `0.000`, so that change appears too aggressive in its current form
+- Next benchmark direction agreed: reuse the one known successful Inspire-hand trial as a near-template prompt, and if needed add a small set of extra named hand presets instead of free-form `set_hand_joints([...])`
 
 ## Current local artifacts
 
