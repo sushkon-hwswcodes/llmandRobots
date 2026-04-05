@@ -285,28 +285,32 @@ class FrankaControlPrivilegedApi(ApiBase):
 
         if shape == "box":
             top_height = bbox[2] * 0.5
-            clearance = 0.01
             if is_inspire:
-                clearance = 0.007
-            target[2] += top_height + clearance
+                # Lower the final top-down target so the open hand can wrap around the box
+                # instead of only touching the top face before closure.
+                target[2] += max(0.35 * bbox[2], top_height - 0.012)
+            else:
+                target[2] += top_height + 0.01
         elif shape == "cylinder":
             top_height = bbox[2] * 0.5
-            clearance = 0.01
             if is_inspire:
-                clearance = 0.006
-            target[2] += top_height + clearance
+                target[2] += max(0.32 * bbox[2], top_height - 0.014)
+            else:
+                target[2] += top_height + 0.01
         elif shape == "ball":
             radius = bbox[2] * 0.5
-            clearance = 0.01
             if is_inspire:
-                clearance = -0.002
-            target[2] += radius + clearance
+                # For balls, aim closer to the equator so the fingers can enclose rather
+                # than press from above.
+                target[2] += max(0.1 * bbox[2], radius - 0.018)
+            else:
+                target[2] += radius + 0.01
         else:
             top_height = bbox[2] * 0.5
-            clearance = 0.01
             if is_inspire:
-                clearance = 0.007
-            target[2] += top_height + clearance
+                target[2] += max(0.35 * bbox[2], top_height - 0.012)
+            else:
+                target[2] += top_height + 0.01
 
         return target
 
