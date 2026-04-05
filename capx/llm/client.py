@@ -51,6 +51,12 @@ OSS_MODELS = [
     "qwen/qwen3.5-122b-a10b",
     "moonshotai/kimi-k2",
 ]
+
+# Local models served via Ollama (OpenAI-compatible endpoint)
+OLLAMA_MODELS = [
+    "ollama/qwen2.5-coder:7b-instruct-q4_K_M",
+]
+OLLAMA_SERVER_URL = "http://localhost:11434/v1/chat/completions"
 OPENROUTER_MODELS = [
     "openrouter/google/gemini-2.5-pro-preview",
     "openrouter/google/gemini-2.5-flash-preview",
@@ -84,6 +90,11 @@ ENSEMBLE_CONFIGS = [
 def is_openrouter_model(model: str) -> bool:
     """Return True if the model should be routed through the OpenRouter proxy."""
     return model.startswith("openrouter/") or model in OPENROUTER_MODELS
+
+
+def is_ollama_model(model: str) -> bool:
+    """Return True if the model should be routed to the local Ollama server."""
+    return model.startswith("ollama/") or model in OLLAMA_MODELS
 
 
 @dataclass
@@ -190,6 +201,8 @@ def query_model(args: "LaunchArgs | ModelQueryArgs", prompt: list[dict]) -> str:
     # Route OpenRouter models to the OpenRouter proxy server
     if is_openrouter_model(args.model):
         server_url = OPENROUTER_SERVER_URL
+    elif is_ollama_model(args.model):
+        server_url = OLLAMA_SERVER_URL
     else:
         server_url = args.server_url
 
@@ -225,6 +238,13 @@ def query_model(args: "LaunchArgs | ModelQueryArgs", prompt: list[dict]) -> str:
     elif args.model in OSS_MODELS:
         payload = {
             "model": args.model,
+            "messages": prompt,
+            "temperature": args.temperature,
+            "max_tokens": args.max_tokens,
+        }
+    elif is_ollama_model(args.model):
+        payload = {
+            "model": args.model.removeprefix("ollama/"),
             "messages": prompt,
             "temperature": args.temperature,
             "max_tokens": args.max_tokens,

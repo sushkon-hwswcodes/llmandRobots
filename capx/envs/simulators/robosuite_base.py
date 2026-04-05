@@ -135,7 +135,7 @@ class RobosuiteBaseEnv(BaseEnv):
         if need_render:
             self.robosuite_env.step(sliced)
         else:
-            self.robosuite_env.step(sliced, skip_render_images=True)
+            self.robosuite_env.step(sliced)
 
     def _step_once(self) -> None:
         """Execute one simulation step with current control state."""
