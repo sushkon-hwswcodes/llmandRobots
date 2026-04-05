@@ -243,19 +243,21 @@ class FrankaControlPrivilegedApi(ApiBase):
         obs = self._env.get_observation()
         name = object_name.lower().strip()
         has_secondary = "cube_poses" in obs and "secondary" in obs["cube_poses"]
-        grasp_quat = np.array([0, 0, 1, 0], dtype=np.float64)
-
         is_primary = self._is_primary_object_name(name, has_secondary)
         if is_primary:
             object_pos = np.asarray(obs["cube_poses"]["primary"][:3], dtype=np.float64).copy()
-            return self._shape_aware_grasp_position(object_pos), grasp_quat
+            grasp_pos = self._shape_aware_grasp_position(object_pos)
+            grasp_quat = self._shape_aware_grasp_quaternion()
+            return grasp_pos, grasp_quat
         elif "green" in name and "cube" in name:
             object_pos = np.asarray(obs["cube_poses"]["secondary"][:3], dtype=np.float64).copy()
-            return self._shape_aware_grasp_position(
+            grasp_pos = self._shape_aware_grasp_position(
                 object_pos,
                 fallback_shape="box",
                 fallback_bbox=np.array([0.05, 0.05, 0.05], dtype=np.float64),
-            ), grasp_quat
+            )
+            grasp_quat = self._shape_aware_grasp_quaternion(fallback_shape="box")
+            return grasp_pos, grasp_quat
         else:
             raise ValueError(f"Invalid object name: {object_name}")
 
@@ -285,34 +287,54 @@ class FrankaControlPrivilegedApi(ApiBase):
 
         if shape == "box":
             top_height = bbox[2] * 0.5
+            clearance = 0.01
             if is_inspire:
-                # Lower the final top-down target so the open hand can wrap around the box
-                # instead of only touching the top face before closure.
-                target[2] += max(0.35 * bbox[2], top_height - 0.012)
-            else:
-                target[2] += top_height + 0.01
+                clearance = 0.007
+            target[2] += top_height + clearance
         elif shape == "cylinder":
             top_height = bbox[2] * 0.5
+            clearance = 0.01
             if is_inspire:
-                target[2] += max(0.32 * bbox[2], top_height - 0.014)
-            else:
-                target[2] += top_height + 0.01
+                clearance = 0.006
+            target[2] += top_height + clearance
         elif shape == "ball":
             radius = bbox[2] * 0.5
+            clearance = 0.01
             if is_inspire:
-                # For balls, aim closer to the equator so the fingers can enclose rather
-                # than press from above.
-                target[2] += max(0.1 * bbox[2], radius - 0.018)
-            else:
-                target[2] += radius + 0.01
+                clearance = -0.002
+            target[2] += radius + clearance
         else:
             top_height = bbox[2] * 0.5
+            clearance = 0.01
             if is_inspire:
-                target[2] += max(0.35 * bbox[2], top_height - 0.012)
-            else:
-                target[2] += top_height + 0.01
+                clearance = 0.007
+            target[2] += top_height + clearance
 
         return target
+
+    def _shape_aware_grasp_quaternion(self, *, fallback_shape: str | None = None) -> np.ndarray:
+        """Return a shape-aware grasp orientation for the current hand profile."""
+        rs_env = getattr(self._env, "robosuite_env", None)
+        shape = fallback_shape
+        if shape is None and rs_env is not None and hasattr(rs_env, "_current_shape"):
+            shape = str(rs_env._current_shape)
+        if shape is None:
+            shape = "box"
+
+        is_inspire = "inspire" in self._hand_name.lower() or "dex" in self._robot_name.lower()
+        if not is_inspire:
+            return np.array([0, 0, 1, 0], dtype=np.float64)
+
+        if shape == "box":
+            quat_xyzw = SciRotation.from_euler("xyz", [180.0, 0.0, 15.0], degrees=True).as_quat()
+        elif shape == "cylinder":
+            quat_xyzw = SciRotation.from_euler("xyz", [180.0, 0.0, 30.0], degrees=True).as_quat()
+        elif shape == "ball":
+            quat_xyzw = SciRotation.from_euler("xyz", [170.0, 0.0, 0.0], degrees=True).as_quat()
+        else:
+            quat_xyzw = SciRotation.from_euler("xyz", [180.0, 0.0, 15.0], degrees=True).as_quat()
+
+        return np.array([quat_xyzw[3], quat_xyzw[0], quat_xyzw[1], quat_xyzw[2]], dtype=np.float64)
 
     def goto_pose(
         self, position: np.ndarray, quaternion_wxyz: np.ndarray, z_approach: float = 0.0

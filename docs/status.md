@@ -6,7 +6,7 @@ Last updated: 2026-04-05
 
 - Branch: `main`
 - Remote tracking: `origin/main`
-- Latest committed milestone: `8ef3c06` "Log PandaDexRH inspire-hand smoke benchmark result"
+- Latest committed milestone: `7bc376c` "Add Inspire preset demos and log named preset smoke result"
 
 ## Recent progress
 
@@ -91,6 +91,7 @@ Last updated: 2026-04-05
 - Preset demo videos generated for all current named Inspire shapes under `outputs/inspire_preset_demos/`
 - Timing readout from the smoke runs: query time is a small minority of wall-clock time, roughly `3%` to `14%`, while execution plus IK / simulation / video work is roughly `86%` to `97%`
 - Named-preset smoke result: the model used `wide_enclose` followed by a shape-specific wrap preset exactly as intended, but the 1-trial reward remained at about `0.033`, so the richer preset vocabulary improved controllability more than task success
+- Orientation A/B result: the current pass restored the better non-regressed grasp height and added shape-specific Inspire grasp quaternions for boxes, cylinders, and balls; across 3 trials it produced rewards of `0.000`, `0.035`, and `0.035` with `0/3` task completions and `0.023` average reward, so the change improved partial lift quality in some cases but did not create a stable successful grasp
 
 ## Current local artifacts
 
@@ -98,6 +99,7 @@ Last updated: 2026-04-05
 - `scripts/make_success_video_grids.py`: helper for assembling 4x2 success-video grids
 - `docs/hand_configuration.md`: notes on the new configurable hand path and the parameters that need to be swapped for a future five-finger hand
 - `benchmark_shape_inspire_smoke_richer_hand_1trial.log`: first prompt-level smoke artifact using the richer Inspire-hand API
+- `benchmark_shape_inspire_smoke_orientation_ab_3trials.log`: first 3-trial batch using shape-specific Inspire grasp quaternions with the template prompt and named presets
 
 ## What is done
 
@@ -124,6 +126,7 @@ Last updated: 2026-04-05
 - Check whether the new enclosing-pregrasp wording improves the actual hand posture in the smoke video before changing orientation logic
 - Improve the low-level grasp geometry next, since the prompt now reliably requests a wider enclosing pregrasp but the lift still does not complete
 - Keep the successful prompt changes, but tune low-level geometry more conservatively next since the first lowered-enclosure target regressed the reward
+- Hold the current prompt and named-preset structure fixed while testing one explicit enclosure change at a time, starting with a pre-close waypoint that places the open hand around the object before the wrap preset is applied
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant
