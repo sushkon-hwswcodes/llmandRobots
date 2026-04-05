@@ -46,6 +46,7 @@ class CodeExecEnvConfig:
 
     low_level: Env | str
     apis: list[str]
+    low_level_kwargs: dict[str, Any] | None = None
     prompt: str | None = None
     task_only_prompt: str | None = None
     multi_turn_prompt: str | None = None
@@ -92,7 +93,11 @@ class CodeExecutionEnvBase(Env):
         super().__init__()
         self.cfg = cfg
         self.low_level_env: BaseEnv = self._build_low_level(
-            cfg.low_level, cfg.privileged, cfg.enable_render, cfg.viser_debug
+            cfg.low_level,
+            cfg.privileged,
+            cfg.enable_render,
+            cfg.viser_debug,
+            cfg.low_level_kwargs,
         )  # type: ignore[assignment]
         # Create APIs once; maximize sharing inside a worker via lru_cache in get_api
         self._apis: dict[str, ApiBase] = {n: get_api(n)(self.low_level_env) for n in cfg.apis}
@@ -205,7 +210,12 @@ class CodeExecutionEnvBase(Env):
         self._exec_globals = g
 
     def _build_low_level(
-        self, src: Env | str, privileged: bool = False, enable_render: bool = True, viser_debug: bool = False
+        self,
+        src: Env | str,
+        privileged: bool = False,
+        enable_render: bool = True,
+        viser_debug: bool = False,
+        low_level_kwargs: dict[str, Any] | None = None,
     ) -> BaseEnv:
         """
         Builds the low level environment from the given source.
@@ -214,6 +224,7 @@ class CodeExecutionEnvBase(Env):
         Returns:
             BaseEnv: the low level environment
         """
+        low_level_kwargs = low_level_kwargs or {}
         if isinstance(src, str):
             if src.endswith(".yaml") or src.endswith(".yml"):
                 cfg = DictLoader.load(src)
@@ -221,7 +232,13 @@ class CodeExecutionEnvBase(Env):
                     return cfg_instantiate(cfg)  # type: ignore[no-any-return]
                 return cfg  # type: ignore[return-value]
             else:
-                return get_env(src, privileged=privileged, enable_render=enable_render, viser_debug=viser_debug)
+                return get_env(
+                    src,
+                    privileged=privileged,
+                    enable_render=enable_render,
+                    viser_debug=viser_debug,
+                    **low_level_kwargs,
+                )
         return src
 
     def _get_observation(self) -> dict[str, Any]:

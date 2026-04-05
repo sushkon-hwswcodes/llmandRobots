@@ -77,18 +77,47 @@ class BaseEnv(Env):
 
 # Use user's BaseEnv for low-level envs
 
-_ENV_FACTORIES: dict[str, Callable[[], BaseEnv]] = {}
+_ENV_FACTORIES: dict[str, Callable[..., BaseEnv]] = {}
 
 
-def register_env(name: str, factory: Callable[[], BaseEnv]) -> None:
+def register_env(name: str, factory: Callable[..., BaseEnv]) -> None:
     _ENV_FACTORIES[name] = factory
 
 
 @lru_cache(maxsize=256)
-def get_env(name: str, privileged: bool = False, enable_render: bool = False, viser_debug: bool = False) -> BaseEnv:
+def _get_env_cached(
+    name: str,
+    privileged: bool = False,
+    enable_render: bool = False,
+    viser_debug: bool = False,
+) -> BaseEnv:
     if name not in _ENV_FACTORIES:
         raise KeyError(f"Environment '{name}' not registered")
     return _ENV_FACTORIES[name](privileged=privileged, enable_render=enable_render, viser_debug=viser_debug)
+
+
+def get_env(
+    name: str,
+    privileged: bool = False,
+    enable_render: bool = False,
+    viser_debug: bool = False,
+    **kwargs: Any,
+) -> BaseEnv:
+    if kwargs:
+        if name not in _ENV_FACTORIES:
+            raise KeyError(f"Environment '{name}' not registered")
+        return _ENV_FACTORIES[name](
+            privileged=privileged,
+            enable_render=enable_render,
+            viser_debug=viser_debug,
+            **kwargs,
+        )
+    return _get_env_cached(
+        name,
+        privileged=privileged,
+        enable_render=enable_render,
+        viser_debug=viser_debug,
+    )
 
 
 def list_envs() -> list[str]:

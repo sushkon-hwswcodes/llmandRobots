@@ -32,6 +32,14 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
         viser_debug: bool = False,
         privileged: bool = False,
         enable_render: bool = False,
+        robot_name: str = "Panda",
+        hand_name: str = "panda",
+        ik_robot_name: str = "panda_description",
+        ik_target_link_name: str = "panda_hand",
+        eef_body_name: str = "gripper0_right_eef",
+        tcp_offset: list[float] | tuple[float, float, float] | np.ndarray = (0.0, 0.0, -0.107),
+        gripper_open_command: float = -1.0,
+        gripper_closed_command: float = 1.0,
     ) -> None:
         super().__init__(
             controller_cfg=controller_cfg,
@@ -40,10 +48,18 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
             viser_debug=False,
             privileged=privileged,
             enable_render=enable_render,
+            robot_name=robot_name,
+            hand_name=hand_name,
+            ik_robot_name=ik_robot_name,
+            ik_target_link_name=ik_target_link_name,
+            eef_body_name=eef_body_name,
+            tcp_offset=tcp_offset,
+            gripper_open_command=gripper_open_command,
+            gripper_closed_command=gripper_closed_command,
         )
 
         lift_kwargs = dict(
-            robots=["Panda"],
+            robots=[self.robot_name],
             has_renderer=False,
             has_offscreen_renderer=True,
             camera_names=self.render_camera_names,

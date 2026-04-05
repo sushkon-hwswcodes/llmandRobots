@@ -8,6 +8,7 @@ from capx.envs.base import (
 )
 from capx.integrations.base_api import ApiBase
 from capx.integrations.franka.common import (
+    DEFAULT_TCP_OFFSET,
     apply_tcp_offset,
     close_gripper as _close_gripper,
     open_gripper as _open_gripper,
@@ -27,9 +28,12 @@ class FrankaControlPrivilegedApi(ApiBase):
       - close_gripper() -> None
     """
 
-    _TCP_OFFSET = np.array([0.0, 0.0, -0.107], dtype=np.float64)
-
-    def __init__(self, env: BaseEnv, multi_turn: bool = False) -> None:
+    def __init__(
+        self,
+        env: BaseEnv,
+        multi_turn: bool = False,
+        tcp_offset: list[float] | tuple[float, float, float] | np.ndarray | None = None,
+    ) -> None:
         super().__init__(env)
         # Lazy-import to keep startup light
         # from capx.integrations.motion import pyroki_snippets as pks  # type: ignore
@@ -42,6 +46,9 @@ class FrankaControlPrivilegedApi(ApiBase):
         self.ik_solve_fn = init_pyroki()
         self.cfg = None
         self.multi_turn = multi_turn
+        if tcp_offset is None:
+            tcp_offset = getattr(env, "tcp_offset", DEFAULT_TCP_OFFSET)
+        self._tcp_offset = np.asarray(tcp_offset, dtype=np.float64)
 
     def functions(self) -> dict[str, Any]:
         base_functions = {
@@ -253,7 +260,7 @@ class FrankaControlPrivilegedApi(ApiBase):
 
         pos = np.asarray(position, dtype=np.float64).reshape(3)
         quat_wxyz = np.asarray(quaternion_wxyz, dtype=np.float64).reshape(4)
-        offset_pos = apply_tcp_offset(pos, quat_wxyz, self._TCP_OFFSET)
+        offset_pos = apply_tcp_offset(pos, quat_wxyz, self._tcp_offset)
         rot = SciRotation.from_quat(
             np.array([quat_wxyz[1], quat_wxyz[2], quat_wxyz[3], quat_wxyz[0]], dtype=np.float64)
         )

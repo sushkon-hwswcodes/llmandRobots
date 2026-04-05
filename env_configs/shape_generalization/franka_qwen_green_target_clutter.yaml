@@ -5,6 +5,13 @@ env:
   cfg:
     _target_: capx.envs.tasks.base.CodeExecEnvConfig
     low_level: franka_robosuite_green_target_clutter_low_level
+    low_level_kwargs:
+      robot_name: Panda
+      hand_name: panda
+      ik_robot_name: panda_description
+      ik_target_link_name: panda_hand
+      eef_body_name: gripper0_right_eef
+      tcp_offset: [0.0, 0.0, -0.107]
     privileged: true
     apis:
       - FrankaControlPrivilegedApi
@@ -70,4 +77,3 @@ use_legacy_multi_turn_decision_prompt: true
 
 trials: 30
 num_workers: 1
-

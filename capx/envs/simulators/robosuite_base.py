@@ -16,6 +16,7 @@ import viser.transforms as vtf
 from robosuite.utils.camera_utils import get_real_depth_map
 
 from capx.envs.base import BaseEnv
+from capx.integrations.franka.common import DEFAULT_TCP_OFFSET
 from capx.utils.camera_utils import obs_get_rgb
 from capx.utils.depth_utils import depth_color_to_pointcloud
 
@@ -46,10 +47,26 @@ class RobosuiteBaseEnv(BaseEnv):
         viser_debug: bool = False,
         privileged: bool = False,
         enable_render: bool = False,
+        robot_name: str = "Panda",
+        hand_name: str = "panda",
+        ik_robot_name: str = "panda_description",
+        ik_target_link_name: str = "panda_hand",
+        eef_body_name: str = "gripper0_right_eef",
+        tcp_offset: list[float] | tuple[float, float, float] | np.ndarray = DEFAULT_TCP_OFFSET,
+        gripper_open_command: float = -1.0,
+        gripper_closed_command: float = 1.0,
     ) -> None:
         super().__init__()
         self.controller_cfg = controller_cfg
         self.max_steps = max_steps
+        self.robot_name = robot_name
+        self.hand_name = hand_name
+        self.ik_robot_name = ik_robot_name
+        self.ik_target_link_name = ik_target_link_name
+        self.eef_body_name = eef_body_name
+        self.tcp_offset = np.asarray(tcp_offset, dtype=np.float64)
+        self.gripper_open_command = float(gripper_open_command)
+        self.gripper_closed_command = float(gripper_closed_command)
         self.save_camera_name = "robot0_robotview"
         self.render_camera_names = [self.save_camera_name]
         self.segmentation_level = "instance"
@@ -75,12 +92,14 @@ class RobosuiteBaseEnv(BaseEnv):
         # Control state
         self._current_joints = np.zeros(7, dtype=np.float64)
         self._gripper_fraction = 1.0  # 1.0 = open, 0.0 = closed
+        self._gripper_action_dim = 2
 
     def _init_robot_links(self) -> None:
         """Initialize robot link indices and base transforms. Call after robosuite_env is created."""
         self.gripper_metric_length = 0.04
         self.base_link_idx = self.robosuite_env.sim.model.body_name2id("fixed_mount0_base")
-        self.gripper_link_idx = self.robosuite_env.sim.model.body_name2id("gripper0_right_eef")
+        self.gripper_link_idx = self.robosuite_env.sim.model.body_name2id(self.eef_body_name)
+        self._gripper_action_dim = max(1, int(self.robosuite_env.action_dim - 7))
 
         self.base_link_wxyz_xyz = np.concatenate(
             [
@@ -123,11 +142,12 @@ class RobosuiteBaseEnv(BaseEnv):
 
     def _build_action(self) -> np.ndarray:
         """Build a robosuite action array from current joints and gripper state."""
-        action = np.concatenate(
-            [self._current_joints, [self._gripper_fraction, self._gripper_fraction]]
+        gripper_cmd = self.gripper_closed_command + self._gripper_fraction * (
+            self.gripper_open_command - self.gripper_closed_command
         )
-        # Map gripper: 1.0 (open) -> -1.0, 0.0 (closed) -> 1.0
-        action[-2:] = 1.0 - action[-2:] * 2.0
+        action = np.concatenate(
+            [self._current_joints, np.full(self._gripper_action_dim, gripper_cmd, dtype=np.float64)]
+        )
         return action
 
     def _do_robosuite_step(self, action: np.ndarray) -> None:
@@ -160,8 +180,12 @@ class RobosuiteBaseEnv(BaseEnv):
     def move_to_joints_non_blocking(self, joints: np.ndarray) -> None:
         """Move to target joint positions using Robosuite's controller (non-blocking)."""
         target = np.asarray(joints, dtype=np.float64).reshape(7)
-        action = np.concatenate([target, [self._gripper_fraction, self._gripper_fraction]])
-        action[-2:] = 1.0 - action[-2:] * 2.0
+        gripper_cmd = self.gripper_closed_command + self._gripper_fraction * (
+            self.gripper_open_command - self.gripper_closed_command
+        )
+        action = np.concatenate(
+            [target, np.full(self._gripper_action_dim, gripper_cmd, dtype=np.float64)]
+        )
 
         self._do_robosuite_step(action)
 
@@ -195,8 +219,12 @@ class RobosuiteBaseEnv(BaseEnv):
             if error < tolerance:
                 break
 
-            action = np.concatenate([target, [self._gripper_fraction, self._gripper_fraction]])
-            action[-2:] = 1.0 - action[-2:] * 2.0
+            gripper_cmd = self.gripper_closed_command + self._gripper_fraction * (
+                self.gripper_open_command - self.gripper_closed_command
+            )
+            action = np.concatenate(
+                [target, np.full(self._gripper_action_dim, gripper_cmd, dtype=np.float64)]
+            )
 
             self._do_robosuite_step(action)
 
