@@ -6,7 +6,7 @@ Last updated: 2026-04-05
 
 - Branch: `main`
 - Remote tracking: `origin/main`
-- Latest committed milestone: `7bc376c` "Add Inspire preset demos and log named preset smoke result"
+- Latest committed milestone: `b567b7f` "Add shape-aware Inspire grasp orientations"
 
 ## Recent progress
 
