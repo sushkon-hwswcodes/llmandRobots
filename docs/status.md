@@ -75,6 +75,7 @@ Last updated: 2026-04-05
 - First staged-prompt smoke artifact: the model followed the staged structure closely, but the phrase "if the object seems unstable" led it to invent an unsupported `is_object_stable()` helper and fail in the sandbox
 - Prompt tightened again: the reinforcement grasp is now deterministic and the config explicitly forbids inventing helper checks beyond the exposed APIs
 - Latest staged-prompt result: the model executed the intended two-stage descent and reinforcement grasp without sandbox errors, but it also redefined provided API names locally; the smoke prompt now explicitly forbids shadowing those APIs
+- Prompt wording fix in progress: the Inspire smoke config now explicitly forbids `open_gripper()` / `close_gripper()` so the dexterous-hand path is exclusive rather than optional
 
 ## Current local artifacts
 
@@ -101,6 +102,7 @@ Last updated: 2026-04-05
 - Review the richer-hand smoke video and compare it to the earlier binary-hand smoke artifacts to identify whether finger posture or approach motion is the main remaining limiter
 - Measure whether the safer staged prompt improves the Inspire smoke result before changing `sample_grasp_pose(...)`
 - Confirm that the tightened staged prompt stops sandbox failures from invented helper checks and then compare its grasp outcome against the earlier richer-hand trial
+- Confirm that the revised prompt keeps the model on the real Inspire-hand API path and does not fall back to legacy Panda helpers
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant

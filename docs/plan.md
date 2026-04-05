@@ -8,7 +8,7 @@ Last updated: 2026-04-05
 2. Use the new hand-config plumbing to define the first non-Panda-hand candidate profile without changing existing benchmark YAML behavior.
 3. Standardize on `PandaDexRH` as the first five-finger simulation target, since Robosuite already provides the correct Inspire-hand mount composition for Panda.
 4. Keep the smoke config and future hand benchmarks aligned to that profile: `robot_name: PandaDexRH`, `robosuite_gripper_type: default`, and the existing Panda IK server settings.
-5. Keep the new dexterous-hand API narrow and backward-compatible: preserve `open_gripper()` / `close_gripper()` for Panda while exposing opt-in `get_hand_capabilities()`, `set_hand_preshape(...)`, and `set_hand_joints([...])` for the Inspire path.
+5. Keep the new dexterous-hand API narrow and backward-compatible: preserve `open_gripper()` / `close_gripper()` for Panda while making the Inspire smoke prompt use only `get_hand_capabilities()`, `set_hand_preshape(...)`, and `set_hand_joints([...])`.
 6. Use the updated `franka_qwen_shape_inspire_smoke.yaml` config to enforce a safer Inspire-hand grasp routine: shape-based preshape choice, two-stage descent, short test lift, and one deterministic reinforcement grasp using only exposed APIs.
 7. Benchmark that prompt-only behavior change before modifying `sample_grasp_pose(...)`, so we can separate prompt gains from low-level grasp-target gains.
 8. Keep the clutter-failure review and YCB target-clutter follow-up as the next benchmark tasks once the hand path is stable.

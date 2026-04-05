@@ -20,11 +20,12 @@ env:
       You are controlling a Franka Emika robot with the API described below.
       Goal: pick up the object on the table and lift it into the air.
       The robot is using a five-finger Inspire hand.
-      You may still use open_gripper() and close_gripper(), but this config also exposes richer hand control:
+      For this Inspire-hand config, do NOT use open_gripper() or close_gripper().
+      Those are legacy Panda helpers and are not the hand-control path for this task.
+      Use only these Inspire-hand controls:
         - get_hand_capabilities()
         - set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")
         - set_hand_joints([...])  # 6 values for the Inspire hand
-      Use the richer hand control instead of the old binary path unless there is a strong reason not to.
       Do not use a single fast descend-and-close motion. Use a staged approach and a test lift.
       Do not release the object after grasping.
 
@@ -57,6 +58,7 @@ env:
         - do not call any functions other than the provided robot APIs and standard Python / numpy
         - do not invent helper checks such as stability or contact tests
         - do not redefine or shadow provided robot API functions such as get_object_shape, sample_grasp_pose, goto_pose, get_hand_capabilities, open_gripper, close_gripper, set_hand_preshape, or set_hand_joints
+        - never call open_gripper() or close_gripper() in this config
 
       Example structure:
         hand_info = get_hand_capabilities()
