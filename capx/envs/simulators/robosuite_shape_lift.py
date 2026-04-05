@@ -16,7 +16,7 @@ from robosuite.controllers.composite.composite_controller_factory import (
 )
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
-from capx.third_party.robosuite.robosuite.environments.manipulation.lift_shape import LiftShape
+from robosuite.environments.manipulation.lift_shape import LiftShape
 
 
 class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
