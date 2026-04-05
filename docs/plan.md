@@ -10,6 +10,7 @@ Last updated: 2026-04-05
 4. Decide whether the next iteration should be a prompt-only change or a simulator / reward adjustment.
 5. Preserve the intended Phase 3 scope: move from randomly generated shapes to real-world object assets once Phase 2.75 is stable enough.
 6. Benchmark the new YCB-backed Phase 3 lift environment and identify the dominant grasp / orientation failures.
+7. Benchmark the new YCB target-clutter variant and verify whether failures come from target selection, clutter collisions, or the simple top-down grasp policy.
 
 ## Short-term goals
 
@@ -18,6 +19,7 @@ Last updated: 2026-04-05
 3. Add a lightweight regression or smoke check for the clutter environment so future prompt or API edits do not silently break it.
 4. Define the first real-world object set for Phase 3 so the transition is concrete instead of implicit.
 5. Improve the first YCB bridge by replacing the temporary OBJ-for-collision fallback, which currently exists because MuJoCo would not load the provided YCB `collision.ply` files in this setup.
+6. Keep the first real-object clutter benchmark focused on graspable YCB objects so the main variable is cluttered target selection rather than impossible grasps.
 
 ## Medium-term goals
 
@@ -26,6 +28,7 @@ Last updated: 2026-04-05
 3. Keep collecting benchmark artifacts that are easy to audit: logs, saved code, overview videos, and montage summaries.
 4. Implement Phase 3 by replacing synthetic/generated shapes with real-world objects while keeping the evaluation protocol comparable.
 5. Extend Phase 3 from single-object lift into harder real-object variants after the base YCB lift is benchmarked.
+6. Extend Phase 3 from single-object lift into specific-target selection from real-object clutter once the base YCB lift and first clutter benchmark are characterized.
 
 ## Planned phase sequence
 

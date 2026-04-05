@@ -1,4 +1,4 @@
-"""Low-level Robosuite Franka environment for Phase 3 real-world YCB objects."""
+"""Low-level Robosuite Franka environments for Phase 3 real-world YCB objects."""
 
 from __future__ import annotations
 
@@ -35,16 +35,20 @@ _YCB_CANDIDATES = [
 class YCBMeshObject(MujocoXMLObject):
     """Runtime-generated XML object wrapper around ManiSkill YCB meshes."""
 
-    def __init__(self, model_id: str, metadata: dict[str, Any], xml_path: Path):
+    def __init__(self, model_id: str, metadata: dict[str, Any], xml_path: Path, name: str | None = None):
         self.model_id = model_id
         self.metadata = metadata
         super().__init__(
             str(xml_path),
-            name=model_id,
+            name=name or model_id,
             joints=[dict(type="free", damping="0.0005")],
             obj_type="all",
             duplicate_collision_geoms=False,
         )
+
+
+def _display_name(model_id: str) -> str:
+    return model_id.replace("_", " ")
 
 
 def _resolve_maniskill_asset_dir() -> Path:
@@ -153,7 +157,7 @@ class LiftYCBObject(Lift):
         self._current_object_info = {
             "shape": "mesh",
             "category": model_id,
-            "display_name": model_id.replace("_", " "),
+            "display_name": _display_name(model_id),
             "size": {
                 "x": round(float(extents[0]), 4),
                 "y": round(float(extents[1]), 4),
@@ -357,4 +361,280 @@ class FrankaRobosuiteYCBLiftLowLevel(RobosuiteBaseEnv):
         return robosuite_obs
 
 
-__all__ = ["FrankaRobosuiteYCBLiftLowLevel"]
+class LiftYCBTargetClutter(Lift):
+    """Lift task with one specified YCB target among YCB distractors."""
+
+    def __init__(
+        self,
+        *args,
+        object_ids: list[str] | None = None,
+        num_distractors: int = 4,
+        **kwargs,
+    ):
+        self.asset_root = _resolve_maniskill_asset_dir()
+        self._ycb_metadata = _load_ycb_metadata(self.asset_root)
+        self.object_ids = object_ids or list(_YCB_CANDIDATES)
+        self.num_distractors = num_distractors
+        self._current_shape = "mesh"
+        self._current_size = np.zeros(3)
+        self._current_object_info: dict[str, Any] = {}
+        self._distractor_infos: list[dict[str, Any]] = []
+        super().__init__(*args, **kwargs)
+
+    def _make_named_ycb_object(self, model_id: str, name: str) -> YCBMeshObject:
+        metadata = self._ycb_metadata[model_id]
+        xml_path = _write_ycb_xml(self.asset_root, model_id, metadata)
+        return YCBMeshObject(model_id=model_id, metadata=metadata, xml_path=xml_path, name=name)
+
+    def _info_for_model(self, model_id: str) -> dict[str, Any]:
+        extents = _full_extents(self._ycb_metadata[model_id])
+        return {
+            "shape": "mesh",
+            "category": model_id,
+            "display_name": _display_name(model_id),
+            "size": {
+                "x": round(float(extents[0]), 4),
+                "y": round(float(extents[1]), 4),
+                "z": round(float(extents[2]), 4),
+            },
+            "grasp_hint": (
+                "Use a top-down grasp near the object's center. Prefer sample_grasp_pose('object') "
+                "over deriving the grasp pose from size alone."
+            ),
+        }
+
+    def _load_model(self):
+        ManipulationEnv._load_model(self)
+
+        xpos = self.robots[0].robot_model.base_xpos_offset["table"](self.table_full_size[0])
+        self.robots[0].robot_model.set_base_xpos(xpos)
+
+        mujoco_arena = TableArena(
+            table_full_size=self.table_full_size,
+            table_friction=self.table_friction,
+            table_offset=self.table_offset,
+        )
+        mujoco_arena.set_origin([0, 0, 0])
+
+        target_idx = int(self.rng.integers(0, len(self.object_ids)))
+        target_id = self.object_ids[target_idx]
+        distractor_pool = [obj_id for obj_id in self.object_ids if obj_id != target_id]
+        if len(distractor_pool) < self.num_distractors:
+            distractor_ids = list(self.rng.choice(distractor_pool, size=self.num_distractors, replace=True))
+        else:
+            distractor_ids = list(self.rng.choice(distractor_pool, size=self.num_distractors, replace=False))
+
+        self.cube = self._make_named_ycb_object(target_id, "target")
+        self._current_object_info = self._info_for_model(target_id)
+        self._current_size = np.array(
+            [
+                self._current_object_info["size"]["x"],
+                self._current_object_info["size"]["y"],
+                self._current_object_info["size"]["z"],
+            ],
+            dtype=np.float64,
+        )
+
+        self._distractors = []
+        self._distractor_infos = []
+        for idx, distractor_id in enumerate(distractor_ids):
+            self._distractors.append(self._make_named_ycb_object(distractor_id, f"distractor_{idx}"))
+            self._distractor_infos.append(self._info_for_model(distractor_id))
+
+        all_objects = [self.cube] + self._distractors
+
+        if self.placement_initializer is not None:
+            self.placement_initializer.reset()
+            for obj in all_objects:
+                self.placement_initializer.add_objects(obj)
+        else:
+            self.placement_initializer = UniformRandomSampler(
+                name="YCBClutterSampler",
+                mujoco_objects=all_objects,
+                x_range=[-0.18, 0.18],
+                y_range=[-0.12, 0.12],
+                rotation=None,
+                ensure_object_boundary_in_range=False,
+                ensure_valid_placement=True,
+                reference_pos=self.table_offset,
+                z_offset=0.01,
+                rng=self.rng,
+            )
+
+        self.model = ManipulationTask(
+            mujoco_arena=mujoco_arena,
+            mujoco_robots=[robot.robot_model for robot in self.robots],
+            mujoco_objects=all_objects,
+        )
+
+    def _setup_references(self):
+        super()._setup_references()
+        if self._current_object_info:
+            size = self._current_object_info["size"]
+            self._current_size = np.array([size["x"], size["y"], size["z"]], dtype=np.float64)
+
+
+class FrankaRobosuiteYCBTargetClutterLowLevel(RobosuiteBaseEnv):
+    """Robosuite Franka task: pick the specified YCB target from YCB clutter."""
+
+    _SUBSAMPLE_RATE = 2
+
+    def __init__(
+        self,
+        controller_cfg: str = "capx/integrations/robosuite/controllers/config/robots/panda_joint_ctrl.json",
+        max_steps: int = 1500,
+        seed: int | None = None,
+        viser_debug: bool = False,
+        privileged: bool = False,
+        enable_render: bool = False,
+    ) -> None:
+        super().__init__(
+            controller_cfg=controller_cfg,
+            max_steps=max_steps,
+            seed=seed,
+            viser_debug=False,
+            privileged=privileged,
+            enable_render=enable_render,
+        )
+
+        clutter_candidates = [
+            "004_sugar_box",
+            "005_tomato_soup_can",
+            "008_pudding_box",
+            "009_gelatin_box",
+            "010_potted_meat_can",
+        ]
+        lift_kwargs = dict(
+            robots=["Panda"],
+            has_renderer=False,
+            has_offscreen_renderer=True,
+            camera_names=self.render_camera_names,
+            camera_depths=True,
+            renderer="mujoco",
+            camera_heights=self._render_height,
+            camera_widths=self._render_width,
+            controller_configs=load_composite_controller_config(controller=self.controller_cfg),
+            horizon=max_steps,
+            reward_shaping=True,
+            object_ids=clutter_candidates,
+            num_distractors=4,
+        )
+
+        if privileged and not enable_render:
+            lift_kwargs.update(
+                use_camera_obs=False,
+                has_offscreen_renderer=False,
+                camera_names=[],
+            )
+
+        self.robosuite_env = LiftYCBTargetClutter(**lift_kwargs)
+        self._initial_cube_height: float | None = None
+        self._init_robot_links()
+
+    def reset(
+        self, *, seed: int | None = None, options: dict[str, Any] | None = None
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        if seed is not None:
+            self._rng = np.random.default_rng(seed)
+
+        self.robosuite_env.reset()
+        self.robosuite_env.sim.data.qpos[6] -= np.pi
+
+        self._step_count = 0
+        self._sim_step_count = 0
+
+        for _ in range(50):
+            self.robosuite_env.sim.forward()
+            self.robosuite_env.sim.step()
+            self._set_gripper(1.0)
+
+        self._initial_cube_height = float(
+            self.robosuite_env.sim.data.body_xpos[self.robosuite_env.cube_body_id][2]
+        )
+
+        robosuite_obs = self.robosuite_env._get_observations()
+        self._current_joints = np.array(robosuite_obs["robot0_joint_pos"], dtype=np.float64)
+        self._current_joints[6] -= np.pi
+
+        obs = self.get_observation()
+        self.gripper_link_wxyz_xyz = np.concatenate(
+            [
+                self.robosuite_env.sim.data.xquat[self.gripper_link_idx],
+                self.robosuite_env.sim.data.xpos[self.gripper_link_idx],
+            ]
+        )
+
+        target_name = self.robosuite_env._current_object_info.get("display_name", "target object")
+        clutter_names = ", ".join(info["display_name"] for info in self.robosuite_env._distractor_infos)
+        info = {
+            "task_prompt": (
+                f"Pick up the {target_name} and lift it. Ignore the other objects in the clutter. "
+                f"Other objects on the table may include: {clutter_names}."
+            )
+        }
+        return obs, info
+
+    def _object_pose_dict(self, robosuite_obs: dict[str, Any]) -> dict[str, list[float]]:
+        base_link_wxyz_xyz = np.concatenate(
+            [
+                self.robosuite_env.sim.data.xquat[self.base_link_idx],
+                self.robosuite_env.sim.data.xpos[self.base_link_idx],
+            ]
+        )
+        obj_world = vtf.SE3(
+            wxyz_xyz=np.concatenate([robosuite_obs["cube_quat"], robosuite_obs["cube_pos"]])
+        )
+        base_transform = vtf.SE3(wxyz_xyz=base_link_wxyz_xyz).inverse()
+        obj_robot_base = base_transform @ obj_world
+
+        return {
+            "primary": [
+                float(x)
+                for x in np.concatenate([obj_robot_base.translation(), obj_robot_base.rotation().wxyz])
+            ],
+        }
+
+    def compute_reward(self) -> float:
+        if self.task_completed():
+            return 1.0
+        cube_height = float(
+            self.robosuite_env.sim.data.body_xpos[self.robosuite_env.cube_body_id][2]
+        )
+        baseline = (
+            self._initial_cube_height
+            if self._initial_cube_height is not None
+            else float(self.robosuite_env.model.mujoco_arena.table_offset[2])
+        )
+        return float(np.clip((cube_height - baseline) / 0.04, 0.0, 1.0))
+
+    def task_completed(self) -> bool:
+        cube_height = float(
+            self.robosuite_env.sim.data.body_xpos[self.robosuite_env.cube_body_id][2]
+        )
+        baseline = (
+            self._initial_cube_height
+            if self._initial_cube_height is not None
+            else float(self.robosuite_env.model.mujoco_arena.table_offset[2])
+        )
+        lifted = cube_height > (baseline + 0.04)
+        grasped = self.robosuite_env._check_grasp(
+            gripper=self.robosuite_env.robots[0].gripper,
+            object_geoms=self.robosuite_env.cube,
+        )
+        return bool(lifted and grasped)
+
+    def get_observation(self) -> dict[str, Any]:
+        robosuite_obs = self.robosuite_env._get_observations()
+        pose_dict = self._object_pose_dict(robosuite_obs)
+        robosuite_obs["cube_poses"] = {
+            "primary": np.asarray(pose_dict["primary"], dtype=np.float32),
+        }
+        self._process_camera_observations(robosuite_obs)
+        self._compute_gripper_obs(robosuite_obs)
+        return robosuite_obs
+
+
+__all__ = [
+    "FrankaRobosuiteYCBLiftLowLevel",
+    "FrankaRobosuiteYCBTargetClutterLowLevel",
+]

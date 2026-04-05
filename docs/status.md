@@ -42,6 +42,11 @@ Last updated: 2026-04-05
 - Added config: `env_configs/real_objects/franka_qwen_ycb.yaml`
 - Smoke test: env registration, reset, object metadata, and prompt-facing APIs all pass locally
 - Current workaround: the bridge uses YCB `textured.obj` meshes for collision because this MuJoCo setup would not load the provided `collision.ply` files
+- New branch in progress: target-object selection from YCB clutter
+- Added low-level env: `franka_robosuite_ycb_target_clutter_low_level`
+- Added config: `env_configs/real_objects/franka_qwen_ycb_target_clutter.yaml`
+- Current target-clutter behavior: the prompt names a specific YCB target object while `sample_grasp_pose("object")` still resolves to the target object pose
+- Early smoke result: the target-clutter env resets and runs, but grasp reliability in clutter is still below benchmark-ready levels
 
 ## Current local artifacts
 
@@ -54,10 +59,12 @@ Last updated: 2026-04-05
 - Phase 2 shape generalization is implemented and benchmarked at `25/30`
 - Phase 2.75 green-target clutter is implemented and benchmarked at `24/30`
 - Phase 3 real-world objects has started with a first YCB-backed lift environment and prompt/config bridge
+- Phase 3 target-object selection from real-object clutter has an initial implementation and smoke-test coverage
 
 ## What still needs attention
 
 - Inspect the six clutter-task failures to separate prompt issues from simulator/task-design issues
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
+- Run and review the first larger benchmark for the YCB target-clutter variant
 - Turn representative successful trials into montage videos for easier review and sharing

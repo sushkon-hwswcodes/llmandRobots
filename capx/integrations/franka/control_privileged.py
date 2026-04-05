@@ -58,17 +58,20 @@ class FrankaControlPrivilegedApi(ApiBase):
         return base_functions
 
     def _primary_name_aliases(self) -> set[str]:
-        aliases = {"object", "red_object", "red object", "cube", "target", "green object", "green cube"}
+        aliases = {"object", "red_object", "red object", "cube", "target", "green object", "green cube", "mesh"}
         rs_env = getattr(self._env, "robosuite_env", None)
         info = getattr(rs_env, "_current_object_info", None)
         if isinstance(info, dict):
             display_name = str(info.get("display_name", "")).strip().lower()
             category = str(info.get("category", "")).strip().lower()
+            shape = str(info.get("shape", "")).strip().lower()
             if display_name:
                 aliases.add(display_name)
             if category:
                 aliases.add(category)
                 aliases.add(category.replace("_", " "))
+            if shape:
+                aliases.add(shape)
         return aliases
 
     def _is_primary_object_name(self, object_name: str, has_secondary: bool) -> bool:
