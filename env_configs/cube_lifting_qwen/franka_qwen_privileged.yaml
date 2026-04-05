@@ -56,7 +56,7 @@ api_servers:
     target_link: panda_hand
 
 record_video: true
-output_dir: ./outputs/qwen_cube_lifting_prompt_v2
+output_dir: ./outputs/qwen_cube_lifting_prompt_v2_temp03
 use_legacy_multi_turn_decision_prompt: true
 
 trials: 20
