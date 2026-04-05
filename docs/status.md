@@ -80,6 +80,8 @@ Last updated: 2026-04-05
 - Literal-prompt smoke result: the model now stays on the real Inspire-hand API path, performs real IK-driven approach motion, and no longer falls back to placeholder functions or legacy Panda helpers; however, the grasp still failed with reward `0.0`
 - New low-level grasp-target change in progress: `sample_grasp_pose("object")` is being upgraded from raw object-center targeting to a shape-aware top-down target, with a slightly more enclosing Z target for the Inspire hand on round objects
 - Shape-aware grasp-pose smoke result: after moving `sample_grasp_pose("object")` from raw object-center targeting to a shape-aware top-surface target, the same literal Inspire prompt improved from reward `0.000` to `0.033` on a 1-trial smoke run, though it still did not complete the lift
+- Video-guided prompt fix in progress: the Inspire smoke prompt now explicitly tells the model to keep the hand opening wider than the object, center the palm above the object, and ensure the fingers go around the object before closing
+- Enclosing-pregrasp smoke result: the model adopted `pregrasp_name = "open"` across shapes and stayed on the intended real API path, but the 1-trial reward remained at roughly `0.033`, so the main remaining bottleneck appears to be low-level grasp geometry rather than prompt wording
 
 ## Current local artifacts
 
@@ -110,6 +112,8 @@ Last updated: 2026-04-05
 - Improve the actual grasp target / pose selection next, since prompt tightening alone now produces the intended motion sequence but not a successful lift
 - Re-benchmark the Inspire smoke task with the new shape-aware grasp target to see whether grasp execution improves without changing prompt structure again
 - Keep iterating on low-level grasp targeting, since the first shape-aware pose change produced a measurable reward improvement without any new prompt complexity
+- Check whether the new enclosing-pregrasp wording improves the actual hand posture in the smoke video before changing orientation logic
+- Improve the low-level grasp geometry next, since the prompt now reliably requests a wider enclosing pregrasp but the lift still does not complete
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant

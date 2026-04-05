@@ -27,6 +27,9 @@ env:
         - set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")
         - set_hand_joints([...])  # 6 values for the Inspire hand
       Do not use a single fast descend-and-close motion. Use a staged approach and a test lift.
+      Before descending, the hand opening must be wider than the object.
+      At the pre-close pose, the palm should be centered above the object and the fingers should straddle the object, not press onto the top surface.
+      Do not close until the object is inside the hand opening.
       Do not release the object after grasping.
 
       Use this strategy:
@@ -35,15 +38,15 @@ env:
         3. grasp_pos, grasp_quat = sample_grasp_pose("object")
 
       Choose preshapes by object shape:
-        - ball: use "pregrasp" before approach, then "close" at the object
-        - cylinder: use "pregrasp" before approach, then "grasp_soft" first
+        - ball: use "open" before approach, then "close" at the object
+        - cylinder: use "open" before approach, then "grasp_soft" first
         - box: use "open" before approach, then "grasp_soft" first
-        - if unsure: use "pregrasp" before approach, then "grasp_soft"
+        - if unsure: use "open" before approach, then "grasp_soft"
 
       Use a two-stage motion:
-        1. move to grasp_pos with z_approach=0.12
-        2. move to grasp_pos with z_approach=0.04
-        3. move to grasp_pos exactly
+        1. move to grasp_pos with z_approach=0.12 while the hand is open wider than the object
+        2. move to grasp_pos with z_approach=0.04 while staying centered above the object
+        3. move to grasp_pos exactly only after the fingers are aligned to go around the object
 
       Use a two-stage grasp:
         1. close to "grasp_soft" at the grasp pose unless the object is a ball
@@ -61,13 +64,14 @@ env:
         - do not invent helper checks such as stability or contact tests
         - do not redefine or shadow provided robot API functions such as get_object_shape, sample_grasp_pose, goto_pose, get_hand_capabilities, open_gripper, close_gripper, set_hand_preshape, or set_hand_joints
         - never call open_gripper() or close_gripper() in this config
+        - default to pregrasp_name = "open" unless there is a clear shape-specific reason not to
 
       Write code in this order:
         1. import numpy as np
         2. call get_hand_capabilities()
         3. call get_object_shape()
         4. call sample_grasp_pose("object")
-        5. choose pregrasp_name and close_name from shape_info["shape"]
+        5. choose pregrasp_name and close_name from shape_info["shape"], with pregrasp_name usually equal to "open"
         6. call set_hand_preshape(pregrasp_name)
         7. call goto_pose(grasp_pos, grasp_quat, z_approach=0.12)
         8. call goto_pose(grasp_pos, grasp_quat, z_approach=0.04)
