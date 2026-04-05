@@ -88,6 +88,9 @@ Last updated: 2026-04-05
 - Template-prompt update in progress: the Inspire smoke config now tells the model to follow the one known-good lift pattern almost literally, but translated onto `set_hand_preshape("open")` / `set_hand_preshape("close")`
 - Template-prompt smoke result: the model followed the near-template sequence closely and produced a clean straight-line `open -> approach -> descend -> close -> lift` Inspire-hand program; the 1-trial reward improved slightly to `0.035`, though it still did not complete the lift
 - New named Inspire presets added in progress: `wide_enclose`, `box_wrap`, `cylinder_wrap`, and `ball_cup` are now manually defined so the model can use a slightly richer hand vocabulary without generating raw 6-value joint vectors
+- Preset demo videos generated for all current named Inspire shapes under `outputs/inspire_preset_demos/`
+- Timing readout from the smoke runs: query time is a small minority of wall-clock time, roughly `3%` to `14%`, while execution plus IK / simulation / video work is roughly `86%` to `97%`
+- Named-preset smoke result: the model used `wide_enclose` followed by a shape-specific wrap preset exactly as intended, but the 1-trial reward remained at about `0.033`, so the richer preset vocabulary improved controllability more than task success
 
 ## Current local artifacts
 

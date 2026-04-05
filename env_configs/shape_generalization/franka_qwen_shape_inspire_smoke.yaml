@@ -24,7 +24,7 @@ env:
       Those are legacy Panda helpers and are not the hand-control path for this task.
       Use only these Inspire-hand controls:
         - get_hand_capabilities()
-        - set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")
+        - set_hand_preshape("open" | "pregrasp" | "wide_enclose" | "grasp_soft" | "box_wrap" | "cylinder_wrap" | "ball_cup" | "close")
         - set_hand_joints([...])  # 6 values for the Inspire hand
       Follow the known-good lift pattern closely. Do not invent a new motion sequence.
       Before descending, the hand opening must be wider than the object.
@@ -37,17 +37,17 @@ env:
         2. hand_info = get_hand_capabilities()
         3. shape_info = get_object_shape()
         4. grasp_pos, grasp_quat = sample_grasp_pose("object")
-        5. set_hand_preshape("open")
+        5. set_hand_preshape("wide_enclose")
         6. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
         7. goto_pose(grasp_pos, grasp_quat)
-        8. set_hand_preshape("close")
+        8. set_hand_preshape(shape-specific close preset)
         9. lift_pos = grasp_pos + np.array([0.0, 0.0, 0.1])
         10. goto_pose(lift_pos, grasp_quat)
 
       Keep the sequence very close to that pattern:
         - use a single approach with z_approach=0.1
-        - use "open" before the approach
-        - use "close" at the grasp pose
+        - use "wide_enclose" before the approach
+        - use `box_wrap` for boxes, `cylinder_wrap` for cylinders, `ball_cup` for balls, and `close` only as fallback
         - do one clean 0.10 m lift
         - do not add retries, helper checks, extra test lifts, or alternate motion branches
 
