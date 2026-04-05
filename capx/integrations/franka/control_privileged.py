@@ -369,12 +369,32 @@ class FrankaControlPrivilegedApi(ApiBase):
         t = float(np.clip(closed_fraction, 0.0, 1.0))
         return open_pose + t * (closed_pose - open_pose)
 
+    def _inspire_wide_enclose_pose(self) -> np.ndarray:
+        """Wide opening intended to straddle medium objects before descent."""
+        return np.array([-1.5, -0.9, -0.9, -0.9, -2.2, 2.4], dtype=np.float64)
+
+    def _inspire_box_wrap_pose(self) -> np.ndarray:
+        """Moderate enclosure for box-like objects."""
+        return np.array([0.6, 0.9, 0.9, 0.9, 0.8, 2.8], dtype=np.float64)
+
+    def _inspire_cylinder_wrap_pose(self) -> np.ndarray:
+        """Slightly narrower wrap to hug cylindrical objects."""
+        return np.array([0.5, 1.0, 1.0, 1.0, 0.4, 2.7], dtype=np.float64)
+
+    def _inspire_ball_cup_pose(self) -> np.ndarray:
+        """Cup-like pose for round objects that benefits from more thumb opposition."""
+        return np.array([0.2, 1.2, 1.2, 1.2, 0.1, 2.3], dtype=np.float64)
+
     def _hand_presets(self) -> dict[str, np.ndarray]:
         if self._supports_dexterous_hand():
             return {
                 "open": self._inspire_open_pose(),
                 "pregrasp": self._interpolate_inspire_pose(0.35),
+                "wide_enclose": self._inspire_wide_enclose_pose(),
                 "grasp_soft": self._interpolate_inspire_pose(0.7),
+                "box_wrap": self._inspire_box_wrap_pose(),
+                "cylinder_wrap": self._inspire_cylinder_wrap_pose(),
+                "ball_cup": self._inspire_ball_cup_pose(),
                 "close": self._inspire_closed_pose(),
             }
         return {

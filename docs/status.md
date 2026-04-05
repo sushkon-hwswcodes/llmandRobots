@@ -87,6 +87,7 @@ Last updated: 2026-04-05
 - Next benchmark direction agreed: reuse the one known successful Inspire-hand trial as a near-template prompt, and if needed add a small set of extra named hand presets instead of free-form `set_hand_joints([...])`
 - Template-prompt update in progress: the Inspire smoke config now tells the model to follow the one known-good lift pattern almost literally, but translated onto `set_hand_preshape("open")` / `set_hand_preshape("close")`
 - Template-prompt smoke result: the model followed the near-template sequence closely and produced a clean straight-line `open -> approach -> descend -> close -> lift` Inspire-hand program; the 1-trial reward improved slightly to `0.035`, though it still did not complete the lift
+- New named Inspire presets added in progress: `wide_enclose`, `box_wrap`, `cylinder_wrap`, and `ball_cup` are now manually defined so the model can use a slightly richer hand vocabulary without generating raw 6-value joint vectors
 
 ## Current local artifacts
 

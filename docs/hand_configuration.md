@@ -52,10 +52,24 @@ Current status:
 - The hand is visibly attached in saved smoke-test video frames.
 - The first richer-hand control layer now exists for the Inspire smoke path:
   - `get_hand_capabilities()`
-  - `set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")`
+  - `set_hand_preshape("open" | "pregrasp" | "wide_enclose" | "grasp_soft" | "box_wrap" | "cylinder_wrap" | "ball_cup" | "close")`
   - `set_hand_joints([...])` with 6 values
 - Panda compatibility is preserved because the older `open_gripper()` and
   `close_gripper()` helpers still exist and still drive the scalar Panda path.
+
+## Current named Inspire presets
+
+These presets are manually defined in the privileged Franka API, not provided by a
+built-in library:
+
+- `open`: maximum opening
+- `pregrasp`: moderate opening
+- `wide_enclose`: wider-than-object opening for initial alignment
+- `grasp_soft`: soft initial close
+- `box_wrap`: moderate wrap for box-like shapes
+- `cylinder_wrap`: narrower wrap for cylinders
+- `ball_cup`: round-object cupping pose
+- `close`: full closure
 
 ## Current limitation
 
