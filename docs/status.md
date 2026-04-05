@@ -56,12 +56,12 @@ Last updated: 2026-04-05
 - Active benchmark YAMLs now pin Panda defaults explicitly so the current `20/20`, `25/30`, and `24/30` results remain reproducible
 - The low-level Robosuite envs now accept hand metadata such as robot name, IK target link, end-effector body name, and TCP offset
 - The low-level Robosuite envs now accept a Robosuite `gripper_types` override so a custom hand can actually be instantiated instead of only relabelled
-- Current best candidate for the first five-finger profile: `Panda + InspireRightHand`, because Robosuite already includes Inspire hand assets and a gripper class
-- Smoke result: `Panda + InspireRightHand` successfully instantiated and reset in the existing shape-lift low-level env, with Robosuite action dimension increasing to `13`
-- Follow-up compatibility result: the shared Robosuite wrapper now steps correctly with the Inspire hand after fixing the old hard-coded action slicing assumption
-- Motion result: the existing privileged API can execute `goto_pose(...)` against the Inspire-hand profile when the standard Panda Pyroki server is running
+- The raw `Panda + InspireRightHand` composition was only partially integrated: it instantiated and moved, but the first smoke video showed the hand geometry was not attaching / rendering correctly
+- Better path identified: use Robosuite's built-in `PandaDexRH` composition, which already includes the Inspire-hand mount quaternion offset
+- `PandaDexRH` instantiates and steps correctly with action dimension `13`, and all Inspire hand bodies appear in the assembled MuJoCo model
+- Motion result: the existing privileged API can execute `goto_pose(...)` against the dexterous-hand profile when the standard Panda Pyroki server is running
 - Added opt-in smoke config: `env_configs/shape_generalization/franka_qwen_shape_inspire_smoke.yaml`
-- First video smoke result: the saved Inspire-hand trial video indicates the hand geometry is not rendering / attaching correctly, so the current `Panda + InspireRightHand` path is only partially integrated
+- Updated smoke result: with `PandaDexRH`, the saved trial video now shows the hand visibly attached in both close-up and overview views
 - Caveat: policy behavior is still binary open / close, so the first five-finger benchmark will likely be a compatibility test before any dexterous-hand policy upgrade
 
 ## Current local artifacts
@@ -83,8 +83,7 @@ Last updated: 2026-04-05
 
 ## What still needs attention
 
-- Determine the correct mount/frame parameters for the first five-finger profile, likely `Panda + InspireRightHand`, now that reset and simulator stepping both work
-- Fix the robot-hand composition so the Inspire hand is actually visible and attached correctly in rendered trials before treating the smoke config as a benchmark path
+- Standardize the first five-finger profile around `PandaDexRH` and propagate that profile through the smoke config and future benchmark configs
 - Check whether the current IK / end-effector assumptions still hold across full grasp attempts, not just a single `goto_pose`
 - Decide whether the first five-finger evaluation should keep the binary open/close API for comparability or expose richer hand actions immediately
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier

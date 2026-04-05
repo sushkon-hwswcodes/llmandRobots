@@ -35,18 +35,23 @@ To test a different hand, update:
 
 ## First five-finger candidate
 
-The current best low-friction target is:
+The current best low-friction target is the built-in Robosuite composite robot:
 
 ```yaml
 low_level_kwargs:
-  robot_name: Panda
+  robot_name: PandaDexRH
   hand_name: inspire_right
-  robosuite_gripper_type: InspireRightHand
+  robosuite_gripper_type: default
 ```
 
-That profile now instantiates and resets in the existing shape-lift low-level env.
-It should be treated as a compatibility smoke target for now, not yet as a
-policy-complete dexterous-hand benchmark.
+This path is better than raw `Panda + InspireRightHand` because Robosuite already
+defines the necessary gripper mount quaternion offset in `PandaDexRH`.
+
+Current status:
+- `PandaDexRH` instantiates, resets, and steps correctly.
+- The hand is visibly attached in saved smoke-test video frames.
+- The policy is still binary open / close, so this is still a compatibility-first
+  dexterous-hand benchmark path rather than a full dexterous manipulation policy.
 
 ## Current limitation
 
