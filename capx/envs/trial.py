@@ -206,6 +206,16 @@ def _save_turn_and_combined_videos(
                     _write_video(wrist_turn, base_dir, suffix=f"turn_{i:02d}_wrist")
             _write_video(wrist_frames, base_dir, suffix="combined_wrist")
 
+    # Overview camera videos (always recorded alongside main camera)
+    if hasattr(env, "get_overview_video_frames"):
+        overview_frames = env.get_overview_video_frames(clear=True)
+        if overview_frames:
+            for i, (start, end) in enumerate(turn_frame_ranges):
+                overview_turn = overview_frames[start:end]
+                if overview_turn:
+                    _write_video(overview_turn, base_dir, suffix=f"turn_{i:02d}_overview")
+            _write_video(overview_frames, base_dir, suffix="combined_overview")
+
 
 # ---------------------------------------------------------------------------
 # Visual feedback and image differencing

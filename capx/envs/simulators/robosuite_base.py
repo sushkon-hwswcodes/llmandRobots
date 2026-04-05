@@ -66,8 +66,10 @@ class RobosuiteBaseEnv(BaseEnv):
         self._record_frames = False
         self._frame_buffer: list[np.ndarray] = []
         self._wrist_frame_buffer: list[np.ndarray] = []
+        self._overview_frame_buffer: list[np.ndarray] = []
         self._record_wrist_camera = False
         self._wrist_camera_name = "robot0_eye_in_hand"
+        self._overview_camera_name = "frontview"
         self._subsample_rate = self._SUBSAMPLE_RATE
 
         # Control state
@@ -327,6 +329,7 @@ class RobosuiteBaseEnv(BaseEnv):
         if clear:
             self._frame_buffer.clear()
             self._wrist_frame_buffer.clear()
+            self._overview_frame_buffer.clear()
         if enabled:
             self._record_frame()
 
@@ -351,6 +354,15 @@ class RobosuiteBaseEnv(BaseEnv):
     def get_wrist_video_frames_range(self, start: int, end: int) -> list[np.ndarray]:
         return [frame.copy() for frame in self._wrist_frame_buffer[start:end]]
 
+    def get_overview_video_frames(self, *, clear: bool = False) -> list[np.ndarray]:
+        frames = [frame.copy() for frame in self._overview_frame_buffer]
+        if clear:
+            self._overview_frame_buffer.clear()
+        return frames
+
+    def get_overview_video_frames_range(self, start: int, end: int) -> list[np.ndarray]:
+        return [frame.copy() for frame in self._overview_frame_buffer[start:end]]
+
     def _record_frame(self) -> None:
         if not self._record_frames:
             return
@@ -371,6 +383,14 @@ class RobosuiteBaseEnv(BaseEnv):
                 depth=False,
             )
             self._wrist_frame_buffer.append(wrist_frame[::-1])
+
+        overview_frame = self.robosuite_env.sim.render(
+            camera_name=self._overview_camera_name,
+            width=self._render_width,
+            height=self._render_height,
+            depth=False,
+        )
+        self._overview_frame_buffer.append(overview_frame[::-1])
 
     def render(self, mode: str = "rgb_array") -> np.ndarray:  # type: ignore[override]
         if mode != "rgb_array":

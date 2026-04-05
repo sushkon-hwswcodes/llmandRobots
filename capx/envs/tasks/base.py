@@ -357,6 +357,16 @@ class CodeExecutionEnvBase(Env):
             return [f.copy() for f in self.low_level_env._wrist_frame_buffer[start:end]]
         return []
 
+    def get_overview_video_frames(self, *, clear: bool = False) -> list[np.ndarray]:
+        if hasattr(self.low_level_env, "get_overview_video_frames"):
+            return self.low_level_env.get_overview_video_frames(clear=clear)
+        return []
+
+    def get_overview_video_frames_range(self, start: int, end: int) -> list[np.ndarray]:
+        if hasattr(self.low_level_env, "get_overview_video_frames_range"):
+            return self.low_level_env.get_overview_video_frames_range(start, end)
+        return []
+
 
 # Use user's BaseEnv for low-level envs
 
