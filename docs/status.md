@@ -78,6 +78,8 @@ Last updated: 2026-04-05
 - Prompt wording fix in progress: the Inspire smoke config now explicitly forbids `open_gripper()` / `close_gripper()` so the dexterous-hand path is exclusive rather than optional
 - Prompt tightened further: the Inspire smoke config now requires a straight-line script order and explicitly forbids defining helper functions or classes, reducing the chance that the model shadows the real APIs again
 - Literal-prompt smoke result: the model now stays on the real Inspire-hand API path, performs real IK-driven approach motion, and no longer falls back to placeholder functions or legacy Panda helpers; however, the grasp still failed with reward `0.0`
+- New low-level grasp-target change in progress: `sample_grasp_pose("object")` is being upgraded from raw object-center targeting to a shape-aware top-down target, with a slightly more enclosing Z target for the Inspire hand on round objects
+- Shape-aware grasp-pose smoke result: after moving `sample_grasp_pose("object")` from raw object-center targeting to a shape-aware top-surface target, the same literal Inspire prompt improved from reward `0.000` to `0.033` on a 1-trial smoke run, though it still did not complete the lift
 
 ## Current local artifacts
 
@@ -106,6 +108,8 @@ Last updated: 2026-04-05
 - Confirm that the tightened staged prompt stops sandbox failures from invented helper checks and then compare its grasp outcome against the earlier richer-hand trial
 - Confirm that the revised prompt keeps the model on the real Inspire-hand API path and does not fall back to legacy Panda helpers
 - Improve the actual grasp target / pose selection next, since prompt tightening alone now produces the intended motion sequence but not a successful lift
+- Re-benchmark the Inspire smoke task with the new shape-aware grasp target to see whether grasp execution improves without changing prompt structure again
+- Keep iterating on low-level grasp targeting, since the first shape-aware pose change produced a measurable reward improvement without any new prompt complexity
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant

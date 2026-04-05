@@ -1,0 +1,108 @@
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+API server {'_target_': 'capx.serving.launch_pyroki_server.main', 'port': 8116, 'host': '127.0.0.1', 'robot': 'panda_description', 'target_link': 'panda_hand'} started
+API server on 127.0.0.1:8116 is ready
+Time taken to query model: 11.22 seconds
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+INFO:     127.0.0.1:37368 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44814 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48952 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48966 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60350 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60362 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60366 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38454 - "POST /ik HTTP/1.1" 200 OK
+Code block 1 done
+Number of code blocks: 1
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/video_turn_00.mp4 (90 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/video_combined.mp4 (91 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/video_turn_00_overview.mp4 (90 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/video_combined_overview.mp4 (91 frames)
+Trial 1 took 82.25 seconds
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get hand capabilities
+hand_info = get_hand_capabilities()
+
+# Step 2: Get object shape
+shape_info = get_object_shape()
+
+# Step 3: Sample grasp pose
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Choose pregrasp_name and close_name from shape_info["shape"]
+if shape_info["shape"] == "ball":
+    pregrasp_name = "pregrasp"
+    close_name = "close"
+elif shape_info["shape"] == "cylinder":
+    pregrasp_name = "pregrasp"
+    close_name = "grasp_soft"
+elif shape_info["shape"] == "box":
+    pregrasp_name = "open"
+    close_name = "grasp_soft"
+else:
+    pregrasp_name = "pregrasp"
+    close_name = "grasp_soft"
+
+# Step 5: Set hand preshape to pregrasp
+set_hand_preshape(pregrasp_name)
+
+# Step 6: Move to grasp position with z_approach=0.12
+goto_pose(grasp_pos, grasp_quat, z_approach=0.12)
+
+# Step 7: Move to grasp position with z_approach=0.04
+goto_pose(grasp_pos, grasp_quat, z_approach=0.04)
+
+# Step 8: Move to grasp position exactly
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 9: Set hand preshape to close_name (unless it's a ball)
+if shape_info["shape"] != "ball":
+    set_hand_preshape(close_name)
+
+# Step 10: Lift by 0.04 m
+lift_offset = np.array([0, 0, 0.04])
+goto_pose(grasp_pos + lift_offset, grasp_quat)
+
+# Step 11: Return once to grasp position
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 12: Set hand preshape to "close"
+set_hand_preshape("close")
+
+# Step 13: Lift by 0.10 m
+lift_offset = np.array([0, 0, 0.10])
+goto_pose(grasp_pos + lift_offset, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.03298379204469959
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 0
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_smoke/trial_01_sandboxrc_0_reward_0.033_taskcompleted_0/code.py
+
+Summary Statistics:
+Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+Config Path: env_configs/shape_generalization/franka_qwen_shape_inspire_smoke.yaml
+Git Commit: 25f2865 (Dirty: True)
+Total number of trials: 1
+Code generation success rate / Average reward / Task completed: 
+1.000/0.033/0
+Average code blocks: 1.000
+Average regenerations: 0.000
+Average finishes: 0.000
+Elapsed time: 93.48 seconds

@@ -243,14 +243,72 @@ class FrankaControlPrivilegedApi(ApiBase):
         obs = self._env.get_observation()
         name = object_name.lower().strip()
         has_secondary = "cube_poses" in obs and "secondary" in obs["cube_poses"]
+        grasp_quat = np.array([0, 0, 1, 0], dtype=np.float64)
 
         is_primary = self._is_primary_object_name(name, has_secondary)
         if is_primary:
-            return obs["cube_poses"]["primary"][:3], np.array([0, 0, 1, 0])
+            object_pos = np.asarray(obs["cube_poses"]["primary"][:3], dtype=np.float64).copy()
+            return self._shape_aware_grasp_position(object_pos), grasp_quat
         elif "green" in name and "cube" in name:
-            return obs["cube_poses"]["secondary"][:3], np.array([0, 0, 1, 0])
+            object_pos = np.asarray(obs["cube_poses"]["secondary"][:3], dtype=np.float64).copy()
+            return self._shape_aware_grasp_position(
+                object_pos,
+                fallback_shape="box",
+                fallback_bbox=np.array([0.05, 0.05, 0.05], dtype=np.float64),
+            ), grasp_quat
         else:
             raise ValueError(f"Invalid object name: {object_name}")
+
+    def _shape_aware_grasp_position(
+        self,
+        object_pos: np.ndarray,
+        *,
+        fallback_shape: str | None = None,
+        fallback_bbox: np.ndarray | None = None,
+    ) -> np.ndarray:
+        """Return a top-down grasp target adjusted for object shape and hand profile."""
+        rs_env = getattr(self._env, "robosuite_env", None)
+        shape = fallback_shape
+        if shape is None and rs_env is not None and hasattr(rs_env, "_current_shape"):
+            shape = str(rs_env._current_shape)
+        if shape is None:
+            shape = "box"
+
+        bbox = fallback_bbox
+        if bbox is None:
+            bbox = self._get_primary_bbox()
+        bbox = np.asarray(bbox, dtype=np.float64).reshape(3)
+
+        target = np.asarray(object_pos, dtype=np.float64).copy()
+        hand_name = self._hand_name.lower()
+        is_inspire = "inspire" in hand_name or "dex" in self._robot_name.lower()
+
+        if shape == "box":
+            top_height = bbox[2] * 0.5
+            clearance = 0.01
+            if is_inspire:
+                clearance = 0.007
+            target[2] += top_height + clearance
+        elif shape == "cylinder":
+            top_height = bbox[2] * 0.5
+            clearance = 0.01
+            if is_inspire:
+                clearance = 0.006
+            target[2] += top_height + clearance
+        elif shape == "ball":
+            radius = bbox[2] * 0.5
+            clearance = 0.01
+            if is_inspire:
+                clearance = -0.002
+            target[2] += radius + clearance
+        else:
+            top_height = bbox[2] * 0.5
+            clearance = 0.01
+            if is_inspire:
+                clearance = 0.007
+            target[2] += top_height + clearance
+
+        return target
 
     def goto_pose(
         self, position: np.ndarray, quaternion_wxyz: np.ndarray, z_approach: float = 0.0
