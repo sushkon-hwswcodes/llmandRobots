@@ -57,6 +57,29 @@ class FrankaControlPrivilegedApi(ApiBase):
         #     base_functions["breakpoint_code_block"] = self.breakpoint_code_block
         return base_functions
 
+    def _primary_name_aliases(self) -> set[str]:
+        aliases = {"object", "red_object", "red object", "cube", "target", "green object", "green cube"}
+        rs_env = getattr(self._env, "robosuite_env", None)
+        info = getattr(rs_env, "_current_object_info", None)
+        if isinstance(info, dict):
+            display_name = str(info.get("display_name", "")).strip().lower()
+            category = str(info.get("category", "")).strip().lower()
+            if display_name:
+                aliases.add(display_name)
+            if category:
+                aliases.add(category)
+                aliases.add(category.replace("_", " "))
+        return aliases
+
+    def _is_primary_object_name(self, object_name: str, has_secondary: bool) -> bool:
+        name = object_name.lower().strip()
+        aliases = self._primary_name_aliases()
+        return (
+            ("red" in name and "cube" in name)
+            or name in aliases
+            or (not has_secondary and ("green" in name))
+        )
+
     def get_object_pose(
         self, object_name: str, return_bbox_extent: bool = False
     ) -> tuple[np.ndarray, np.ndarray, np.ndarray | None]:
@@ -75,13 +98,7 @@ class FrankaControlPrivilegedApi(ApiBase):
         name = object_name.lower().strip()
         has_secondary = "cube_poses" in obs and "secondary" in obs["cube_poses"]
 
-        # Accept any name that refers to the primary object
-        is_primary = (
-            ("red" in name and "cube" in name)
-            or name in ("object", "red_object", "red object", "cube")
-            or (not has_secondary and ("green" in name))
-            or (not has_secondary and name in ("target", "green object", "green cube"))
-        )
+        is_primary = self._is_primary_object_name(name, has_secondary)
         if is_primary:
             bbox = self._get_primary_bbox()
             return (
@@ -102,14 +119,16 @@ class FrankaControlPrivilegedApi(ApiBase):
         """Return full bounding-box extents (x, y, z) in metres for the primary object."""
         rs_env = getattr(self._env, "robosuite_env", None)
         if rs_env is not None and hasattr(rs_env, "_current_size") and hasattr(rs_env, "_current_shape"):
-            size = rs_env._current_size   # MuJoCo geom_size: half-extents / radius
+            size = np.asarray(rs_env._current_size, dtype=np.float64)
             shape = rs_env._current_shape
             if shape == "box":
                 return np.array([size[0] * 2, size[1] * 2, size[2] * 2])
             elif shape == "cylinder":
-                return np.array([size[0] * 2, size[0] * 2, size[1] * 2])  # [diam, diam, height]
-            else:  # ball
+                return np.array([size[0] * 2, size[0] * 2, size[1] * 2])
+            elif shape == "ball":
                 return np.array([size[0] * 2, size[0] * 2, size[0] * 2])
+            elif shape == "mesh" and size.shape[0] >= 3:
+                return np.array([size[0], size[1], size[2]])
         # Fallback for plain cube environment
         return np.array([0.05, 0.05, 0.05])
 
@@ -128,6 +147,21 @@ class FrankaControlPrivilegedApi(ApiBase):
         if rs_env is None or not hasattr(rs_env, "_current_shape"):
             return {"shape": "box", "size": {"x": 0.05, "y": 0.05, "z": 0.05},
                     "grasp_hint": "top-down grasp"}
+
+        info = getattr(rs_env, "_current_object_info", None)
+        if isinstance(info, dict) and info.get("shape") == "mesh":
+            size = info.get("size", {})
+            return {
+                "shape": "mesh",
+                "category": info.get("category", "object"),
+                "display_name": info.get("display_name", "object"),
+                "size": {
+                    "x": round(float(size.get("x", 0.05)), 4),
+                    "y": round(float(size.get("y", 0.05)), 4),
+                    "z": round(float(size.get("z", 0.05)), 4),
+                },
+                "grasp_hint": info.get("grasp_hint", "Use a top-down grasp near the object center."),
+            }
 
         shape = rs_env._current_shape
         s = rs_env._current_size  # raw MuJoCo geom_size half-extents
@@ -180,12 +214,7 @@ class FrankaControlPrivilegedApi(ApiBase):
         name = object_name.lower().strip()
         has_secondary = "cube_poses" in obs and "secondary" in obs["cube_poses"]
 
-        is_primary = (
-            ("red" in name and "cube" in name)
-            or name in ("object", "red_object", "red object", "cube")
-            or (not has_secondary and ("green" in name))
-            or (not has_secondary and name in ("target", "green object", "green cube"))
-        )
+        is_primary = self._is_primary_object_name(name, has_secondary)
         if is_primary:
             return obs["cube_poses"]["primary"][:3], np.array([0, 0, 1, 0])
         elif "green" in name and "cube" in name:

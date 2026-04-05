@@ -1,0 +1,76 @@
+# Phase 3: Real-world object lift using ManiSkill YCB assets; privileged state; Qwen2.5-Coder-7B
+# Usage: python -m capx.envs.launch --config-path env_configs/real_objects/franka_qwen_ycb.yaml
+
+env:
+  _target_: capx.envs.tasks.franka.franka_lift.FrankaLiftCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level: franka_robosuite_ycb_lift_low_level
+    privileged: true
+    apis:
+      - FrankaControlPrivilegedApi
+    prompt: |
+      You are controlling a Franka Emika robot with the API described below.
+      Goal: pick up the object on the table and lift it into the air. The task is complete when the gripper is holding the object above the table.
+      IMPORTANT: Do NOT call open_gripper() after grasping the object. Releasing the object fails the task.
+
+      First call get_object_shape() to inspect the current object category and size.
+      Then use sample_grasp_pose("object") for the actual grasp target.
+      Prefer the sampled grasp pose over deriving a grasp directly from object dimensions.
+
+      The correct sequence is:
+        1. object_info = get_object_shape()
+        2. grasp_pos, grasp_quat = sample_grasp_pose("object")
+        3. open_gripper()
+        4. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+        5. goto_pose(grasp_pos, grasp_quat)
+        6. close_gripper()
+        7. lift_pos = grasp_pos.copy(); lift_pos[2] += 0.1
+        8. goto_pose(lift_pos, grasp_quat)
+
+      ONLY write executable Python code. Do not use code fences.
+      The functions below are already imported. Import numpy explicitly if needed.
+
+      Example:
+      import numpy as np
+      object_info = get_object_shape()
+      grasp_pos, grasp_quat = sample_grasp_pose("object")
+      open_gripper()
+      goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+      goto_pose(grasp_pos, grasp_quat)
+      close_gripper()
+      lift_pos = grasp_pos.copy()
+      lift_pos[2] += 0.1
+      goto_pose(lift_pos, grasp_quat)
+
+    multi_turn_prompt: |
+      The following code blocks were just executed:
+      ```python
+      {executed_code}
+      ```
+      The current console stdout is:
+      ```
+      {console_stdout}
+      ```
+      The current console stderr is:
+      ```
+      {console_stderr}
+      ```
+      If there were errors, regenerate with corrected code.
+      Please respond with EXACTLY ONE of the following:
+      - The word 'REGENERATE' followed immediately by new Python code in a fenced code block (```python...```)
+      - The word 'FINISH' if the task appears to be complete
+
+api_servers:
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+record_video: true
+output_dir: ./outputs/qwen_ycb_real_objects
+use_legacy_multi_turn_decision_prompt: true
+
+trials: 10
+num_workers: 1

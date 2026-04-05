@@ -9,6 +9,7 @@ Last updated: 2026-04-05
 3. Generate montage videos from successful clutter trials using `scripts/make_success_video_grids.py`.
 4. Decide whether the next iteration should be a prompt-only change or a simulator / reward adjustment.
 5. Preserve the intended Phase 3 scope: move from randomly generated shapes to real-world object assets once Phase 2.75 is stable enough.
+6. Benchmark the new YCB-backed Phase 3 lift environment and identify the dominant grasp / orientation failures.
 
 ## Short-term goals
 
@@ -16,6 +17,7 @@ Last updated: 2026-04-05
 2. Preserve the already-solved `20/20` privileged baseline while making clutter-specific changes.
 3. Add a lightweight regression or smoke check for the clutter environment so future prompt or API edits do not silently break it.
 4. Define the first real-world object set for Phase 3 so the transition is concrete instead of implicit.
+5. Improve the first YCB bridge by replacing the temporary OBJ-for-collision fallback if it becomes a stability bottleneck.
 
 ## Medium-term goals
 
@@ -23,6 +25,7 @@ Last updated: 2026-04-05
 2. Reuse the same evaluation harness to compare single-turn, multi-turn, and prompt-variant behavior on harder visual-grounding tasks.
 3. Keep collecting benchmark artifacts that are easy to audit: logs, saved code, overview videos, and montage summaries.
 4. Implement Phase 3 by replacing synthetic/generated shapes with real-world objects while keeping the evaluation protocol comparable.
+5. Extend Phase 3 from single-object lift into harder real-object variants after the base YCB lift is benchmarked.
 
 ## Planned phase sequence
 

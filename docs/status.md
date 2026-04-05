@@ -37,7 +37,10 @@ Last updated: 2026-04-05
 
 - Planned next milestone: replace randomly generated shape instances with real-world object assets
 - Goal: test whether the current prompting and control stack transfers from synthetic shape abstractions to more realistic object geometry and appearance
-- Status: not started yet in code; this phase was part of the roadmap but was missing from the docs
+- Status: initial implementation now exists via a YCB-backed Robosuite lift environment using downloaded ManiSkill YCB assets
+- Added low-level env: `franka_robosuite_ycb_lift_low_level`
+- Added config: `env_configs/real_objects/franka_qwen_ycb.yaml`
+- Smoke test: env registration, reset, object metadata, and prompt-facing APIs all pass locally
 
 ## Current local artifacts
 
@@ -49,11 +52,11 @@ Last updated: 2026-04-05
 - Robosuite privileged baseline is stable at `20/20`
 - Phase 2 shape generalization is implemented and benchmarked at `25/30`
 - Phase 2.75 green-target clutter is implemented and benchmarked at `24/30`
-- Phase 3 real-world objects is defined as the next milestone, but not implemented yet
+- Phase 3 real-world objects has started with a first YCB-backed lift environment and prompt/config bridge
 
 ## What still needs attention
 
 - Inspect the six clutter-task failures to separate prompt issues from simulator/task-design issues
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
-- Prepare the Phase 3 transition from generated shapes to real-world object assets
+- Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Turn representative successful trials into montage videos for easier review and sharing

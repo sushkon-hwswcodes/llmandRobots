@@ -10,6 +10,7 @@ register_env("franka_real_low_level", FrankaRealLowLevel)
 try:
     from .robosuite_cube_lift import FrankaRobosuiteCubeLiftLowLevel
     from .robosuite_shape_lift import FrankaRobosuiteShapeLiftLowLevel
+    from .robosuite_ycb_lift import FrankaRobosuiteYCBLiftLowLevel
     from .robosuite_green_target_clutter import FrankaRobosuiteGreenTargetClutterLowLevel
     from .robosuite_cubes import FrankaRobosuiteCubesLowLevel
     from .robosuite_cubes_restack import FrankaRobosuiteCubesRestackLowLevel
@@ -21,6 +22,7 @@ try:
 
     register_env("franka_robosuite_cube_lift_low_level", FrankaRobosuiteCubeLiftLowLevel)
     register_env("franka_robosuite_shape_lift_low_level", FrankaRobosuiteShapeLiftLowLevel)
+    register_env("franka_robosuite_ycb_lift_low_level", FrankaRobosuiteYCBLiftLowLevel)
     register_env("franka_robosuite_green_target_clutter_low_level", FrankaRobosuiteGreenTargetClutterLowLevel)
     register_env("franka_robosuite_cubes_low_level", FrankaRobosuiteCubesLowLevel)
     register_env("franka_robosuite_cubes_restack_low_level", FrankaRobosuiteCubesRestackLowLevel)
