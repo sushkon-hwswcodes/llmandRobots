@@ -1,0 +1,1525 @@
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+API server {'_target_': 'capx.serving.launch_pyroki_server.main', 'port': 8116, 'host': '127.0.0.1', 'robot': 'panda_description', 'target_link': 'panda_hand'} started
+API server on 127.0.0.1:8116 is ready
+Time taken to query model: 6.14 seconds
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+INFO:     127.0.0.1:53828 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53834 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47546 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46106 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.54 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (81 frames)
+Trial 1 took 45.74 seconds
+Time taken to query model: 1.69 seconds
+INFO:     127.0.0.1:48726 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48736 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48744 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45282 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.49 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 2 took 34.86 seconds
+Time taken to query model: 3.15 seconds
+INFO:     127.0.0.1:37894 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44724 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44728 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58162 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.50 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_03_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_03_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_03_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_03_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 3 took 36.74 seconds
+Time taken to query model: 1.66 seconds
+INFO:     127.0.0.1:59646 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59658 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33326 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50384 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.48 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_04_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (131 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_04_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (132 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_04_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (131 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_04_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (132 frames)
+Trial 4 took 53.15 seconds
+Time taken to query model: 2.90 seconds
+INFO:     127.0.0.1:49746 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36180 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55228 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38150 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.51 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_05_sandboxrc_0_reward_0.035_taskcompleted_0/video_turn_00.mp4 (170 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_05_sandboxrc_0_reward_0.035_taskcompleted_0/video_combined.mp4 (171 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_05_sandboxrc_0_reward_0.035_taskcompleted_0/video_turn_00_overview.mp4 (170 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_05_sandboxrc_0_reward_0.035_taskcompleted_0/video_combined_overview.mp4 (171 frames)
+Trial 5 took 68.02 seconds
+Time taken to query model: 2.99 seconds
+INFO:     127.0.0.1:52148 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55760 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55776 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34480 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.54 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_06_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_06_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_06_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_06_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 6 took 35.83 seconds
+Time taken to query model: 1.65 seconds
+INFO:     127.0.0.1:50172 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50184 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50190 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47614 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.50 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_07_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_07_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_07_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_07_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 7 took 35.04 seconds
+Time taken to query model: 1.61 seconds
+INFO:     127.0.0.1:52380 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51136 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51142 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52240 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.46 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_08_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_08_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (87 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_08_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_08_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (87 frames)
+Trial 8 took 39.26 seconds
+Time taken to query model: 2.96 seconds
+INFO:     127.0.0.1:55898 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42136 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42148 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35634 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.51 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_09_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_09_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_09_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_09_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 9 took 36.57 seconds
+Time taken to query model: 2.86 seconds
+INFO:     127.0.0.1:55884 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55870 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55878 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43324 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.50 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_10_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_10_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_10_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_10_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 10 took 37.14 seconds
+Time taken to query model: 3.03 seconds
+INFO:     127.0.0.1:55982 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55988 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55994 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45174 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.52 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_11_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_11_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_11_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_11_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (81 frames)
+Trial 11 took 35.62 seconds
+Time taken to query model: 2.97 seconds
+INFO:     127.0.0.1:49914 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57284 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57292 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39338 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.51 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_12_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_12_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_12_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_12_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 12 took 35.87 seconds
+Time taken to query model: 3.06 seconds
+INFO:     127.0.0.1:49248 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49264 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41798 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35744 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.52 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_13_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (85 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_13_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_13_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (85 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_13_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (86 frames)
+Trial 13 took 38.68 seconds
+Time taken to query model: 2.97 seconds
+INFO:     127.0.0.1:48216 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48224 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43392 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42928 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.50 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_14_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_14_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_14_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_14_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (81 frames)
+Trial 14 took 37.04 seconds
+Time taken to query model: 2.99 seconds
+INFO:     127.0.0.1:53298 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53310 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53318 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38052 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.50 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_15_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_15_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_15_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_15_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 15 took 35.25 seconds
+Time taken to query model: 1.67 seconds
+INFO:     127.0.0.1:39042 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39050 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33666 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49480 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.48 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_16_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_16_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (87 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_16_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_16_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (87 frames)
+Trial 16 took 38.27 seconds
+Time taken to query model: 2.81 seconds
+INFO:     127.0.0.1:36188 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36202 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39510 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36798 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.49 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_17_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_17_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_17_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_17_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (81 frames)
+Trial 17 took 36.62 seconds
+Time taken to query model: 1.67 seconds
+INFO:     127.0.0.1:60072 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60088 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60102 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38290 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.48 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_18_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_18_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_18_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_18_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (81 frames)
+Trial 18 took 34.54 seconds
+Time taken to query model: 1.68 seconds
+INFO:     127.0.0.1:60356 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60358 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37444 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49860 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.50 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_19_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_19_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (87 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_19_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_19_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (87 frames)
+Trial 19 took 36.52 seconds
+Time taken to query model: 1.64 seconds
+INFO:     127.0.0.1:57062 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57074 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57086 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44500 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.47 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_20_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_20_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_20_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_20_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 20 took 34.30 seconds
+Time taken to query model: 2.98 seconds
+INFO:     127.0.0.1:55742 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35338 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35340 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59460 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.48 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_21_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_21_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_21_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (80 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_21_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (81 frames)
+Trial 21 took 36.19 seconds
+Time taken to query model: 2.96 seconds
+INFO:     127.0.0.1:48948 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48950 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44906 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57102 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.53 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_22_sandboxrc_0_reward_0.035_taskcompleted_0/video_turn_00.mp4 (169 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_22_sandboxrc_0_reward_0.035_taskcompleted_0/video_combined.mp4 (170 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_22_sandboxrc_0_reward_0.035_taskcompleted_0/video_turn_00_overview.mp4 (169 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_22_sandboxrc_0_reward_0.035_taskcompleted_0/video_combined_overview.mp4 (170 frames)
+Trial 22 took 69.29 seconds
+Time taken to query model: 2.97 seconds
+INFO:     127.0.0.1:40940 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40946 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46934 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55544 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.49 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_23_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_23_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_23_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_23_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 23 took 35.99 seconds
+Time taken to query model: 2.94 seconds
+INFO:     127.0.0.1:51634 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51646 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51656 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54154 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.46 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_24_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (85 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_24_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_24_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (85 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_24_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (86 frames)
+Trial 24 took 37.40 seconds
+Time taken to query model: 2.88 seconds
+INFO:     127.0.0.1:52906 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53468 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55158 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53614 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.51 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_25_sandboxrc_0_reward_1.000_taskcompleted_0/video_turn_00.mp4 (170 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_25_sandboxrc_0_reward_1.000_taskcompleted_0/video_combined.mp4 (171 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_25_sandboxrc_0_reward_1.000_taskcompleted_0/video_turn_00_overview.mp4 (170 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_25_sandboxrc_0_reward_1.000_taskcompleted_0/video_combined_overview.mp4 (171 frames)
+Trial 25 took 66.70 seconds
+Time taken to query model: 2.96 seconds
+INFO:     127.0.0.1:39868 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35120 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35130 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50802 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.49 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_26_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_26_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_26_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_26_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 26 took 36.87 seconds
+Time taken to query model: 2.83 seconds
+INFO:     127.0.0.1:60542 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60550 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52050 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54894 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.54 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_27_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_27_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (87 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_27_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (86 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_27_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (87 frames)
+Trial 27 took 39.59 seconds
+Time taken to query model: 3.13 seconds
+INFO:     127.0.0.1:49790 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49802 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36840 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33246 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.52 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_28_sandboxrc_0_reward_0.035_taskcompleted_0/video_turn_00.mp4 (170 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_28_sandboxrc_0_reward_0.035_taskcompleted_0/video_combined.mp4 (171 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_28_sandboxrc_0_reward_0.035_taskcompleted_0/video_turn_00_overview.mp4 (170 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_28_sandboxrc_0_reward_0.035_taskcompleted_0/video_combined_overview.mp4 (171 frames)
+Trial 28 took 69.90 seconds
+Time taken to query model: 2.88 seconds
+INFO:     127.0.0.1:41318 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41334 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41370 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35746 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.50 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_29_sandboxrc_0_reward_0.035_taskcompleted_0/video_turn_00.mp4 (170 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_29_sandboxrc_0_reward_0.035_taskcompleted_0/video_combined.mp4 (171 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_29_sandboxrc_0_reward_0.035_taskcompleted_0/video_turn_00_overview.mp4 (170 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_29_sandboxrc_0_reward_0.035_taskcompleted_0/video_combined_overview.mp4 (171 frames)
+Trial 29 took 69.75 seconds
+Time taken to query model: 1.66 seconds
+INFO:     127.0.0.1:56994 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57000 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57004 - "POST /ik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45200 - "POST /ik HTTP/1.1" 200 OK
+Time taken to query model: 0.49 seconds
+Model chose to finish
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_30_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_30_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined.mp4 (82 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_30_sandboxrc_0_reward_1.000_taskcompleted_1/video_turn_00_overview.mp4 (81 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_30_sandboxrc_0_reward_1.000_taskcompleted_1/video_combined_overview.mp4 (82 frames)
+Trial 30 took 34.17 seconds
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Move to the grasp position with an approach
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the grasp position without approach
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_01_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_02_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Move to the grasp position with an approach of 0.1 meters
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the grasp position without any approach
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object by 0.1 meters above the current position
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_03_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_04_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape and size of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.03456495304634544
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_05_sandboxrc_0_reward_0.035_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape and size of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Move to the grasp position with a small approach
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the grasp position without approach
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object slightly above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_06_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_07_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_08_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Move to the grasp position with an approach
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the grasp position without approach
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_09_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_10_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape and size of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 3: Open the gripper
+open_gripper()
+
+# Step 4: Move to the grasp position with an approach
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 5: Move to the grasp position without approach
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 6: Close the gripper
+close_gripper()
+
+# Step 7: Define the lift position
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+
+# Step 8: Move to the lift position
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_11_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape and size of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with a small z offset
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the exact grasp pose
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object slightly above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_12_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach to the object with the gripper open
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the grasp pose with the gripper open
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper to grasp the object
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_13_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape and size of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper (do not call open_gripper())
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_14_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Move to the grasp position with an approach distance
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the grasp position without approach
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_15_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_16_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Move to the approach position
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the grasp position
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_17_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_18_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_19_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_20_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper to grasp the object
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_21_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.03456332026512687
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_22_sandboxrc_0_reward_0.035_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape and size of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper to grasp the object
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_23_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper (keep it closed)
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_24_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Move to the approach position above the object
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the grasp position
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: False
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_25_sandboxrc_0_reward_1.000_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape and size of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper to grasp the object
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_26_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape and size of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_27_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape information of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Go to the grasp position with an approach height of 0.1 meters
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Move to the exact grasp pose
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object by 0.1 meters above the current position
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.03456484315467745
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_28_sandboxrc_0_reward_0.035_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Get the shape and size of the object
+shape_info = get_object_shape()
+
+# Step 2: Sample a grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 4: Open the gripper
+open_gripper()
+
+# Step 5: Approach the object with the gripper
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+
+# Step 6: Grasp the object
+goto_pose(grasp_pos, grasp_quat)
+
+# Step 7: Close the gripper
+close_gripper()
+
+# Step 8: Lift the object above the table
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.03456424663319524
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_29_sandboxrc_0_reward_0.035_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+shape_info = get_object_shape()
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+open_gripper()
+goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+goto_pose(grasp_pos, grasp_quat)
+close_gripper()
+lift_pos = grasp_pos.copy()
+lift_pos[2] += 0.1
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 1.0
+  Task Completed: True
+  Terminated: True, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 1
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_generalization/trial_30_sandboxrc_0_reward_1.000_taskcompleted_1/code.py
+
+Summary Statistics:
+Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+Config Path: env_configs/shape_generalization/franka_qwen_shape.yaml
+Git Commit: 1da0479 (Dirty: True)
+Total number of trials: 30
+Code generation success rate / Average reward / Task completed: 
+1.000/0.871/25
+Average code blocks: 1.000
+Average regenerations: 0.000
+Average finishes: 1.000
+Elapsed time: 1301.95 seconds
