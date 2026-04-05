@@ -162,6 +162,7 @@ class FrankaRobosuiteGreenTargetClutterLowLevel(RobosuiteBaseEnv):
         enable_render: bool = False,
         robot_name: str = "Panda",
         hand_name: str = "panda",
+        robosuite_gripper_type: str = "default",
         ik_robot_name: str = "panda_description",
         ik_target_link_name: str = "panda_hand",
         eef_body_name: str = "gripper0_right_eef",
@@ -178,6 +179,7 @@ class FrankaRobosuiteGreenTargetClutterLowLevel(RobosuiteBaseEnv):
             enable_render=enable_render,
             robot_name=robot_name,
             hand_name=hand_name,
+            robosuite_gripper_type=robosuite_gripper_type,
             ik_robot_name=ik_robot_name,
             ik_target_link_name=ik_target_link_name,
             eef_body_name=eef_body_name,
@@ -188,6 +190,7 @@ class FrankaRobosuiteGreenTargetClutterLowLevel(RobosuiteBaseEnv):
 
         lift_kwargs = dict(
             robots=[self.robot_name],
+            gripper_types=self.robosuite_gripper_type,
             has_renderer=False,
             has_offscreen_renderer=True,
             camera_names=self.render_camera_names,

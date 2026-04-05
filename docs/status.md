@@ -6,7 +6,7 @@ Last updated: 2026-04-05
 
 - Branch: `main`
 - Remote tracking: `origin/main`
-- Latest committed milestone: `eae9fc8` "Add clutter sim with green target among red distractors (Phase 2.75)"
+- Latest committed milestone: `8dcc9aa` "Add configurable hand parameters for Franka lift benchmarks"
 
 ## Recent progress
 
@@ -32,6 +32,7 @@ Last updated: 2026-04-05
 - `eae9fc8`: added the Phase 2.75 clutter simulator with one green target and red distractors
 - `benchmark_green_target_clutter_30.log`: completed 30 trials with `24/30` successes
 - `scripts/make_success_video_grids.py`: added local tooling to build montage videos for successful clutter trials
+- Failure review update: the six clutter failures appear to be clutter-induced grasp / lift failures, not wrong-target selection
 
 ### Phase 3: real-world objects
 
@@ -49,23 +50,38 @@ Last updated: 2026-04-05
 - 30-trial benchmark: `9/30` task-complete with `0.394` average reward
 - Current readout: target selection appears to be working, but cluttered grasp reliability is still the dominant bottleneck
 
+### Hand migration work
+
+- `8dcc9aa`: added backward-compatible hand-configuration plumbing while preserving Panda as the default benchmark path
+- Active benchmark YAMLs now pin Panda defaults explicitly so the current `20/20`, `25/30`, and `24/30` results remain reproducible
+- The low-level Robosuite envs now accept hand metadata such as robot name, IK target link, end-effector body name, and TCP offset
+- The low-level Robosuite envs now accept a Robosuite `gripper_types` override so a custom hand can actually be instantiated instead of only relabelled
+- Current best candidate for the first five-finger profile: `Panda + InspireRightHand`, because Robosuite already includes Inspire hand assets and a gripper class
+- Smoke result: `Panda + InspireRightHand` successfully instantiated and reset in the existing shape-lift low-level env, with Robosuite action dimension increasing to `13`
+- Caveat: policy behavior is still binary open / close, so the first five-finger benchmark will likely be a compatibility test before any dexterous-hand policy upgrade
+
 ## Current local artifacts
 
 - `benchmark_green_target_clutter_30.log`: full 30-trial clutter benchmark output
 - `scripts/make_success_video_grids.py`: helper for assembling 4x2 success-video grids
+- `docs/hand_configuration.md`: notes on the new configurable hand path and the parameters that need to be swapped for a future five-finger hand
 
 ## What is done
 
 - Robosuite privileged baseline is stable at `20/20`
 - Phase 2 shape generalization is implemented and benchmarked at `25/30`
 - Phase 2.75 green-target clutter is implemented and benchmarked at `24/30`
+- The clutter failure review is complete enough to say the misses are grasp-execution failures, not target-selection failures
 - Phase 3 real-world objects has started with a first YCB-backed lift environment and prompt/config bridge
 - Phase 3 target-object selection from real-object clutter has an initial implementation and smoke-test coverage
 - Phase 3 target-object selection from real-object clutter has now been benchmarked once at `9/30`
+- The hand path is now configurable without replacing Panda, and the current benchmark configs explicitly preserve Panda settings
 
 ## What still needs attention
 
-- Inspect the six clutter-task failures to separate prompt issues from simulator/task-design issues
+- Finish wiring the Robosuite gripper override path and attempt the first five-finger hand instantiation smoke test
+- Determine the correct mount/frame parameters for the first five-finger profile, likely `Panda + InspireRightHand`, now that basic instantiation is working
+- Decide whether the first five-finger evaluation should keep the binary open/close API for comparability or expose richer hand actions immediately
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant

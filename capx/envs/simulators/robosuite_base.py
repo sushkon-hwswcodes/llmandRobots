@@ -49,6 +49,7 @@ class RobosuiteBaseEnv(BaseEnv):
         enable_render: bool = False,
         robot_name: str = "Panda",
         hand_name: str = "panda",
+        robosuite_gripper_type: str = "default",
         ik_robot_name: str = "panda_description",
         ik_target_link_name: str = "panda_hand",
         eef_body_name: str = "gripper0_right_eef",
@@ -61,6 +62,7 @@ class RobosuiteBaseEnv(BaseEnv):
         self.max_steps = max_steps
         self.robot_name = robot_name
         self.hand_name = hand_name
+        self.robosuite_gripper_type = robosuite_gripper_type
         self.ik_robot_name = ik_robot_name
         self.ik_target_link_name = ik_target_link_name
         self.eef_body_name = eef_body_name
