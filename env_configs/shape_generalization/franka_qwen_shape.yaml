@@ -1,0 +1,87 @@
+# Phase 2: Shape generalization — box, cylinder, ball; privileged state; Qwen2.5-Coder-7B
+# Usage: python -m capx.envs.launch --config-path env_configs/shape_generalization/franka_qwen_shape.yaml
+
+env:
+  _target_: capx.envs.tasks.franka.franka_lift.FrankaLiftCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level: franka_robosuite_shape_lift_low_level
+    privileged: true
+    apis:
+      - FrankaControlPrivilegedApi
+    prompt: |
+      You are controlling a Franka Emika robot with the API described below.
+      Goal: pick up the red object on the table and lift it into the air. The task is complete when the gripper is holding the object above the table.
+      IMPORTANT: Do NOT call open_gripper() — releasing the object fails the task. Keep the gripper closed once you have grasped the object.
+
+      Before writing grasp code, call get_object_shape() to learn the shape and size of the object.
+      Use the shape and size to set the correct grasp height:
+        - box:      grasp_pos[2] = object_pos[2] + size['z']/2 + 0.01
+        - cylinder: grasp_pos[2] = object_pos[2] + size['height']/2 + 0.01
+        - ball:     grasp_pos[2] = object_pos[2] + size['diameter']/2 + 0.01
+
+      The correct sequence is:
+        1. shape_info = get_object_shape()
+        2. obj_pos, obj_quat, _ = get_object_pose("object")
+        3. Compute grasp_pos from obj_pos and shape_info
+        4. open_gripper()
+        5. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+        6. goto_pose(grasp_pos, grasp_quat)
+        7. close_gripper()
+        8. goto_pose(lift_pos, grasp_quat)   # lift_pos = grasp_pos + [0, 0, 0.1]
+
+      ONLY write executable Python code. Do not use code fences.
+      After execution you will see stdout/stderr and may regenerate if something went wrong.
+      The functions below are already imported. Import numpy explicitly if needed.
+
+      Example for a cylinder (diameter=0.06, height=0.10):
+      import numpy as np
+      shape_info = get_object_shape()
+      obj_pos, _, _ = get_object_pose("object")
+      grasp_quat = np.array([0, 0, 1, 0])
+      grasp_pos = obj_pos.copy()
+      if shape_info['shape'] == 'cylinder':
+          grasp_pos[2] = obj_pos[2] + shape_info['size']['height'] / 2 + 0.01
+      elif shape_info['shape'] == 'box':
+          grasp_pos[2] = obj_pos[2] + shape_info['size']['z'] / 2 + 0.01
+      else:
+          grasp_pos[2] = obj_pos[2] + shape_info['size']['diameter'] / 2 + 0.01
+      open_gripper()
+      goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+      goto_pose(grasp_pos, grasp_quat)
+      close_gripper()
+      lift_pos = grasp_pos.copy()
+      lift_pos[2] += 0.1
+      goto_pose(lift_pos, grasp_quat)
+
+    multi_turn_prompt: |
+      The following code blocks were just executed:
+      ```python
+      {executed_code}
+      ```
+      The current console stdout is:
+      ```
+      {console_stdout}
+      ```
+      The current console stderr is:
+      ```
+      {console_stderr}
+      ```
+      If there were errors, regenerate with corrected code.
+      Please respond with EXACTLY ONE of the following:
+      - The word 'REGENERATE' followed immediately by new Python code in a fenced code block (```python...```) if you want to modify the code.
+      - The word 'FINISH' if the task appears to be complete
+
+api_servers:
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+record_video: true
+output_dir: ./outputs/qwen_shape_generalization
+use_legacy_multi_turn_decision_prompt: true
+
+trials: 30
+num_workers: 1

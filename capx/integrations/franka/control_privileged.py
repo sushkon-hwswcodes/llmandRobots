@@ -46,6 +46,7 @@ class FrankaControlPrivilegedApi(ApiBase):
     def functions(self) -> dict[str, Any]:
         base_functions = {
             "get_object_pose": self.get_object_pose,
+            "get_object_shape": self.get_object_shape,
             "sample_grasp_pose": self.sample_grasp_pose,
             "goto_pose": self.goto_pose,
             "open_gripper": self.open_gripper,
@@ -72,14 +73,17 @@ class FrankaControlPrivilegedApi(ApiBase):
         """
         obs = self._env.get_observation()
 
-        if (
-            "red" in object_name and "cube" in object_name
-        ):  # TODO: Slightly problematic that these are hardcoded language descriptions
-            # Could just expose a low level obs dict item with the same object name from the low level env
+        # Accept any name that refers to the primary object
+        is_primary = (
+            ("red" in object_name and "cube" in object_name)
+            or object_name in ("object", "red_object", "red object", "cube")
+        )
+        if is_primary:
+            bbox = self._get_primary_bbox()
             return (
                 obs["cube_poses"]["primary"][:3],
                 obs["cube_poses"]["primary"][3:],
-                np.array([0.05, 0.05, 0.05]),
+                bbox,
             )
         elif "green" in object_name and "cube" in object_name:
             return (
@@ -89,6 +93,73 @@ class FrankaControlPrivilegedApi(ApiBase):
             )
         else:
             raise ValueError(f"Invalid object name: {object_name}")
+
+    def _get_primary_bbox(self) -> np.ndarray:
+        """Return full bounding-box extents (x, y, z) in metres for the primary object."""
+        rs_env = getattr(self._env, "robosuite_env", None)
+        if rs_env is not None and hasattr(rs_env, "_current_size") and hasattr(rs_env, "_current_shape"):
+            size = rs_env._current_size   # MuJoCo geom_size: half-extents / radius
+            shape = rs_env._current_shape
+            if shape == "box":
+                return np.array([size[0] * 2, size[1] * 2, size[2] * 2])
+            elif shape == "cylinder":
+                return np.array([size[0] * 2, size[0] * 2, size[1] * 2])  # [diam, diam, height]
+            else:  # ball
+                return np.array([size[0] * 2, size[0] * 2, size[0] * 2])
+        # Fallback for plain cube environment
+        return np.array([0.05, 0.05, 0.05])
+
+    def get_object_shape(self) -> dict:
+        """Return the shape type and dimensions of the object to be grasped.
+
+        Returns a dict with keys:
+          shape  : str  — "box" | "cylinder" | "ball"
+          size   : dict — shape-specific dimensions in metres (full lengths, not half):
+            box      → {"x": float, "y": float, "z": float}
+            cylinder → {"diameter": float, "height": float}
+            ball     → {"diameter": float}
+          grasp_hint : str — suggested grasp strategy
+        """
+        rs_env = getattr(self._env, "robosuite_env", None)
+        if rs_env is None or not hasattr(rs_env, "_current_shape"):
+            return {"shape": "box", "size": {"x": 0.05, "y": 0.05, "z": 0.05},
+                    "grasp_hint": "top-down grasp"}
+
+        shape = rs_env._current_shape
+        s = rs_env._current_size  # raw MuJoCo geom_size half-extents
+
+        if shape == "box":
+            return {
+                "shape": "box",
+                "size": {"x": round(float(s[0]) * 2, 4),
+                         "y": round(float(s[1]) * 2, 4),
+                         "z": round(float(s[2]) * 2, 4)},
+                "grasp_hint": (
+                    "Top-down grasp. Set grasp_pos[2] = object_pos[2] + size['z']/2 + 0.01. "
+                    "Finger gap should exceed max(size['x'], size['y'])."
+                ),
+            }
+        elif shape == "cylinder":
+            diameter = round(float(s[0]) * 2, 4)
+            height   = round(float(s[1]) * 2, 4)
+            return {
+                "shape": "cylinder",
+                "size": {"diameter": diameter, "height": height},
+                "grasp_hint": (
+                    "Top-down grasp. Set grasp_pos[2] = object_pos[2] + size['height']/2 + 0.01. "
+                    "Finger gap should exceed size['diameter']."
+                ),
+            }
+        else:  # ball
+            diameter = round(float(s[0]) * 2, 4)
+            return {
+                "shape": "ball",
+                "size": {"diameter": diameter},
+                "grasp_hint": (
+                    "Top-down grasp. Set grasp_pos[2] = object_pos[2] + size['diameter']/2 + 0.01. "
+                    "Finger gap should exceed size['diameter']."
+                ),
+            }
 
     def sample_grasp_pose(self, object_name: str) -> tuple[np.ndarray, np.ndarray]:
         """Sample a grasp pose for an object in the environment from a natural language description.
