@@ -11,8 +11,8 @@ Last updated: 2026-04-05
 5. Keep the new dexterous-hand API narrow and backward-compatible: preserve `open_gripper()` / `close_gripper()` for Panda while making the Inspire smoke prompt use only `get_hand_capabilities()`, `set_hand_preshape(...)`, and `set_hand_joints([...])`.
 6. Use the updated `franka_qwen_shape_inspire_smoke.yaml` config to enforce a safer Inspire-hand grasp routine: shape-based preshape choice, two-stage descent, short test lift, one deterministic reinforcement grasp, and a straight-line script that does not define helpers or shadow APIs.
 7. The literal Inspire-hand prompt has now produced the intended real motion sequence, the first shape-aware `sample_grasp_pose(...)` change improved smoke reward from `0.000` to `0.033`, and the enclosing-pregrasp prompt made the model reliably choose `open`; lowering the final target too far regressed back to `0.000`, so the next geometry change should be more conservative or should add orientation changes instead of only more Z lowering.
-8. Extract the known successful Inspire-hand smoke trial into a near-template prompt and have the model follow that pattern closely instead of inferring the sequence from rules alone.
-9. If prompt templating still is not enough, add a few more named Inspire-hand presets such as `wide_enclose`, `box_wrap`, `cylinder_wrap`, or `ball_cup` rather than asking the model to invent raw 6-value joint vectors.
+8. The known successful Inspire-hand smoke trial has now been turned into a near-template prompt, and it improved the smoke reward slightly to `0.035`; the next step is to add a few more named Inspire-hand presets such as `wide_enclose`, `box_wrap`, `cylinder_wrap`, or `ball_cup` rather than asking the model to invent raw 6-value joint vectors.
+9. After adding those presets, keep the prompt template structure and only swap the named hand shape used before closure.
 10. Keep the clutter-failure review and YCB target-clutter follow-up as the next benchmark tasks once the hand path is stable.
 
 ## Short-term goals

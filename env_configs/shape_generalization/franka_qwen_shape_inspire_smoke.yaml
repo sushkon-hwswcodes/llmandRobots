@@ -26,61 +26,41 @@ env:
         - get_hand_capabilities()
         - set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")
         - set_hand_joints([...])  # 6 values for the Inspire hand
-      Do not use a single fast descend-and-close motion. Use a staged approach and a test lift.
+      Follow the known-good lift pattern closely. Do not invent a new motion sequence.
       Before descending, the hand opening must be wider than the object.
       At the pre-close pose, the palm should be centered above the object and the fingers should straddle the object, not press onto the top surface.
       Do not close until the object is inside the hand opening.
       Do not release the object after grasping.
 
-      Use this strategy:
-        1. hand_info = get_hand_capabilities()
-        2. shape_info = get_object_shape()
-        3. grasp_pos, grasp_quat = sample_grasp_pose("object")
+      Use this exact pattern, translated to the Inspire hand:
+        1. import numpy as np
+        2. hand_info = get_hand_capabilities()
+        3. shape_info = get_object_shape()
+        4. grasp_pos, grasp_quat = sample_grasp_pose("object")
+        5. set_hand_preshape("open")
+        6. goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
+        7. goto_pose(grasp_pos, grasp_quat)
+        8. set_hand_preshape("close")
+        9. lift_pos = grasp_pos + np.array([0.0, 0.0, 0.1])
+        10. goto_pose(lift_pos, grasp_quat)
 
-      Choose preshapes by object shape:
-        - ball: use "open" before approach, then "close" at the object
-        - cylinder: use "open" before approach, then "grasp_soft" first
-        - box: use "open" before approach, then "grasp_soft" first
-        - if unsure: use "open" before approach, then "grasp_soft"
-
-      Use a two-stage motion:
-        1. move to grasp_pos with z_approach=0.12 while the hand is open wider than the object
-        2. move to grasp_pos with z_approach=0.04 while staying centered above the object
-        3. move to grasp_pos exactly only after the fingers are aligned to go around the object
-
-      Use a two-stage grasp:
-        1. close to "grasp_soft" at the grasp pose unless the object is a ball
-        2. do a short test lift of only 0.03 to 0.05 m
-        3. return once to the grasp pose and reinforce with "close"
-        4. then do the full 0.10 m lift
+      Keep the sequence very close to that pattern:
+        - use a single approach with z_approach=0.1
+        - use "open" before the approach
+        - use "close" at the grasp pose
+        - do one clean 0.10 m lift
+        - do not add retries, helper checks, extra test lifts, or alternate motion branches
 
       Keep the code simple and deterministic:
         - write one straight-line script, not helper functions
-        - define helper variables like pregrasp_name and close_name from shape_info
+        - keep shape_info and hand_info calls, but do not branch on shape unless absolutely necessary
         - use numpy arrays for lift offsets
-        - include at most one reinforcement grasp
         - do not call any functions other than the provided robot APIs and standard Python / numpy
         - do not define your own Python functions or classes
         - do not invent helper checks such as stability or contact tests
         - do not redefine or shadow provided robot API functions such as get_object_shape, sample_grasp_pose, goto_pose, get_hand_capabilities, open_gripper, close_gripper, set_hand_preshape, or set_hand_joints
         - never call open_gripper() or close_gripper() in this config
-        - default to pregrasp_name = "open" unless there is a clear shape-specific reason not to
-
-      Write code in this order:
-        1. import numpy as np
-        2. call get_hand_capabilities()
-        3. call get_object_shape()
-        4. call sample_grasp_pose("object")
-        5. choose pregrasp_name and close_name from shape_info["shape"], with pregrasp_name usually equal to "open"
-        6. call set_hand_preshape(pregrasp_name)
-        7. call goto_pose(grasp_pos, grasp_quat, z_approach=0.12)
-        8. call goto_pose(grasp_pos, grasp_quat, z_approach=0.04)
-        9. call goto_pose(grasp_pos, grasp_quat)
-        10. call set_hand_preshape(close_name)
-        11. lift by 0.04 m
-        12. return once to grasp_pos
-        13. call set_hand_preshape("close")
-        14. lift by 0.10 m
+        - default to exactly the template above
 
       ONLY write executable Python code. Do not use code fences.
       Import numpy explicitly if needed.

@@ -85,6 +85,8 @@ Last updated: 2026-04-05
 - New low-level enclosure change in progress: the Inspire final grasp target is being lowered from the object top surface toward the object body so the open fingers can straddle and close around it rather than just contact from above
 - Lowered-enclosure pose smoke result: lowering the Inspire final grasp target further around the object body caused the 1-trial smoke result to regress from `0.033` back to `0.000`, so that change appears too aggressive in its current form
 - Next benchmark direction agreed: reuse the one known successful Inspire-hand trial as a near-template prompt, and if needed add a small set of extra named hand presets instead of free-form `set_hand_joints([...])`
+- Template-prompt update in progress: the Inspire smoke config now tells the model to follow the one known-good lift pattern almost literally, but translated onto `set_hand_preshape("open")` / `set_hand_preshape("close")`
+- Template-prompt smoke result: the model followed the near-template sequence closely and produced a clean straight-line `open -> approach -> descend -> close -> lift` Inspire-hand program; the 1-trial reward improved slightly to `0.035`, though it still did not complete the lift
 
 ## Current local artifacts
 
