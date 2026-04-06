@@ -20,6 +20,7 @@ class HandPreset:
     name: str
     command: np.ndarray
     description: str
+    references: tuple[str, ...] = ()
 
 
 def _cmd(*values: float) -> np.ndarray:
@@ -75,9 +76,65 @@ INSPIRE_RIGHT_CANDIDATE_PRESETS: dict[str, HandPreset] = {
 }
 
 
+ALLEGRO_REFERENCE_LINES = (
+    "/root/allegro_hand_ros_v5/src/bhand/include/bhand/BHand.h:45",
+    "/root/allegro_hand_ros_v5/src/allegro_hand_controllers/src/allegro_node_grasp.cpp:9",
+)
+
+
+INSPIRE_RIGHT_ALLEGRO_V1_PRESETS: dict[str, HandPreset] = {
+    "home": HandPreset(
+        name="home",
+        command=_cmd(-0.65, -0.45, -0.25, -0.05, -0.35, 0.45),
+        description="Inspire candidate for Allegro's HOME pose: relaxed fingers with a lightly abducted thumb.",
+        references=ALLEGRO_REFERENCE_LINES,
+    ),
+    "open": HandPreset(
+        name="open",
+        command=_cmd(-1.5, -1.5, -1.5, -1.5, -3.0, 3.0),
+        description="Fully open hand; kept alongside Allegro-style presets as a visual baseline.",
+        references=ALLEGRO_REFERENCE_LINES,
+    ),
+    "pinch_it": HandPreset(
+        name="pinch_it",
+        command=_cmd(-0.95, -0.7, -0.3, 1.35, 1.25, 1.25),
+        description="Inspire candidate for Allegro PINCH_IT: favor thumb-index opposition while outer fingers stay mostly clear.",
+        references=ALLEGRO_REFERENCE_LINES,
+    ),
+    "pinch_mt": HandPreset(
+        name="pinch_mt",
+        command=_cmd(-0.85, -0.45, 1.2, -0.3, 1.2, 0.8),
+        description="Inspire candidate for Allegro PINCH_MT: favor thumb-middle opposition while index stays less engaged.",
+        references=ALLEGRO_REFERENCE_LINES,
+    ),
+    "grasp_3": HandPreset(
+        name="grasp_3",
+        command=_cmd(-0.35, 0.45, 1.05, 1.15, 1.2, 0.9),
+        description="Inspire candidate for Allegro GRASP_3: emphasize thumb, index, and middle with ring support and reduced pinky curl.",
+        references=ALLEGRO_REFERENCE_LINES,
+    ),
+    "grasp_4": HandPreset(
+        name="grasp_4",
+        command=_cmd(1.05, 1.05, 1.05, 1.05, 1.0, 0.75),
+        description="Inspire candidate for Allegro GRASP_4: close all four fingers around the palm with the thumb engaged.",
+        references=ALLEGRO_REFERENCE_LINES,
+    ),
+    "envelop": HandPreset(
+        name="envelop",
+        command=_cmd(1.3, 1.15, 1.0, 0.9, 0.65, 0.2),
+        description="Inspire candidate for Allegro ENVELOP: wrap the fingers with a softer thumb swing for a power-style enclosure.",
+        references=ALLEGRO_REFERENCE_LINES,
+    ),
+}
+
+
 HAND_PRESET_LIBRARIES: dict[str, dict[str, HandPreset]] = {
     "inspire_right": INSPIRE_RIGHT_CANDIDATE_PRESETS,
     "inspire_left": INSPIRE_RIGHT_CANDIDATE_PRESETS,
+    "inspire_right_candidate_v1": INSPIRE_RIGHT_CANDIDATE_PRESETS,
+    "inspire_left_candidate_v1": INSPIRE_RIGHT_CANDIDATE_PRESETS,
+    "inspire_right_allegro_v1": INSPIRE_RIGHT_ALLEGRO_V1_PRESETS,
+    "inspire_left_allegro_v1": INSPIRE_RIGHT_ALLEGRO_V1_PRESETS,
 }
 
 

@@ -111,6 +111,11 @@ def main() -> None:
     parser.add_argument("--preset", action="append", default=[], help="Preset name to run; may be repeated.")
     parser.add_argument("--all-presets", action="store_true", help="Run every registered preset.")
     parser.add_argument(
+        "--library",
+        default="",
+        help="Registered hand preset library to use. Defaults to the env hand_name library.",
+    )
+    parser.add_argument(
         "--output-dir",
         default="outputs/hand_preset_harness",
         help="Directory to save rendered images and JSON summaries.",
@@ -124,7 +129,8 @@ def main() -> None:
     args = parser.parse_args()
 
     env = _make_env()
-    preset_library = get_hand_preset_library(env.hand_name)
+    library_name = args.library or env.hand_name
+    preset_library = get_hand_preset_library(library_name)
     selected = list(preset_library.keys()) if args.all_presets or not args.preset else args.preset
 
     output_dir = Path(args.output_dir)
@@ -132,6 +138,7 @@ def main() -> None:
 
     summary: dict[str, Any] = {
         "hand_name": env.hand_name,
+        "preset_library": library_name,
         "robot_name": env.robot_name,
         "gripper_action_dim": env._gripper_action_dim,
         "command_labels": list(INSPIRE_COMMAND_LABELS),
@@ -163,6 +170,7 @@ def main() -> None:
 
         payload = {
             "description": preset.description,
+            "references": list(preset.references),
             "command": {label: float(value) for label, value in zip(INSPIRE_COMMAND_LABELS, preset.command)},
             "before_joint_positions": before_joints,
             "after_joint_positions": result["joint_positions"],
