@@ -98,6 +98,10 @@ def _move_wrist_with_frames(
             robot_frames.extend([frame_robot] * 4)
             front_frames.extend([frame_front] * 4)
 
+    # Persist the final arm target so subsequent hand-only playback keeps the
+    # wrist pose instead of falling back to the previous joint target.
+    env._current_joints = target_joints.copy()
+
     return {
         "target_joints": target_joints.tolist(),
         "robot_frames": robot_frames,
