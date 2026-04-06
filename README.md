@@ -207,8 +207,13 @@ For the current benchmark work in this repo, the most relevant path is:
 
 1. Install the Robosuite environment with `uv sync --extra robosuite --extra dev`
 2. Start `ollama serve` and pull `qwen2.5-coder:7b-instruct-q4_K_M`
-3. Ensure PyRoKi is reachable on `127.0.0.1:8116` (many configs auto-launch it, but first startup may take a couple of minutes)
-4. Run Franka / Robosuite evaluations from the repo root
+3. Export the local helper env with `source .project_env`, or set the same vars in your shell
+4. Ensure PyRoKi is reachable on `127.0.0.1:8116` (many configs auto-launch it, but first startup may take a couple of minutes)
+5. Run Franka / Robosuite evaluations from the repo root
+
+For the real-object YCB configs on this machine, also download the ManiSkill YCB
+assets into `/root/.maniskill/data/assets/mani_skill2_ycb` and keep
+`MANISKILL_ASSET_DIR=/root/.maniskill/data` set.
 
 If you want the exact prerequisites and commands for reproducing the current local
 Panda workflow, plus the minimal hand-configuration smoke path, use

@@ -1,7 +1,8 @@
 """Low-level Robosuite Franka environment for shape-generalization experiments.
 
-Identical to FrankaRobosuiteCubeLiftLowLevel but uses LiftShape instead of Lift,
-so the grasped object is randomly chosen (box / cylinder / ball) at each reset.
+This keeps the historical CAPX shape-lift contract, but implements it on top of
+the maintained Robosuite ``Lift`` task instead of the removed upstream
+``lift_shape`` module.
 """
 
 from __future__ import annotations
@@ -9,14 +10,129 @@ from __future__ import annotations
 from typing import Any
 
 import numpy as np
-import robosuite as suite
 import viser.transforms as vtf
 from robosuite.controllers.composite.composite_controller_factory import (
     load_composite_controller_config,
 )
+from robosuite.environments.manipulation.lift import Lift
+from robosuite.environments.manipulation.manipulation_env import ManipulationEnv
+from robosuite.models.arenas import TableArena
+from robosuite.models.objects import BallObject, BoxObject, CylinderObject
+from robosuite.models.tasks import ManipulationTask
+from robosuite.utils.mjcf_utils import CustomMaterial
+from robosuite.utils.placement_samplers import UniformRandomSampler
 
 from capx.envs.simulators.robosuite_base import RobosuiteBaseEnv
-from robosuite.environments.manipulation.lift_shape import LiftShape
+
+
+class LiftShapeTask(Lift):
+    """Lift task with one random synthetic shape per episode."""
+
+    SHAPES = ["box", "cylinder", "ball"]
+
+    def __init__(self, *args, fixed_shape: str | None = None, **kwargs):
+        self._fixed_shape = fixed_shape.lower().strip() if fixed_shape is not None else None
+        self._valid_shapes = set(self.SHAPES)
+        if self._fixed_shape is not None and self._fixed_shape not in self._valid_shapes:
+            raise ValueError(
+                f"Invalid fixed_shape: {fixed_shape}. Expected one of {sorted(self._valid_shapes)}"
+            )
+        self._current_shape = "box"
+        self._current_size = np.zeros(3)
+        self.prefer_center_grasp_pose = True
+        super().__init__(*args, **kwargs)
+
+    def _sample_shape(self) -> str:
+        if self._fixed_shape is not None:
+            return self._fixed_shape
+        return self.SHAPES[int(self.rng.integers(0, len(self.SHAPES)))]
+
+    def _make_random_object(self, name: str):
+        shape = self._sample_shape()
+        redwood = CustomMaterial(
+            texture="WoodRed",
+            tex_name="shape_redwood",
+            mat_name="shape_redwood_mat",
+            tex_attrib={"type": "cube"},
+            mat_attrib={"texrepeat": "1 1", "specular": "0.4", "shininess": "0.1"},
+        )
+        if shape == "box":
+            obj = BoxObject(
+                name=name,
+                size_min=[0.018, 0.018, 0.018],
+                size_max=[0.045, 0.045, 0.045],
+                rgba=[1.0, 0.0, 0.0, 1.0],
+                material=redwood,
+                rng=self.rng,
+            )
+        elif shape == "cylinder":
+            obj = CylinderObject(
+                name=name,
+                size_min=[0.015, 0.020],
+                size_max=[0.035, 0.055],
+                rgba=[1.0, 0.0, 0.0, 1.0],
+                material=redwood,
+                rng=self.rng,
+            )
+        else:
+            obj = BallObject(
+                name=name,
+                size_min=[0.015],
+                size_max=[0.035],
+                rgba=[1.0, 0.0, 0.0, 1.0],
+            )
+        return obj, shape
+
+    def _load_model(self):
+        ManipulationEnv._load_model(self)
+
+        xpos = self.robots[0].robot_model.base_xpos_offset["table"](self.table_full_size[0])
+        self.robots[0].robot_model.set_base_xpos(xpos)
+
+        mujoco_arena = TableArena(
+            table_full_size=self.table_full_size,
+            table_friction=self.table_friction,
+            table_offset=self.table_offset,
+        )
+        mujoco_arena.set_origin([0, 0, 0])
+
+        self.cube, self._current_shape = self._make_random_object(name="object")
+
+        if self.placement_initializer is not None:
+            self.placement_initializer.reset()
+            self.placement_initializer.add_objects(self.cube)
+        else:
+            self.placement_initializer = UniformRandomSampler(
+                name="ShapeLiftSampler",
+                mujoco_objects=self.cube,
+                x_range=[-0.04, 0.04],
+                y_range=[-0.04, 0.04],
+                rotation=None,
+                ensure_object_boundary_in_range=False,
+                ensure_valid_placement=True,
+                reference_pos=self.table_offset,
+                z_offset=0.01,
+                rng=self.rng,
+            )
+
+        self.model = ManipulationTask(
+            mujoco_arena=mujoco_arena,
+            mujoco_robots=[robot.robot_model for robot in self.robots],
+            mujoco_objects=self.cube,
+        )
+
+    def _setup_references(self):
+        super()._setup_references()
+        try:
+            geom_name = self.cube.contact_geoms[0]
+            geom_id = self.sim.model.geom_name2id(geom_name)
+            self._current_size = self.sim.model.geom_size[geom_id].copy()
+        except Exception:
+            if hasattr(self.cube, "size") and self.cube.size:
+                arr = np.zeros(3)
+                for i, v in enumerate(self.cube.size[:3]):
+                    arr[i] = v
+                self._current_size = arr
 
 
 class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
@@ -47,7 +163,7 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
             controller_cfg=controller_cfg,
             max_steps=max_steps,
             seed=seed,
-            viser_debug=False,
+            viser_debug=viser_debug,
             privileged=privileged,
             enable_render=enable_render,
             robot_name=robot_name,
@@ -71,11 +187,10 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
             renderer="mujoco",
             camera_heights=self._render_height,
             camera_widths=self._render_width,
-            controller_configs=load_composite_controller_config(
-                controller=self.controller_cfg
-            ),
+            controller_configs=load_composite_controller_config(controller=self.controller_cfg),
             horizon=max_steps,
             reward_shaping=True,
+            fixed_shape=fixed_shape,
         )
 
         if privileged and not enable_render:
@@ -85,14 +200,8 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
                 camera_names=[],
             )
 
-        self.robosuite_env = LiftShape(**lift_kwargs)
+        self.robosuite_env = LiftShapeTask(**lift_kwargs)
         self._initial_cube_height: float | None = None
-        self._fixed_shape = fixed_shape.lower().strip() if fixed_shape is not None else None
-        self._valid_shapes = {"box", "cylinder", "ball"}
-        if self._fixed_shape is not None and self._fixed_shape not in self._valid_shapes:
-            raise ValueError(
-                f"Invalid fixed_shape: {fixed_shape}. Expected one of {sorted(self._valid_shapes)}"
-            )
         self._init_robot_links()
 
     def reset(
@@ -101,7 +210,7 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
         if seed is not None:
             self._rng = np.random.default_rng(seed)
 
-        self._reset_to_requested_shape()
+        self.robosuite_env.reset()
         self.robosuite_env.sim.data.qpos[6] -= np.pi
 
         self._step_count = 0
@@ -112,7 +221,6 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
             self.robosuite_env.sim.step()
             self._set_gripper(1.0)
 
-        # Baseline object height after settling; used for robust lift success across varying shape sizes.
         self._initial_cube_height = float(
             self.robosuite_env.sim.data.body_xpos[self.robosuite_env.cube_body_id][2]
         )
@@ -129,22 +237,9 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
             ]
         )
 
-        info = {"task_prompt": "Pick up the red object and lift it."}
+        shape = getattr(self.robosuite_env, "_current_shape", "object")
+        info = {"task_prompt": f"Pick up the red {shape} and lift it."}
         return obs, info
-
-    def _reset_to_requested_shape(self) -> None:
-        """Reset until the requested shape is sampled, if a fixed-shape override is active."""
-        max_resets = 32
-        for _ in range(max_resets):
-            self.robosuite_env.reset()
-            if self._fixed_shape is None:
-                return
-            current_shape = getattr(self.robosuite_env, "_current_shape", None)
-            if current_shape == self._fixed_shape:
-                return
-        raise RuntimeError(
-            f"Failed to sample fixed_shape={self._fixed_shape!r} after {max_resets} resets"
-        )
 
     def _object_pose_dict(self, robosuite_obs: dict[str, Any]) -> dict[str, list[float]]:
         base_link_wxyz_xyz = np.concatenate(
@@ -172,7 +267,6 @@ class FrankaRobosuiteShapeLiftLowLevel(RobosuiteBaseEnv):
         if self.task_completed():
             return 1.0
 
-        # Dense shaping: progress is measured by lift above reset baseline (not absolute table height).
         cube_height = float(
             self.robosuite_env.sim.data.body_xpos[self.robosuite_env.cube_body_id][2]
         )

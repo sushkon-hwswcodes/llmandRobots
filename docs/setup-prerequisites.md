@@ -89,6 +89,7 @@ Typical headless simulation settings used in this repo:
 export PATH=/root/.local/bin:$PATH
 export PYTHONPATH=/path/to/cap-x
 export MUJOCO_GL=osmesa
+export MANISKILL_ASSET_DIR=/root/.maniskill/data
 export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 ```
 
@@ -173,6 +174,24 @@ Example hand-configuration smoke test:
 uv run pytest tests/test_hand_configs.py -q
 ```
 
+Example YCB asset setup for the real-object benchmark path:
+
+```bash
+mkdir -p /root/.maniskill/data/assets
+cd /root/.maniskill/data/assets
+curl -L \
+  https://huggingface.co/datasets/haosulab/ManiSkill2/resolve/main/data/mani_skill2_ycb.zip \
+  -o mani_skill2_ycb.zip
+python - <<'PY'
+from pathlib import Path
+from zipfile import ZipFile
+zip_path = Path('/root/.maniskill/data/assets/mani_skill2_ycb.zip')
+with ZipFile(zip_path) as zf:
+    zf.extractall(zip_path.parent)
+zip_path.unlink()
+PY
+```
+
 ## Current practical prerequisites for reproducing our local runs
 
 Before reproducing the current Panda benchmark work, or the minimal hand-configuration smoke path, make sure all of the
@@ -184,15 +203,16 @@ following are true:
 4. MuJoCo rendering works with `MUJOCO_GL=osmesa` on this machine.
 5. The Franka PyRoKi server can be auto-launched or reached on `127.0.0.1:8116`.
 6. You are running commands from the repo root with `PYTHONPATH` set correctly.
+7. For the YCB real-object configs, `MANISKILL_ASSET_DIR` points at the downloaded
+   ManiSkill asset root and `assets/mani_skill2_ycb/info_pick_v0.json` exists there.
 
 ## Current caveat
 
-The reachable vendored Robosuite submodule currently supports the Panda /
-cube-lift / cube-stack / spill-wipe / nut-assembly baseline path, but the
-shape-generalization registration path depends on a historical `lift_shape`
-module that is not present in the currently reachable upstream Robosuite refs.
-The simulator registry now skips that optional env instead of disabling all
-Robosuite env registration.
+The reachable vendored Robosuite submodule now supports the active Panda /
+shape-generalization / clutter / YCB benchmark path on this machine, but the
+YCB real-object configs additionally depend on the downloaded ManiSkill YCB
+assets. If those assets are missing, the YCB envs will fail during reset even
+though the Robosuite registry itself is healthy.
 
 ## Related docs
 

@@ -59,6 +59,21 @@ uv run capx/envs/launch.py --config-path env_configs/spill_wipe/franka_robosuite
 # Expected avg. reward: ~0.20
 ```
 
+### Real-object YCB smoke
+
+Before running the YCB configs, make sure `MANISKILL_ASSET_DIR` points at a
+downloaded ManiSkill asset root that contains `assets/mani_skill2_ycb`.
+
+```bash
+source .project_env
+python -u -m capx.envs.launch \
+  --config-path env_configs/real_objects/franka_qwen_ycb.yaml \
+  --model "ollama/qwen2.5-coder:7b-instruct-q4_K_M" \
+  --total-trials 5 \
+  --num-workers 1 \
+  --temperature 0.3
+```
+
 ## Linting
 
 ```bash

@@ -145,6 +145,7 @@ class LiftYCBObject(Lift):
         self._current_shape = "mesh"
         self._current_size = np.zeros(3)
         self._current_object_info: dict[str, Any] = {}
+        self.prefer_center_grasp_pose = True
         super().__init__(*args, **kwargs)
 
     def _make_ycb_object(self) -> YCBMeshObject:
@@ -398,6 +399,7 @@ class LiftYCBTargetClutter(Lift):
         self._current_size = np.zeros(3)
         self._current_object_info: dict[str, Any] = {}
         self._distractor_infos: list[dict[str, Any]] = []
+        self.prefer_center_grasp_pose = True
         super().__init__(*args, **kwargs)
 
     def _make_named_ycb_object(self, model_id: str, name: str) -> YCBMeshObject:

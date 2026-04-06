@@ -10,10 +10,10 @@ Last updated: 2026-04-06
 
 ## Current benchmark readout on this machine
 
-- Panda cube-lift benchmark runs end-to-end with local Ollama Qwen output capture
-- Panda cube-lift local readout is currently much worse than the documented historical baseline
-- Green-target clutter also runs end-to-end locally, but is currently far below the earlier recorded result
-- A short local oracle cube-lift run also underperformed, which suggests the current gap is not purely a model issue
+- Panda cube-lift baseline is recovered locally
+- Shape generalization is restored locally after replacing the dead historical `lift_shape` dependency
+- Green-target clutter is recovered locally
+- YCB real-object lift and YCB target clutter both run end-to-end locally with downloaded ManiSkill assets
 
 ## Active benchmark milestones from the repo history
 
@@ -25,26 +25,28 @@ Last updated: 2026-04-06
 ## Current focus
 
 - Preserve Panda as the reference benchmark path
-- Re-establish a trustworthy Panda local baseline on this machine
 - Keep hand configuration support only at the simulation / instantiation level for now
+- Keep the restored synthetic benchmark path stable while moving the same grasp semantics into YCB
 - Remove the old project-local Inspire prompt / preset benchmark direction and restart hand work from a smaller surface area later
 
 ## Current local artifacts
 
 - Panda setup and workflow docs have been updated for this machine
+- The shape-generalization env no longer depends on an unreachable upstream Robosuite module
 - The env registry now skips optional broken imports instead of disabling the whole Robosuite family
 - A dedicated hand-config smoke test now verifies that `PandaDexRH` can instantiate and step in simulation
+- The local shell helper on this machine exports `MANISKILL_ASSET_DIR=/root/.maniskill/data` for the YCB path
 
-## Known local issue
+## Current local readout
 
-The current local Panda reward gap likely comes from one or more of:
-
-1. low-level Panda control drift after the configurable-hand refactor
-2. reachable Robosuite revision drift versus the earlier benchmarked state
-3. model/backend differences in the local Ollama path
+- Panda cube-lift: recovered locally
+- Shape generalization: recovered in a short `5/5` run
+- Green-target clutter: recovered at `24/30`
+- YCB single-object lift: improved to `3/5` in a short run after restoring center grasps
+- YCB target clutter: improved to `3/5` in a short run after restoring center grasps
 
 ## What still needs attention
 
-- Compare the current Panda control path against the earlier `20/20` milestone more directly
-- Restore a trustworthy Panda local oracle result before starting a new hand direction
-- Decide on the next hand experiment only after Panda is behaving predictably again
+- Re-run the YCB benchmarks at larger trial counts and compare them against the earlier milestone
+- Decide whether YCB needs any category-specific grasp heuristics beyond the restored center-grasp baseline
+- Keep hand work deferred until the maintained Panda / shape / clutter / YCB path is stable
