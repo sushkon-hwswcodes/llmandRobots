@@ -1,0 +1,10 @@
+Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+Config Path: env_configs/real_objects/franka_qwen_ycb.yaml
+Git Commit: db7f255 (Dirty: True)
+Total number of trials: 20
+Code generation success rate / Average reward / Task completed: 
+1.000/0.750/13
+Average code blocks: 1.000
+Average regenerations: 0.000
+Average finishes: 1.000
+Elapsed time: 148.62 seconds

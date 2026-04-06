@@ -243,16 +243,26 @@ class FrankaControlPrivilegedApi(ApiBase):
         is_primary = self._is_primary_object_name(name, has_secondary)
 
         if getattr(rs_env, "prefer_center_grasp_pose", False):
+            info = getattr(rs_env, "_current_object_info", None)
+            category = ""
+            if isinstance(info, dict):
+                category = str(info.get("category", "")).strip().lower()
+
+            # Thin rectangular YCB packages tend to miss with a pure center target.
+            # A small upward bias preserves the recovered center-grasp behavior while
+            # giving the fingers a cleaner approach on these flatter boxes.
+            center_z_bias = 0.0
+            if category in {"003_cracker_box", "004_sugar_box", "008_pudding_box"}:
+                center_z_bias = 0.005
+
             if is_primary:
-                return (
-                    np.asarray(obs["cube_poses"]["primary"][:3], dtype=np.float64).copy(),
-                    np.array([0, 0, 1, 0], dtype=np.float64),
-                )
+                pos = np.asarray(obs["cube_poses"]["primary"][:3], dtype=np.float64).copy()
+                pos[2] += center_z_bias
+                return (pos, np.array([0, 0, 1, 0], dtype=np.float64))
             if "green" in name and "cube" in name:
-                return (
-                    np.asarray(obs["cube_poses"]["secondary"][:3], dtype=np.float64).copy(),
-                    np.array([0, 0, 1, 0], dtype=np.float64),
-                )
+                pos = np.asarray(obs["cube_poses"]["secondary"][:3], dtype=np.float64).copy()
+                pos[2] += center_z_bias
+                return (pos, np.array([0, 0, 1, 0], dtype=np.float64))
 
         # Preserve the historical Panda cube-lift behavior for plain cube envs.
         # Those envs do not expose shape metadata, and their earlier benchmarked

@@ -42,11 +42,19 @@ Last updated: 2026-04-06
 - Panda cube-lift: recovered locally
 - Shape generalization: recovered in a short `5/5` run
 - Green-target clutter: recovered at `24/30`
-- YCB single-object lift: improved to `3/5` in a short run after restoring center grasps
-- YCB target clutter: improved to `3/5` in a short run after restoring center grasps
+- YCB single-object lift: `13/20`, average reward `0.750`
+- YCB target clutter: `12/30`, average reward `0.402`
+- Current YCB clutter result is above the earlier recorded `9/30`
+
+## Current YCB object breakdown
+
+- Strongest category so far: `005_tomato_soup_can`
+- Mixed but promising: `006_mustard_bottle`, `010_potted_meat_can`, `009_gelatin_box`
+- Weak categories to focus on next: `008_pudding_box`, `004_sugar_box`
+- The remaining YCB gap now looks concentrated in a few flatter box-like objects rather than a broad setup failure
 
 ## What still needs attention
 
-- Re-run the YCB benchmarks at larger trial counts and compare them against the earlier milestone
-- Decide whether YCB needs any category-specific grasp heuristics beyond the restored center-grasp baseline
+- Decide whether the weak flat YCB packages need a small category-specific grasp bias or a slightly different preshape / orientation
+- Re-run the YCB benchmarks after any object-specific grasp refinement
 - Keep hand work deferred until the maintained Panda / shape / clutter / YCB path is stable
