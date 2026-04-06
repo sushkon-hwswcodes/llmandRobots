@@ -1,24 +1,3 @@
-# Code block 0
-import numpy as np
-
-# Sample a grasp pose for the red cube
-grasp_pos, grasp_quat = sample_grasp_pose("red_cube")
-
-# Open the gripper to prepare for grasping
-open_gripper()
-
-# Move the robot arm to an approach position above the cube
-goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
-
-# Move the robot arm to the exact grasp pose
-goto_pose(grasp_pos, grasp_quat)
-
-# Close the gripper to grasp the red cube
-close_gripper()
-
-# Calculate a lift position above the table
-lift_pos = grasp_pos.copy()
-lift_pos[2] += 0.1
-
-# Move the robot arm to the lift position
-goto_pose(lift_pos, grasp_quat)
+version https://git-lfs.github.com/spec/v1
+oid sha256:b1eafb2129dfc26d71a98aa25f61c15431ac7f21a3cb9c6c785f438a61d97f31
+size 601

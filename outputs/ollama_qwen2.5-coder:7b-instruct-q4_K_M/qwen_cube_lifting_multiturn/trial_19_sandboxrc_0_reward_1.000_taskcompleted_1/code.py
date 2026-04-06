@@ -1,22 +1,3 @@
-# Code block 0
-import numpy as np
-
-# Get the pose of the red cube
-red_cube_position, _, _ = get_object_pose('red cube')
-
-# Sample a grasp pose for the red cube using the down orientation
-grasp_position, sample_quaternion_wxyz = sample_grasp_pose('red cube')
-grasp_orientation = np.array([0, 0, 1, 0])  # Down orientation
-
-# Go to a position slightly above the red cube to ready for grasping
-goto_pose(grasp_position + np.array([0, 0, 0.1]), grasp_orientation)
-
-# Approach to grab the red cube
-goto_pose(grasp_position, grasp_orientation, z_approach=0.05)
-
-# Close the gripper to pick up the red cube
-close_gripper()
-
-# Lift the red cube a little bit higher
-lift_position = grasp_position + np.array([0, 0, 0.1])
-goto_pose(lift_position, grasp_orientation)
+version https://git-lfs.github.com/spec/v1
+oid sha256:f509fb836565e5b1fc50b5b08ffac1778879ffac885820e76048b970601b9eed
+size 755

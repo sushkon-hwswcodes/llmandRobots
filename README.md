@@ -215,6 +215,11 @@ For the real-object YCB configs on this machine, also download the ManiSkill YCB
 assets into `/root/.maniskill/data/assets/mani_skill2_ycb` and keep
 `MANISKILL_ASSET_DIR=/root/.maniskill/data` set.
 
+Benchmark outputs under `outputs/` are preserved in Git LFS, and this repo's
+`.lfsconfig` excludes them from default LFS fetches. In practice that means a
+normal clone keeps the output pointers without eagerly downloading the payloads.
+When you do want the artifacts locally, run `git lfs pull --include="outputs/**"`.
+
 If you want the exact prerequisites and commands for reproducing the current local
 Panda workflow, plus the minimal hand-configuration smoke path, use
 [Setup And Prerequisites](docs/setup-prerequisites.md).

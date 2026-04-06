@@ -1,36 +1,3 @@
-----------------------------------------------------------------------------------------------------
-Generated program:
-# Code block 0
-import numpy as np
-
-# Sample a grasp pose for the red cube
-grasp_pos, grasp_quat = sample_grasp_pose("red_cube")
-
-# Go to the approach position
-goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
-
-# Go to the grasp position
-goto_pose(grasp_pos, grasp_quat)
-
-# Close the gripper to grasp the cube
-close_gripper()
-
-# Calculate the lift position above the table
-lift_pos = grasp_pos.copy()
-lift_pos[2] += 0.1
-
-# Go to the lift position
-goto_pose(lift_pos, grasp_quat)
-
-
-Environment response:
-  Sandbox failed: 0
-  Stdout: 
-  Stderr: 
-  Reward: 1.0
-  Task Completed: True
-  Terminated: True, Truncated: False
-  Num Regenerations: 0
-  Num Finishes: 1
-  Num Code Blocks: 1
-----------------------------------------------------------------------------------------------------
+version https://git-lfs.github.com/spec/v1
+oid sha256:dc7afa09bb097722051d9d231acc72ca8cf6c040b45d84ea4a598e17905f73fa
+size 899

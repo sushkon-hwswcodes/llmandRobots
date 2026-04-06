@@ -1,20 +1,3 @@
-```python
-# Get the pose of the red cube
-red_cube_pose = get_object_pose("red cube")
-
-# Sample a grasp pose for the red cube
-grasp_position, grasp_quaternion_wxyz = sample_grasp_pose("red cube")
-
-# Move to a position above the cube to approach it with the gripper
-goto_pose(grasp_position + np.array([0.0, 0.0, 0.1]), grasp_quaternion_wxyz)
-
-# Close the gripper to pick up the red cube
-close_gripper()
-
-# Lift the red cube by adjusting the z-axis position
-lift_position = grasp_position + np.array([0.0, 0.0, 0.2])
-goto_pose(lift_position, grasp_quaternion_wxyz)
-
-# Open the gripper to release the cube
-open_gripper()
-```
+version https://git-lfs.github.com/spec/v1
+oid sha256:7ec69f8d5f606094b482cac29fde8fcebd0956698d6d7eba1d48918777d2cd83
+size 621

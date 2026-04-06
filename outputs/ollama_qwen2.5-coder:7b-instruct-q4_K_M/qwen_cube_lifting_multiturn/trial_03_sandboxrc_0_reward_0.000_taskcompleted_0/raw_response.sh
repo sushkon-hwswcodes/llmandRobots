@@ -1,13 +1,3 @@
-```python
-import numpy as np
-
-# Get the pose of the red cube
-cube_position, _, _ = get_object_pose("red cube")
-
-# Go to a position slightly above the red cube
-goto_pose(cube_position + np.array([0, 0, 0.1]), np.array([0, 0, 1, 0]))
-
-# Lift over the cube
-close_gripper()
-goto_pose(cube_position + np.array([0, 0, 0.5]), np.array([0, 0, 1, 0]))
-```
+version https://git-lfs.github.com/spec/v1
+oid sha256:6ae1f161f6d301008d1cb5dec015e4d98c26e197d3c4ea3f9966785581d770e1
+size 346

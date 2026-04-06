@@ -1,10 +1,3 @@
-Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
-Config Path: env_configs/real_objects/franka_qwen_ycb_target_clutter.yaml
-Git Commit: db7f255 (Dirty: True)
-Total number of trials: 30
-Code generation success rate / Average reward / Task completed: 
-1.000/0.402/12
-Average code blocks: 1.000
-Average regenerations: 0.000
-Average finishes: 1.000
-Elapsed time: 235.56 seconds
+version https://git-lfs.github.com/spec/v1
+oid sha256:1b41a33870adcd0d0dbc12b0a107110ccdbfd4f47e606d276c32e8164747da1b
+size 369

@@ -1,36 +1,3 @@
-----------------------------------------------------------------------------------------------------
-Generated program:
-# Code block 0
-import numpy as np
-
-# Get the pose of the red cube
-cube_position, cube_quaternion_wxyz, _ = get_object_pose("red cube")
-
-# Sample a grasp pose for the red cube
-grasp_position, grasp_quaternion_wxyz = sample_grasp_pose("red cube")
-
-# Go to the grasp position with some z_approach for precise grasping
-goto_pose(grasp_position, grasp_quaternion_wxyz, z_approach=0.1)
-
-# Close the gripper to pick up the red cube
-close_gripper()
-
-# Lift the red cube vertically above its current position
-lift_position = cube_position + np.array([0, 0, 0.2])  # Adjust the lift height as needed
-goto_pose(lift_position, grasp_quaternion_wxyz)
-
-# Open the gripper to release the red cube
-open_gripper()
-
-
-Environment response:
-  Sandbox failed: 0
-  Stdout: 
-  Stderr: 
-  Reward: 0.013471247672634362
-  Task Completed: False
-  Terminated: False, Truncated: False
-  Num Regenerations: 0
-  Num Finishes: 0
-  Num Code Blocks: 1
-----------------------------------------------------------------------------------------------------
+version https://git-lfs.github.com/spec/v1
+oid sha256:c51c893a80a925d696b324a03c896b04f80377e1e96bbb76bcf7e975e7046a6a
+size 1138

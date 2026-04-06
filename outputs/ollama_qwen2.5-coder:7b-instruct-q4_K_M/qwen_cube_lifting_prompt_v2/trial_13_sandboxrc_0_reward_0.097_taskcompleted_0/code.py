@@ -1,31 +1,3 @@
-# Code block 0
-import numpy as np
-
-# Get the pose of the red cube
-cube_pos, cube_quat, bbox_extent = get_object_pose("red_cube")
-
-# Sample a grasp pose for the red cube
-grasp_pos, grasp_quat = sample_grasp_pose("red_cube")
-
-# Approach and then grasp the cube
-goto_pose(grasp_pos, grasp_quat)
-close_gripper()
-
-# Lift the cube above the table
-lift_pos = grasp_pos.copy()
-lift_pos[2] += 0.1
-goto_pose(lift_pos, grasp_quat)
-
-# Code block 1
-# Get the current pose of the red cube again after picking it up
-cube_pos, cube_quat, bbox_extent = get_object_pose("red_cube")
-
-if cube_pos[2] > 0.1:  # Assuming the table is at z=0 and the lift position is at z=0.1
-    print("Task completed. Cube is lifted above the table.")
-else:
-    open_gripper()
-    goto_pose(grasp_pos, grasp_quat)
-    close_gripper()
-    lift_pos = grasp_pos.copy()
-    lift_pos[2] += 0.1
-    goto_pose(lift_pos, grasp_quat)
+version https://git-lfs.github.com/spec/v1
+oid sha256:acc63ea42282efaa36dc17d1d3c5408444d3d5521d7a8e8cbfd5dc448d699c17
+size 886

@@ -1,31 +1,3 @@
-----------------------------------------------------------------------------------------------------
-Generated program:
-# Code block 0
-# Define the target object and get its pose
-target_object = "red cube"
-position, quaternion, bbox_extent = get_object_pose(target_object)
-
-# Sample a grasp pose for the red cube
-grasp_position, grasp_quaternion = sample_grasp_pose(target_object)
-
-# Move to a position above the red cube
-goto_pose(grasp_position, quaternion, z_approach=0.1)
-
-# Close the gripper to pick up the red cube
-close_gripper()
-
-# Move up slightly after picking up the red cube
-goto_pose(grasp_position + [0, 0, 0.1], quaternion, z_approach=0.1)
-
-
-Environment response:
-  Sandbox failed: 0
-  Stdout: 
-  Stderr: 
-  Reward: 0.0037439473306551084
-  Task Completed: False
-  Terminated: False, Truncated: False
-  Num Regenerations: 0
-  Num Finishes: 0
-  Num Code Blocks: 1
-----------------------------------------------------------------------------------------------------
+version https://git-lfs.github.com/spec/v1
+oid sha256:050d28a9e89b5f35faa8ae9b3c3b141979ae446d57ed8a5cb89daf312020daed
+size 977

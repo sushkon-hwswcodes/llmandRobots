@@ -1,10 +1,3 @@
-Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
-Config Path: env_configs/cube_lifting_qwen/franka_qwen_privileged.yaml
-Git Commit: b825159 (Dirty: True)
-Total number of trials: 20
-Code generation success rate / Average reward / Task completed: 
-0.650/0.194/2
-Average code blocks: 1.000
-Average regenerations: 0.000
-Average finishes: 0.000
-Elapsed time: 497.78 seconds
+version https://git-lfs.github.com/spec/v1
+oid sha256:c3c853ca9d94fa7adeed773db7b9a567e2fbdaa6cc981af191a4be6111b720b7
+size 367

@@ -1,10 +1,3 @@
-Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
-Config Path: env_configs/shape_generalization/franka_qwen_green_target_clutter.yaml
-Git Commit: 0d14778 (Dirty: True)
-Total number of trials: 30
-Code generation success rate / Average reward / Task completed: 
-1.000/0.807/24
-Average code blocks: 1.000
-Average regenerations: 0.000
-Average finishes: 1.000
-Elapsed time: 247.63 seconds
+version https://git-lfs.github.com/spec/v1
+oid sha256:9a323253c4da31e142144f1b20227a1ee8eb77585930d86bf03c48ec1c1fa778
+size 381

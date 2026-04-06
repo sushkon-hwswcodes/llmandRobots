@@ -1,12 +1,3 @@
-# Code block 0
-# Sample a grasp pose for the red cube
-cube_grasp_pos, cube_grasp_quat = sample_grasp_pose("red cube")
-
-# Move the robot to above the cube
-goto_pose(cube_grasp_pos + np.array([0, 0, 0.1]), cube_grasp_quat)
-
-# Close the gripper to grasp the cube
-close_gripper()
-
-# Lift the cube up by a small amount to ensure it's picked up
-goto_pose(cube_grasp_pos + np.array([0, 0, 0.2]), cube_grasp_quat)
+version https://git-lfs.github.com/spec/v1
+oid sha256:2e878bec3b85807edf2c969aa82d8bbb13159cd52ae3c0d3592d7cc0b0c08639
+size 405

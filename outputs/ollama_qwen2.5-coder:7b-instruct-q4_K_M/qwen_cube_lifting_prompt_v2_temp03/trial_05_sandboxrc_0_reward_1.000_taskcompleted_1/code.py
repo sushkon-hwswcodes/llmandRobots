@@ -1,22 +1,3 @@
-# Code block 0
-import numpy as np
-
-# Sample a grasp pose for the red cube
-grasp_pos, grasp_quat = sample_grasp_pose("red_cube")
-
-# Open the gripper
-open_gripper()
-
-# Approach to the object with a small z offset
-goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
-
-# Move to the exact grasp pose
-goto_pose(grasp_pos, grasp_quat)
-
-# Close the gripper to pick up the cube
-close_gripper()
-
-# Lift the cube above the table
-lift_pos = grasp_pos.copy()
-lift_pos[2] += 0.1
-goto_pose(lift_pos, grasp_quat)
+version https://git-lfs.github.com/spec/v1
+oid sha256:024b930f86144d5c4c3a40ea59ea8c340693647b6bb678497485c5fd2dff0eee
+size 500

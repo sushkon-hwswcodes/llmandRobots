@@ -1,10 +1,3 @@
-# Code block 0
-import numpy as np
-grasp_pos, grasp_quat = sample_grasp_pose("red_cube")
-open_gripper()
-goto_pose(grasp_pos, grasp_quat, z_approach=0.1)
-goto_pose(grasp_pos, grasp_quat)
-close_gripper()
-lift_pos = grasp_pos.copy()
-lift_pos[2] += 0.1
-goto_pose(lift_pos, grasp_quat)
+version https://git-lfs.github.com/spec/v1
+oid sha256:e54b318ee14e4a81574d7ef87743bbe5e8ffff366e70173e4a0b8860cb70193f
+size 279
