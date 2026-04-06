@@ -7,41 +7,74 @@ register_env("franka_real_low_level", FrankaRealLowLevel)
 
 # NOTE: Can only have one of Robosuite or LIBERO installed at a time!
 # Using Robosuite run: uv sync --extra robosuite
-try:
-    from .robosuite_cube_lift import FrankaRobosuiteCubeLiftLowLevel
-    from .robosuite_shape_lift import FrankaRobosuiteShapeLiftLowLevel
-    from .robosuite_ycb_lift import (
-        FrankaRobosuiteYCBLiftLowLevel,
-        FrankaRobosuiteYCBTargetClutterLowLevel,
-    )
-    from .robosuite_green_target_clutter import FrankaRobosuiteGreenTargetClutterLowLevel
-    from .robosuite_cubes import FrankaRobosuiteCubesLowLevel
-    from .robosuite_cubes_restack import FrankaRobosuiteCubesRestackLowLevel
-    from .robosuite_spill_wipe import FrankaRobosuiteSpillWipeLowLevel
-    from .robosuite_handover import RobosuiteHandoverEnv
-    from .robosuite_two_arm_lift import RobosuiteTwoArmLiftEnv
-    from .robosuite_nut_assembly import FrankaRobosuiteNutAssembly
-    from .robosuite_nut_assembly import FrankaRobosuiteNutAssemblyVisual
-
-    register_env("franka_robosuite_cube_lift_low_level", FrankaRobosuiteCubeLiftLowLevel)
-    register_env("franka_robosuite_shape_lift_low_level", FrankaRobosuiteShapeLiftLowLevel)
-    register_env("franka_robosuite_ycb_lift_low_level", FrankaRobosuiteYCBLiftLowLevel)
-    register_env("franka_robosuite_ycb_target_clutter_low_level", FrankaRobosuiteYCBTargetClutterLowLevel)
-    register_env("franka_robosuite_green_target_clutter_low_level", FrankaRobosuiteGreenTargetClutterLowLevel)
-    register_env("franka_robosuite_cubes_low_level", FrankaRobosuiteCubesLowLevel)
-    register_env("franka_robosuite_cubes_restack_low_level", FrankaRobosuiteCubesRestackLowLevel)
-    register_env("franka_robosuite_spill_wipe_low_level", FrankaRobosuiteSpillWipeLowLevel)
+def _try_register_robosuite_env(import_path: str, class_name: str, env_name: str) -> None:
+    try:
+        module = __import__(f"{__name__}.{import_path}", fromlist=[class_name])
+        register_env(env_name, getattr(module, class_name))
+    except Exception as exc:
+        print(f"Skipping Robosuite env '{env_name}': {exc}")
 
 
-    register_env("franka_robosuite_nut_assembly_low_level", FrankaRobosuiteNutAssembly)
-    register_env("franka_robosuite_nut_assembly_low_level_visual", FrankaRobosuiteNutAssemblyVisual)
-
-    register_env("two_arm_handover_robosuite", RobosuiteHandoverEnv)
-    register_env("two_arm_lift_robosuite", RobosuiteTwoArmLiftEnv)
-except Exception:
-    import traceback
-    print("Robosuite not installed!")
-    traceback.print_exc()
+_try_register_robosuite_env(
+    "robosuite_cube_lift",
+    "FrankaRobosuiteCubeLiftLowLevel",
+    "franka_robosuite_cube_lift_low_level",
+)
+_try_register_robosuite_env(
+    "robosuite_shape_lift",
+    "FrankaRobosuiteShapeLiftLowLevel",
+    "franka_robosuite_shape_lift_low_level",
+)
+_try_register_robosuite_env(
+    "robosuite_ycb_lift",
+    "FrankaRobosuiteYCBLiftLowLevel",
+    "franka_robosuite_ycb_lift_low_level",
+)
+_try_register_robosuite_env(
+    "robosuite_ycb_lift",
+    "FrankaRobosuiteYCBTargetClutterLowLevel",
+    "franka_robosuite_ycb_target_clutter_low_level",
+)
+_try_register_robosuite_env(
+    "robosuite_green_target_clutter",
+    "FrankaRobosuiteGreenTargetClutterLowLevel",
+    "franka_robosuite_green_target_clutter_low_level",
+)
+_try_register_robosuite_env(
+    "robosuite_cubes",
+    "FrankaRobosuiteCubesLowLevel",
+    "franka_robosuite_cubes_low_level",
+)
+_try_register_robosuite_env(
+    "robosuite_cubes_restack",
+    "FrankaRobosuiteCubesRestackLowLevel",
+    "franka_robosuite_cubes_restack_low_level",
+)
+_try_register_robosuite_env(
+    "robosuite_spill_wipe",
+    "FrankaRobosuiteSpillWipeLowLevel",
+    "franka_robosuite_spill_wipe_low_level",
+)
+_try_register_robosuite_env(
+    "robosuite_nut_assembly",
+    "FrankaRobosuiteNutAssembly",
+    "franka_robosuite_nut_assembly_low_level",
+)
+_try_register_robosuite_env(
+    "robosuite_nut_assembly",
+    "FrankaRobosuiteNutAssemblyVisual",
+    "franka_robosuite_nut_assembly_low_level_visual",
+)
+_try_register_robosuite_env(
+    "robosuite_handover",
+    "RobosuiteHandoverEnv",
+    "two_arm_handover_robosuite",
+)
+_try_register_robosuite_env(
+    "robosuite_two_arm_lift",
+    "RobosuiteTwoArmLiftEnv",
+    "two_arm_lift_robosuite",
+)
 
 # NOTE: Can only have one of LIBERO or Robosuite installed at a time!
 # Using LIBERO run: uv sync --extra libero --extra contactgraspnet
