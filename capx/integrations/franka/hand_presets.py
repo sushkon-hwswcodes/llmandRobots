@@ -21,6 +21,8 @@ class HandPreset:
     command: np.ndarray
     description: str
     references: tuple[str, ...] = ()
+    sequence: tuple[np.ndarray, ...] = ()
+    stage_steps: tuple[int, ...] = ()
 
 
 def _cmd(*values: float) -> np.ndarray:
@@ -174,6 +176,24 @@ INSPIRE_RIGHT_ALLEGRO_V2_PRESETS: dict[str, HandPreset] = {
 }
 
 
+INSPIRE_RIGHT_ALLEGRO_V3_PRESETS: dict[str, HandPreset] = {
+    "pinch_it": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS["pinch_it"],
+    "pinch_mt": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS["pinch_mt"],
+    "grasp_4": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS["grasp_4"],
+    "envelop": HandPreset(
+        name="envelop",
+        command=_cmd(0.95, 0.95, 0.9, 0.8, 0.7, 0.45),
+        description="Inspire candidate for Allegro ENVELOP as a two-stage primitive: spread the hand first, then close into a broad wrap that should read differently from grasp_4.",
+        references=ALLEGRO_REFERENCE_LINES,
+        sequence=(
+            _cmd(-0.95, -0.75, -0.45, -0.25, -0.2, 1.5),
+            _cmd(0.95, 0.95, 0.9, 0.8, 0.7, 0.45),
+        ),
+        stage_steps=(16, 20),
+    ),
+}
+
+
 HAND_PRESET_LIBRARIES: dict[str, dict[str, HandPreset]] = {
     "inspire_right": INSPIRE_RIGHT_CANDIDATE_PRESETS,
     "inspire_left": INSPIRE_RIGHT_CANDIDATE_PRESETS,
@@ -183,6 +203,8 @@ HAND_PRESET_LIBRARIES: dict[str, dict[str, HandPreset]] = {
     "inspire_left_allegro_v1": INSPIRE_RIGHT_ALLEGRO_V1_PRESETS,
     "inspire_right_allegro_v2": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS,
     "inspire_left_allegro_v2": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS,
+    "inspire_right_allegro_v3": INSPIRE_RIGHT_ALLEGRO_V3_PRESETS,
+    "inspire_left_allegro_v3": INSPIRE_RIGHT_ALLEGRO_V3_PRESETS,
 }
 
 

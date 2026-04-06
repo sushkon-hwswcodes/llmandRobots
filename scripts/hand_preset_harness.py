@@ -102,6 +102,43 @@ def _apply_command(
     }
 
 
+def _apply_preset(
+    env: FrankaRobosuiteCubeLiftLowLevel,
+    preset: Any,
+    *,
+    settle_steps: int,
+) -> dict[str, Any]:
+    sequence = tuple(preset.sequence) if getattr(preset, "sequence", ()) else (preset.command,)
+    stage_steps = tuple(int(x) for x in getattr(preset, "stage_steps", ()) if int(x) > 0)
+    if len(stage_steps) != len(sequence):
+        stage_steps = tuple([settle_steps] * len(sequence))
+
+    robot_frames: list[np.ndarray] = []
+    front_frames: list[np.ndarray] = []
+    stage_summaries: list[dict[str, Any]] = []
+
+    for idx, (command, steps) in enumerate(zip(sequence, stage_steps), start=1):
+        result = _apply_command(env, command, settle_steps=steps)
+        robot_frames.extend(result["robot_frames"])
+        front_frames.extend(result["front_frames"])
+        stage_summaries.append(
+            {
+                "stage_index": idx,
+                "command": {label: float(value) for label, value in zip(INSPIRE_COMMAND_LABELS, command)},
+                "after_joint_positions": result["joint_positions"],
+                "after_site_positions": result["site_positions"],
+            }
+        )
+
+    return {
+        "joint_positions": stage_summaries[-1]["after_joint_positions"],
+        "site_positions": stage_summaries[-1]["after_site_positions"],
+        "robot_frames": robot_frames,
+        "front_frames": front_frames,
+        "stages": stage_summaries,
+    }
+
+
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
@@ -154,7 +191,7 @@ def main() -> None:
         before_joints = _joint_positions(env)
         before_sites = _site_positions(env)
 
-        result = _apply_command(env, preset.command, settle_steps=args.settle_steps)
+        result = _apply_preset(env, preset, settle_steps=args.settle_steps)
 
         after_robot = _render_rgb(env, "robot0_robotview")
         after_front = _render_rgb(env, "frontview")
@@ -172,6 +209,7 @@ def main() -> None:
             "description": preset.description,
             "references": list(preset.references),
             "command": {label: float(value) for label, value in zip(INSPIRE_COMMAND_LABELS, preset.command)},
+            "stages": result.get("stages", []),
             "before_joint_positions": before_joints,
             "after_joint_positions": result["joint_positions"],
             "before_site_positions": before_sites,
