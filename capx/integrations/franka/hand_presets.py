@@ -180,6 +180,10 @@ INSPIRE_RIGHT_ALLEGRO_V3_PRESETS: dict[str, HandPreset] = {
     "pinch_it": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS["pinch_it"],
     "pinch_mt": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS["pinch_mt"],
     "grasp_4": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS["grasp_4"],
+    # Keep `envelop` as a staged primitive because the intended behavior is
+    # "spread first, then close." The current v3 sequence is good enough to
+    # preserve as a checkpoint, but it still needs more tuning before we treat
+    # it as a settled grasp primitive.
     "envelop": HandPreset(
         name="envelop",
         command=_cmd(0.95, 0.95, 0.9, 0.8, 0.7, 0.45),

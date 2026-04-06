@@ -52,7 +52,14 @@ can restart from a smaller surface area.
 
 - The current Inspire path can instantiate, reset, step, and replay candidate hand command vectors.
 - Candidate hand preset videos were exported under `outputs/hand_preset_videos_candidate_v1/`.
+- Allegro-referenced Inspire comparison videos were exported under:
+  - `outputs/hand_preset_videos_allegro_reference_v1/`
+  - `outputs/hand_preset_videos_allegro_reference_v2/`
+  - `outputs/hand_preset_videos_allegro_reference_v3/`
 - Those candidate presets are not yet validated grasp primitives.
+- `pinch_mt` is visually closer to the intended middle-thumb pinch now, while
+  staged `envelop` is improved but still needs more tuning before it should be
+  treated as settled.
 - The current harness keeps the wrist fixed, so it demonstrates articulation, not object pickup quality.
 - Any future hand grasp restart should begin with constrained primitives that include:
   - hand shape
