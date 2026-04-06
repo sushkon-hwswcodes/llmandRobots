@@ -237,9 +237,26 @@ class FrankaControlPrivilegedApi(ApiBase):
             quaternion_wxyz: (4,) WXYZ unit quaternion.
         """
         obs = self._env.get_observation()
+        rs_env = getattr(self._env, "robosuite_env", None)
         name = object_name.lower().strip()
         has_secondary = "cube_poses" in obs and "secondary" in obs["cube_poses"]
         is_primary = self._is_primary_object_name(name, has_secondary)
+
+        # Preserve the historical Panda cube-lift behavior for plain cube envs.
+        # Those envs do not expose shape metadata, and their earlier benchmarked
+        # path sampled a grasp directly at the object center.
+        if rs_env is None or not hasattr(rs_env, "_current_shape"):
+            if is_primary:
+                return (
+                    np.asarray(obs["cube_poses"]["primary"][:3], dtype=np.float64).copy(),
+                    np.array([0, 0, 1, 0], dtype=np.float64),
+                )
+            if "green" in name and "cube" in name:
+                return (
+                    np.asarray(obs["cube_poses"]["secondary"][:3], dtype=np.float64).copy(),
+                    np.array([0, 0, 1, 0], dtype=np.float64),
+                )
+
         if is_primary:
             object_pos = np.asarray(obs["cube_poses"]["primary"][:3], dtype=np.float64).copy()
             grasp_pos = self._shape_aware_grasp_position(object_pos)
