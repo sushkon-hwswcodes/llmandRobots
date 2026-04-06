@@ -1,0 +1,244 @@
+R1Pro not installed, skipping R1Pro APIs
+LIBERO not installed!
+R1Pro not installed!
+API server on 127.0.0.1:8116 already running, skipping
+Time taken to query model: 10.61 seconds
+Code block 1 done
+Number of code blocks: 1
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00.mp4 (231 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined.mp4 (232 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00_overview.mp4 (231 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined_overview.mp4 (232 frames)
+Trial 1 took 180.28 seconds
+Time taken to query model: 11.03 seconds
+Code block 1 done
+Number of code blocks: 1
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_02_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00.mp4 (228 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_02_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined.mp4 (229 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_02_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00_overview.mp4 (228 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_02_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined_overview.mp4 (229 frames)
+Trial 2 took 170.64 seconds
+Time taken to query model: 6.28 seconds
+Code block 1 done
+Number of code blocks: 1
+Code blocks done
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00.mp4 (223 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined.mp4 (224 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_turn_00_overview.mp4 (223 frames)
+Saved interaction video to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/video_combined_overview.mp4 (224 frames)
+Trial 3 took 182.58 seconds
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Import numpy as np (already done above)
+
+# Step 2: Get hand capabilities
+hand_info = get_hand_capabilities()
+
+# Step 3: Get object shape
+shape_info = get_object_shape()
+diameter = float(shape_info["size"]["diameter"])
+
+# Step 4: Sample grasp pose for the object
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 5: Compute lateral offset and retry shift
+lateral_offset = max(0.010, 0.25 * diameter)
+retry_shift = max(0.006, 0.15 * diameter)
+
+# Step 6: Define grasp attempts
+grasp_attempt_1 = grasp_pos + np.array([lateral_offset, 0.0, 0.0])
+grasp_attempt_2 = grasp_pos + np.array([-retry_shift, 0.0, 0.0])
+
+# Step 7: Open the hand and go to the first grasp attempt
+set_hand_preshape("open")
+goto_pose(grasp_attempt_1, grasp_quat, z_approach=0.12)
+goto_pose(grasp_attempt_1, grasp_quat)
+
+# Step 8: Close the hand for the first attempt
+set_hand_preshape("close")
+
+# Step 9: Test lift for the first attempt
+test_lift_1 = grasp_attempt_1 + np.array([0.0, 0.0, 0.04])
+goto_pose(test_lift_1, grasp_quat)
+
+# Step 10: Open the hand again
+set_hand_preshape("open")
+
+# Step 11: Go to the second grasp attempt
+goto_pose(grasp_attempt_2, grasp_quat, z_approach=0.08)
+goto_pose(grasp_attempt_2, grasp_quat)
+
+# Step 12: Close the hand for the second attempt
+set_hand_preshape("close")
+
+# Step 13: Lift the object
+lift_pos = grasp_attempt_2 + np.array([0.0, 0.0, 0.10])
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.0
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 0
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_01_sandboxrc_0_reward_0.000_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Import numpy as np
+# (Already done above)
+
+# Step 2: hand_info = get_hand_capabilities()
+hand_info = get_hand_capabilities()
+
+# Step 3: shape_info = get_object_shape()
+shape_info = get_object_shape()
+
+# Step 4: grasp_pos, grasp_quat = sample_grasp_pose("object")
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 5: diameter = float(shape_info["size"]["diameter"])
+diameter = float(shape_info["size"]["diameter"])
+
+# Step 6: lateral_offset = max(0.010, 0.25 * diameter)
+lateral_offset = max(0.010, 0.25 * diameter)
+
+# Step 7: retry_shift = max(0.006, 0.15 * diameter)
+retry_shift = max(0.006, 0.15 * diameter)
+
+# Step 8: grasp_attempt_1 = grasp_pos + np.array([lateral_offset, 0.0, 0.0])
+grasp_attempt_1 = grasp_pos + np.array([lateral_offset, 0.0, 0.0])
+
+# Step 9: grasp_attempt_2 = grasp_pos + np.array([-retry_shift, 0.0, 0.0])
+grasp_attempt_2 = grasp_pos + np.array([-retry_shift, 0.0, 0.0])
+
+# Step 10: set_hand_preshape("open")
+set_hand_preshape("open")
+
+# Step 11: goto_pose(grasp_attempt_1, grasp_quat, z_approach=0.12)
+goto_pose(grasp_attempt_1, grasp_quat, z_approach=0.12)
+
+# Step 12: goto_pose(grasp_attempt_1, grasp_quat)
+goto_pose(grasp_attempt_1, grasp_quat)
+
+# Step 13: set_hand_preshape("close")
+set_hand_preshape("close")
+
+# Step 14: test_lift_1 = grasp_attempt_1 + np.array([0.0, 0.0, 0.04])
+test_lift_1 = grasp_attempt_1 + np.array([0.0, 0.0, 0.04])
+
+# Step 15: goto_pose(test_lift_1, grasp_quat)
+goto_pose(test_lift_1, grasp_quat)
+
+# Step 16: set_hand_preshape("open")
+set_hand_preshape("open")
+
+# Step 17: goto_pose(grasp_attempt_2, grasp_quat, z_approach=0.08)
+goto_pose(grasp_attempt_2, grasp_quat, z_approach=0.08)
+
+# Step 18: goto_pose(grasp_attempt_2, grasp_quat)
+goto_pose(grasp_attempt_2, grasp_quat)
+
+# Step 19: set_hand_preshape("close")
+set_hand_preshape("close")
+
+# Step 20: lift_pos = grasp_attempt_2 + np.array([0.0, 0.0, 0.10])
+lift_pos = grasp_attempt_2 + np.array([0.0, 0.0, 0.10])
+
+# Step 21: goto_pose(lift_pos, grasp_quat)
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.0
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 0
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_02_sandboxrc_0_reward_0.000_taskcompleted_0/code.py
+----------------------------------------------------------------------------------------------------
+Generated program:
+# Code block 0
+import numpy as np
+
+# Step 1: Import numpy as np (already done)
+
+# Step 2: Get hand capabilities
+hand_info = get_hand_capabilities()
+
+# Step 3: Get object shape
+shape_info = get_object_shape()
+diameter = float(shape_info["size"]["diameter"])
+lateral_offset = max(0.010, 0.25 * diameter)
+retry_shift = max(0.006, 0.15 * diameter)
+
+# Step 4: Sample grasp pose
+grasp_pos, grasp_quat = sample_grasp_pose("object")
+
+# Step 5: Define grasp attempts
+grasp_attempt_1 = grasp_pos + np.array([lateral_offset, 0.0, 0.0])
+grasp_attempt_2 = grasp_pos + np.array([-retry_shift, 0.0, 0.0])
+
+# Step 6: Open hand and approach first grasp attempt
+set_hand_preshape("open")
+goto_pose(grasp_attempt_1, grasp_quat, z_approach=0.12)
+goto_pose(grasp_attempt_1, grasp_quat)
+
+# Step 7: Close hand and lift slightly
+set_hand_preshape("close")
+test_lift_1 = grasp_attempt_1 + np.array([0.0, 0.0, 0.04])
+goto_pose(test_lift_1, grasp_quat)
+set_hand_preshape("open")
+
+# Step 8: Approach second grasp attempt
+goto_pose(grasp_attempt_2, grasp_quat, z_approach=0.08)
+goto_pose(grasp_attempt_2, grasp_quat)
+
+# Step 9: Close hand and lift fully
+set_hand_preshape("close")
+lift_pos = grasp_attempt_2 + np.array([0.0, 0.0, 0.10])
+goto_pose(lift_pos, grasp_quat)
+
+
+Environment response:
+  Sandbox failed: 0
+  Stdout: 
+  Stderr: 
+  Reward: 0.0
+  Task Completed: False
+  Terminated: False, Truncated: False
+  Num Regenerations: 0
+  Num Finishes: 0
+  Num Code Blocks: 1
+----------------------------------------------------------------------------------------------------
+Code saved to outputs/ollama_qwen2.5-coder:7b-instruct-q4_K_M/qwen_shape_inspire_cylinder_smoke/trial_03_sandboxrc_0_reward_0.000_taskcompleted_0/code.py
+
+Summary Statistics:
+Model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+Config Path: env_configs/shape_generalization/franka_qwen_shape_inspire_cylinder_smoke.yaml
+Git Commit: 2bfdb46 (Dirty: True)
+Total number of trials: 3
+Code generation success rate / Average reward / Task completed: 
+1.000/0.000/0
+Average code blocks: 1.000
+Average regenerations: 0.000
+Average finishes: 0.000
+Elapsed time: 537.30 seconds

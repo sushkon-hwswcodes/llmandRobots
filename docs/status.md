@@ -96,6 +96,8 @@ Last updated: 2026-04-05
 - Cylinder-only debug result: after tightening the prompt to require `sample_grasp_pose("object")` exactly, the first fixed-cylinder Inspire smoke run executed the intended straight-line `wide_enclose -> approach -> small downward adjustment -> cylinder_wrap -> lift` sequence without sandbox errors, but it still ended at reward `0.000`, so object-specific wording alone did not solve the grasp
 - Cylinder-only follow-up in progress: the next fixed-cylinder prompt now explicitly computes a lateral pre-close offset from the cylinder diameter and forbids keeping the palm center directly above the object during the final descent, so this rerun isolates whether an around-the-cylinder entry path helps more than the previous centered descent
 - Cylinder-only lateral-offset result: the fixed-cylinder rerun followed the intended `wide_enclose -> laterally offset pre-close waypoint -> deeper enclosure waypoint -> cylinder_wrap -> lift` sequence exactly, but it still ended at reward `0.000`, so prompt-level cylinder geometry changes alone are no longer producing measurable progress
+- New cylinder baseline in progress: the fixed-cylinder debug config has been simplified to use only the upstream-grounded Inspire `open` / `close` equivalents plus one deterministic retry, so the next benchmark tests whether a simple pinch-style routine reproduces the earlier Panda-like success pattern more faithfully than the project-local wrap presets
+- Cylinder open/close retry result: the 3-trial fixed-cylinder benchmark using only the upstream-grounded Inspire `open` / `close` equivalents plus one deterministic retry executed cleanly in all trials but still produced `0.000`, `0.000`, and `0.000` rewards with `0/3` completions, so the simpler Panda-like pinch sequence did not recover the earlier partial-lift behavior on this cylinder setup
 
 ## Current local artifacts
 
@@ -137,6 +139,8 @@ Last updated: 2026-04-05
 - Use the cylinder-only video to inspect whether the failure is still “contact from above” or whether the new issue is the wrap timing / final descent depth before adding another low-level waypoint
 - Re-run the cylinder-only smoke with the new lateral-offset sequence and compare the video against the previous centered-descent cylinder attempt before changing low-level geometry in shared code
 - Move the next cylinder experiment into low-level pose generation or action semantics, since both the centered and laterally-offset cylinder prompts now execute cleanly but still fail at `0.000`
+- Measure whether the simpler official `open` / `close` pinch routine plus one retry outperforms the custom wrap-preset cylinder path before changing low-level grasp generation again
+- Move the next cylinder experiment into low-level grasp targeting or hand-command semantics, since both the custom wrap path and the simpler official `open` / `close` retry path now benchmark at `0.000`
 - Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
 - Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
 - Run and review the first larger benchmark for the YCB target-clutter variant

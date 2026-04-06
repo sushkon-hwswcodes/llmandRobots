@@ -26,7 +26,7 @@ env:
       Those are legacy Panda helpers and are not the hand-control path for this task.
       Use only these Inspire-hand controls:
         - get_hand_capabilities()
-        - set_hand_preshape("open" | "pregrasp" | "wide_enclose" | "grasp_soft" | "box_wrap" | "cylinder_wrap" | "ball_cup" | "close")
+        - set_hand_preshape("open" | "close")
         - set_hand_joints([...])  # 6 values for the Inspire hand
 
       Follow this exact cylinder grasp sequence:
@@ -35,36 +35,42 @@ env:
         3. shape_info = get_object_shape()
         4. grasp_pos, grasp_quat = sample_grasp_pose("object")
         5. diameter = float(shape_info["size"]["diameter"])
-        6. lateral_offset = max(0.012, 0.35 * diameter)
-        7. preclose_pos = grasp_pos + np.array([lateral_offset, 0.0, 0.0])
-        8. enclosure_pos = preclose_pos + np.array([0.0, 0.0, -0.008])
-        9. set_hand_preshape("wide_enclose")
-        10. goto_pose(preclose_pos, grasp_quat, z_approach=0.12)
-        11. goto_pose(enclosure_pos, grasp_quat)
-        12. set_hand_preshape("cylinder_wrap")
-        13. lift_pos = enclosure_pos + np.array([0.0, 0.0, 0.10])
-        14. goto_pose(lift_pos, grasp_quat)
+        6. lateral_offset = max(0.010, 0.25 * diameter)
+        7. retry_shift = max(0.006, 0.15 * diameter)
+        8. grasp_attempt_1 = grasp_pos + np.array([lateral_offset, 0.0, 0.0])
+        9. grasp_attempt_2 = grasp_pos + np.array([-retry_shift, 0.0, 0.0])
+        10. set_hand_preshape("open")
+        11. goto_pose(grasp_attempt_1, grasp_quat, z_approach=0.12)
+        12. goto_pose(grasp_attempt_1, grasp_quat)
+        13. set_hand_preshape("close")
+        14. test_lift_1 = grasp_attempt_1 + np.array([0.0, 0.0, 0.04])
+        15. goto_pose(test_lift_1, grasp_quat)
+        16. set_hand_preshape("open")
+        17. goto_pose(grasp_attempt_2, grasp_quat, z_approach=0.08)
+        18. goto_pose(grasp_attempt_2, grasp_quat)
+        19. set_hand_preshape("close")
+        20. lift_pos = grasp_attempt_2 + np.array([0.0, 0.0, 0.10])
+        21. goto_pose(lift_pos, grasp_quat)
 
       Operational meaning for the grasp:
-        - keep the hand opening wider than the cylinder before closing
+        - use a simple pinch-like open then close sequence, not custom wrap presets
         - do not keep the palm center directly above the cylinder center during the final descent
         - offset the open hand laterally so the fingers can land on opposite sides of the cylinder
-        - move the open hand to a point around-and-above the cylinder first
-        - then move down so the cylinder is between the fingers
-        - only then apply "cylinder_wrap"
+        - do one first grasp attempt, then reopen once and retry from a slightly shifted lateral offset
+        - after the second close, do one clean full lift
 
       Keep the code simple and deterministic:
         - write one straight-line script, not helper functions
         - still call get_object_shape(), but do not branch on it
         - call sample_grasp_pose("object") exactly; do not pass "red cylinder" or any other natural-language object name
         - use numpy arrays for offsets
-        - compute `diameter`, `lateral_offset`, `preclose_pos`, and `enclosure_pos` exactly as shown above
+        - compute `diameter`, `lateral_offset`, `retry_shift`, `grasp_attempt_1`, and `grasp_attempt_2` exactly as shown above
         - do not call any functions other than the provided robot APIs and standard Python / numpy
         - do not define your own Python functions or classes
         - do not invent helper checks such as stability or contact tests
         - do not redefine or shadow provided robot API functions such as get_object_shape, sample_grasp_pose, goto_pose, get_hand_capabilities, open_gripper, close_gripper, set_hand_preshape, or set_hand_joints
         - never call open_gripper() or close_gripper() in this config
-        - default to exactly the cylinder sequence above and do not replace it with a center-over-object descent
+        - default to exactly the cylinder sequence above and do not replace it with a center-over-object descent or custom wrap preset
 
       ONLY write executable Python code. Do not use code fences.
       Import numpy explicitly if needed.
@@ -80,5 +86,5 @@ record_video: true
 output_dir: ./outputs/qwen_shape_inspire_cylinder_smoke
 use_legacy_multi_turn_decision_prompt: true
 
-trials: 1
+trials: 3
 num_workers: 1
