@@ -1,148 +1,50 @@
 # Project Status
 
-Last updated: 2026-04-05
+Last updated: 2026-04-06
 
 ## Current branch state
 
 - Branch: `main`
 - Remote tracking: `origin/main`
-- Latest committed milestone: `b567b7f` "Add shape-aware Inspire grasp orientations"
+- Local setup status: Robosuite + Ollama + PyRoKi are working on this machine
 
-## Recent progress
+## Current benchmark readout on this machine
 
-### Baseline and prompt iterations
+- Panda cube-lift benchmark runs end-to-end with local Ollama Qwen output capture
+- Panda cube-lift local readout is currently much worse than the documented historical baseline
+- Green-target clutter also runs end-to-end locally, but is currently far below the earlier recorded result
+- A short local oracle cube-lift run also underperformed, which suggests the current gap is not purely a model issue
 
-- `bda3afb`: initial 20-trial Qwen2.5-Coder-7B cube-lifting benchmark
-- `0d7ac23`: enabled multi-turn recovery for privileged Qwen config
-- `9cf0c1e`: multi-turn benchmark improved to `6/20` from `2/20` single-turn
-- `b7b89b2`: prompt v2 forbade `open_gripper`, added a few-shot example, and clarified task completion
-- `ab933df`: prompt v2 benchmark reached `17/20`
-- `56c359e`: tuned temperature to `0.3`, reaching `20/20`
+## Active benchmark milestones from the repo history
 
-### Phase 2: shape generalization
+- Robosuite privileged Panda baseline was previously recorded at `20/20`
+- Phase 2 shape generalization was previously recorded at `25/30`
+- Phase 2.75 green-target clutter was previously recorded at `24/30`
+- Phase 3 YCB target-clutter was previously recorded at `9/30`
 
-- `97ced36`: added the shape-generalization environment, `get_object_shape()` API, and shape-conditioned prompt
-- `2c7f47d`: fixed the `lift_shape` robosuite import path
-- `641a299`: corrected success / reward logic to require lift-from-reset plus grasp contact
-- `1da0479`: fixed the prompt to use `sample_grasp_pose(object)` and support the `object` alias
-- `4038b0f`: prompt-fix benchmark results reached `25/30`
+## Current focus
 
-### Phase 2.75: green-target clutter task
-
-- `eae9fc8`: added the Phase 2.75 clutter simulator with one green target and red distractors
-- `benchmark_green_target_clutter_30.log`: completed 30 trials with `24/30` successes
-- `scripts/make_success_video_grids.py`: added local tooling to build montage videos for successful clutter trials
-- Failure review update: the six clutter failures appear to be clutter-induced grasp / lift failures, not wrong-target selection
-
-### Phase 3: real-world objects
-
-- Planned next milestone: replace randomly generated shape instances with real-world object assets
-- Goal: test whether the current prompting and control stack transfers from synthetic shape abstractions to more realistic object geometry and appearance
-- Status: initial implementation now exists via a YCB-backed Robosuite lift environment using downloaded ManiSkill YCB assets
-- Added low-level env: `franka_robosuite_ycb_lift_low_level`
-- Added config: `env_configs/real_objects/franka_qwen_ycb.yaml`
-- Smoke test: env registration, reset, object metadata, and prompt-facing APIs all pass locally
-- Current workaround: the bridge uses YCB `textured.obj` meshes for collision because this MuJoCo setup would not load the provided `collision.ply` files
-- New branch in progress: target-object selection from YCB clutter
-- Added low-level env: `franka_robosuite_ycb_target_clutter_low_level`
-- Added config: `env_configs/real_objects/franka_qwen_ycb_target_clutter.yaml`
-- Current target-clutter behavior: the prompt names a specific YCB target object while `sample_grasp_pose("object")` still resolves to the target object pose
-- 30-trial benchmark: `9/30` task-complete with `0.394` average reward
-- Current readout: target selection appears to be working, but cluttered grasp reliability is still the dominant bottleneck
-
-### Hand migration work
-
-- `8dcc9aa`: added backward-compatible hand-configuration plumbing while preserving Panda as the default benchmark path
-- Active benchmark YAMLs now pin Panda defaults explicitly so the current `20/20`, `25/30`, and `24/30` results remain reproducible
-- The low-level Robosuite envs now accept hand metadata such as robot name, IK target link, end-effector body name, and TCP offset
-- The low-level Robosuite envs now accept a Robosuite `gripper_types` override so a custom hand can actually be instantiated instead of only relabelled
-- The raw `Panda + InspireRightHand` composition was only partially integrated: it instantiated and moved, but the first smoke video showed the hand geometry was not attaching / rendering correctly
-- Better path identified: use Robosuite's built-in `PandaDexRH` composition, which already includes the Inspire-hand mount quaternion offset
-- `PandaDexRH` instantiates and steps correctly with action dimension `13`, and all Inspire hand bodies appear in the assembled MuJoCo model
-- Motion result: the existing privileged API can execute `goto_pose(...)` against the dexterous-hand profile when the standard Panda Pyroki server is running
-- Added opt-in smoke config: `env_configs/shape_generalization/franka_qwen_shape_inspire_smoke.yaml`
-- Updated smoke result: with `PandaDexRH`, the saved trial video now shows the hand visibly attached in both close-up and overview views
-- Corrected 3-trial smoke benchmark result: `1/3` task-complete with average reward `0.333` using the unchanged binary open/close lift policy
-- Added the first opt-in dexterous-hand control layer on top of the same low-level env path:
-  - `get_hand_capabilities()`
-  - `set_hand_preshape("open" | "pregrasp" | "grasp_soft" | "close")`
-  - `set_hand_joints([...])` for explicit 6-value Inspire commands
-- Backward-compatibility preserved: Panda still uses the original scalar open / close path, and existing Panda benchmark configs were not changed
-- Direct control check: the Inspire hand now moves through named preshapes and explicit 6-value commands in simulation without changing the arm stack
-- First richer-hand prompt check: a 1-trial smoke run successfully used `get_hand_capabilities()` and `set_hand_preshape(...)` from the prompt, but still failed the lift with reward `0.033`
-- Current readout: the model can adopt richer hand actions immediately, but grasp robustness still appears to be the limiting factor rather than API discoverability
-- New prompt direction in progress: the Inspire smoke config now emphasizes shape-based preshape choice, two-stage descent, a short test lift, and only one reinforcement grasp before the full lift
-- First staged-prompt smoke artifact: the model followed the staged structure closely, but the phrase "if the object seems unstable" led it to invent an unsupported `is_object_stable()` helper and fail in the sandbox
-- Prompt tightened again: the reinforcement grasp is now deterministic and the config explicitly forbids inventing helper checks beyond the exposed APIs
-- Latest staged-prompt result: the model executed the intended two-stage descent and reinforcement grasp without sandbox errors, but it also redefined provided API names locally; the smoke prompt now explicitly forbids shadowing those APIs
-- Prompt wording fix in progress: the Inspire smoke config now explicitly forbids `open_gripper()` / `close_gripper()` so the dexterous-hand path is exclusive rather than optional
-- Prompt tightened further: the Inspire smoke config now requires a straight-line script order and explicitly forbids defining helper functions or classes, reducing the chance that the model shadows the real APIs again
-- Literal-prompt smoke result: the model now stays on the real Inspire-hand API path, performs real IK-driven approach motion, and no longer falls back to placeholder functions or legacy Panda helpers; however, the grasp still failed with reward `0.0`
-- New low-level grasp-target change in progress: `sample_grasp_pose("object")` is being upgraded from raw object-center targeting to a shape-aware top-down target, with a slightly more enclosing Z target for the Inspire hand on round objects
-- Shape-aware grasp-pose smoke result: after moving `sample_grasp_pose("object")` from raw object-center targeting to a shape-aware top-surface target, the same literal Inspire prompt improved from reward `0.000` to `0.033` on a 1-trial smoke run, though it still did not complete the lift
-- Video-guided prompt fix in progress: the Inspire smoke prompt now explicitly tells the model to keep the hand opening wider than the object, center the palm above the object, and ensure the fingers go around the object before closing
-- Enclosing-pregrasp smoke result: the model adopted `pregrasp_name = "open"` across shapes and stayed on the intended real API path, but the 1-trial reward remained at roughly `0.033`, so the main remaining bottleneck appears to be low-level grasp geometry rather than prompt wording
-- New low-level enclosure change in progress: the Inspire final grasp target is being lowered from the object top surface toward the object body so the open fingers can straddle and close around it rather than just contact from above
-- Lowered-enclosure pose smoke result: lowering the Inspire final grasp target further around the object body caused the 1-trial smoke result to regress from `0.033` back to `0.000`, so that change appears too aggressive in its current form
-- Next benchmark direction agreed: reuse the one known successful Inspire-hand trial as a near-template prompt, and if needed add a small set of extra named hand presets instead of free-form `set_hand_joints([...])`
-- Template-prompt update in progress: the Inspire smoke config now tells the model to follow the one known-good lift pattern almost literally, but translated onto `set_hand_preshape("open")` / `set_hand_preshape("close")`
-- Template-prompt smoke result: the model followed the near-template sequence closely and produced a clean straight-line `open -> approach -> descend -> close -> lift` Inspire-hand program; the 1-trial reward improved slightly to `0.035`, though it still did not complete the lift
-- New named Inspire presets added in progress: `wide_enclose`, `box_wrap`, `cylinder_wrap`, and `ball_cup` are now manually defined so the model can use a slightly richer hand vocabulary without generating raw 6-value joint vectors
-- Preset demo videos generated for all current named Inspire shapes under `outputs/inspire_preset_demos/`
-- Timing readout from the smoke runs: query time is a small minority of wall-clock time, roughly `3%` to `14%`, while execution plus IK / simulation / video work is roughly `86%` to `97%`
-- Named-preset smoke result: the model used `wide_enclose` followed by a shape-specific wrap preset exactly as intended, but the 1-trial reward remained at about `0.033`, so the richer preset vocabulary improved controllability more than task success
-- Orientation A/B result: the current pass restored the better non-regressed grasp height and added shape-specific Inspire grasp quaternions for boxes, cylinders, and balls; across 3 trials it produced rewards of `0.000`, `0.035`, and `0.035` with `0/3` task completions and `0.023` average reward, so the change improved partial lift quality in some cases but did not create a stable successful grasp
-- New debug path in progress: the shape-lift low-level env now supports an optional `fixed_shape` override, and a new Inspire cylinder-only smoke config has been added so we can test a cylinder-specific prompt without changing the shared generic-shape benchmark path
-- Cylinder-only debug result: after tightening the prompt to require `sample_grasp_pose("object")` exactly, the first fixed-cylinder Inspire smoke run executed the intended straight-line `wide_enclose -> approach -> small downward adjustment -> cylinder_wrap -> lift` sequence without sandbox errors, but it still ended at reward `0.000`, so object-specific wording alone did not solve the grasp
-- Cylinder-only follow-up in progress: the next fixed-cylinder prompt now explicitly computes a lateral pre-close offset from the cylinder diameter and forbids keeping the palm center directly above the object during the final descent, so this rerun isolates whether an around-the-cylinder entry path helps more than the previous centered descent
-- Cylinder-only lateral-offset result: the fixed-cylinder rerun followed the intended `wide_enclose -> laterally offset pre-close waypoint -> deeper enclosure waypoint -> cylinder_wrap -> lift` sequence exactly, but it still ended at reward `0.000`, so prompt-level cylinder geometry changes alone are no longer producing measurable progress
-- New cylinder baseline in progress: the fixed-cylinder debug config has been simplified to use only the upstream-grounded Inspire `open` / `close` equivalents plus one deterministic retry, so the next benchmark tests whether a simple pinch-style routine reproduces the earlier Panda-like success pattern more faithfully than the project-local wrap presets
-- Cylinder open/close retry result: the 3-trial fixed-cylinder benchmark using only the upstream-grounded Inspire `open` / `close` equivalents plus one deterministic retry executed cleanly in all trials but still produced `0.000`, `0.000`, and `0.000` rewards with `0/3` completions, so the simpler Panda-like pinch sequence did not recover the earlier partial-lift behavior on this cylinder setup
+- Preserve Panda as the reference benchmark path
+- Re-establish a trustworthy Panda local baseline on this machine
+- Keep hand configuration support only at the simulation / instantiation level for now
+- Remove the old project-local Inspire prompt / preset benchmark direction and restart hand work from a smaller surface area later
 
 ## Current local artifacts
 
-- `benchmark_green_target_clutter_30.log`: full 30-trial clutter benchmark output
-- `scripts/make_success_video_grids.py`: helper for assembling 4x2 success-video grids
-- `docs/hand_configuration.md`: notes on the new configurable hand path and the parameters that need to be swapped for a future five-finger hand
-- `benchmark_shape_inspire_smoke_richer_hand_1trial.log`: first prompt-level smoke artifact using the richer Inspire-hand API
-- `benchmark_shape_inspire_smoke_orientation_ab_3trials.log`: first 3-trial batch using shape-specific Inspire grasp quaternions with the template prompt and named presets
-- `env_configs/shape_generalization/franka_qwen_shape_inspire_cylinder_smoke.yaml`: cylinder-only Inspire smoke config for object-specific prompt debugging
-- `benchmark_shape_inspire_cylinder_smoke_1trial.log`: first fixed-cylinder Inspire smoke artifact
+- Panda setup and workflow docs have been updated for this machine
+- The env registry now skips optional broken imports instead of disabling the whole Robosuite family
+- A dedicated hand-config smoke test now verifies that `PandaDexRH` can instantiate and step in simulation
 
-## What is done
+## Known local issue
 
-- Robosuite privileged baseline is stable at `20/20`
-- Phase 2 shape generalization is implemented and benchmarked at `25/30`
-- Phase 2.75 green-target clutter is implemented and benchmarked at `24/30`
-- The clutter failure review is complete enough to say the misses are grasp-execution failures, not target-selection failures
-- Phase 3 real-world objects has started with a first YCB-backed lift environment and prompt/config bridge
-- Phase 3 target-object selection from real-object clutter has an initial implementation and smoke-test coverage
-- Phase 3 target-object selection from real-object clutter has now been benchmarked once at `9/30`
-- The hand path is now configurable without replacing Panda, and the current benchmark configs explicitly preserve Panda settings
-- The first richer-hand API pass is now implemented for the Inspire smoke path, and the model has already used it in a benchmark trial
+The current local Panda reward gap likely comes from one or more of:
+
+1. low-level Panda control drift after the configurable-hand refactor
+2. reachable Robosuite revision drift versus the earlier benchmarked state
+3. model/backend differences in the local Ollama path
 
 ## What still needs attention
 
-- Standardize the first five-finger profile around `PandaDexRH` and propagate that profile through the smoke config and future benchmark configs
-- Review the richer-hand smoke video and compare it to the earlier binary-hand smoke artifacts to identify whether finger posture or approach motion is the main remaining limiter
-- Measure whether the safer staged prompt improves the Inspire smoke result before changing `sample_grasp_pose(...)`
-- Confirm that the tightened staged prompt stops sandbox failures from invented helper checks and then compare its grasp outcome against the earlier richer-hand trial
-- Confirm that the revised prompt keeps the model on the real Inspire-hand API path and does not fall back to legacy Panda helpers
-- Improve the actual grasp target / pose selection next, since prompt tightening alone now produces the intended motion sequence but not a successful lift
-- Re-benchmark the Inspire smoke task with the new shape-aware grasp target to see whether grasp execution improves without changing prompt structure again
-- Keep iterating on low-level grasp targeting, since the first shape-aware pose change produced a measurable reward improvement without any new prompt complexity
-- Check whether the new enclosing-pregrasp wording improves the actual hand posture in the smoke video before changing orientation logic
-- Improve the low-level grasp geometry next, since the prompt now reliably requests a wider enclosing pregrasp but the lift still does not complete
-- Keep the successful prompt changes, but tune low-level geometry more conservatively next since the first lowered-enclosure target regressed the reward
-- Hold the current prompt and named-preset structure fixed while testing one explicit enclosure change at a time, starting with a pre-close waypoint that places the open hand around the object before the wrap preset is applied
-- Measure whether an object-specific cylinder prompt plus a fixed cylinder scene improves behavior before adding more low-level geometry branches to the generic prompt
-- Use the cylinder-only video to inspect whether the failure is still “contact from above” or whether the new issue is the wrap timing / final descent depth before adding another low-level waypoint
-- Re-run the cylinder-only smoke with the new lateral-offset sequence and compare the video against the previous centered-descent cylinder attempt before changing low-level geometry in shared code
-- Move the next cylinder experiment into low-level pose generation or action semantics, since both the centered and laterally-offset cylinder prompts now execute cleanly but still fail at `0.000`
-- Measure whether the simpler official `open` / `close` pinch routine plus one retry outperforms the custom wrap-preset cylinder path before changing low-level grasp generation again
-- Move the next cylinder experiment into low-level grasp targeting or hand-command semantics, since both the custom wrap path and the simpler official `open` / `close` retry path now benchmark at `0.000`
-- Decide whether the clutter task needs another prompt pass before expanding it into a broader benchmark tier
-- Expand the initial Phase 3 YCB bridge beyond smoke-test level and characterize failure modes
-- Run and review the first larger benchmark for the YCB target-clutter variant
-- Improve grasp robustness for the YCB target-clutter variant before treating it as a stable benchmark tier
-- Turn representative successful trials into montage videos for easier review and sharing
+- Compare the current Panda control path against the earlier `20/20` milestone more directly
+- Restore a trustworthy Panda local oracle result before starting a new hand direction
+- Decide on the next hand experiment only after Panda is behaving predictably again

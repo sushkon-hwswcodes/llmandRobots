@@ -10,7 +10,6 @@ from capx.integrations.base_api import ApiBase
 from capx.integrations.franka.common import (
     DEFAULT_TCP_OFFSET,
     apply_tcp_offset,
-    command_gripper as _command_gripper,
     close_gripper as _close_gripper,
     open_gripper as _open_gripper,
 )
@@ -60,9 +59,6 @@ class FrankaControlPrivilegedApi(ApiBase):
             "get_object_shape": self.get_object_shape,
             "sample_grasp_pose": self.sample_grasp_pose,
             "goto_pose": self.goto_pose,
-            "get_hand_capabilities": self.get_hand_capabilities,
-            "set_hand_joints": self.set_hand_joints,
-            "set_hand_preshape": self.set_hand_preshape,
             "open_gripper": self.open_gripper,
             "close_gripper": self.close_gripper,
             # "home_pose": self.home_pose,
@@ -247,7 +243,7 @@ class FrankaControlPrivilegedApi(ApiBase):
         if is_primary:
             object_pos = np.asarray(obs["cube_poses"]["primary"][:3], dtype=np.float64).copy()
             grasp_pos = self._shape_aware_grasp_position(object_pos)
-            grasp_quat = self._shape_aware_grasp_quaternion()
+            grasp_quat = np.array([0, 0, 1, 0], dtype=np.float64)
             return grasp_pos, grasp_quat
         elif "green" in name and "cube" in name:
             object_pos = np.asarray(obs["cube_poses"]["secondary"][:3], dtype=np.float64).copy()
@@ -256,7 +252,7 @@ class FrankaControlPrivilegedApi(ApiBase):
                 fallback_shape="box",
                 fallback_bbox=np.array([0.05, 0.05, 0.05], dtype=np.float64),
             )
-            grasp_quat = self._shape_aware_grasp_quaternion(fallback_shape="box")
+            grasp_quat = np.array([0, 0, 1, 0], dtype=np.float64)
             return grasp_pos, grasp_quat
         else:
             raise ValueError(f"Invalid object name: {object_name}")
@@ -268,7 +264,7 @@ class FrankaControlPrivilegedApi(ApiBase):
         fallback_shape: str | None = None,
         fallback_bbox: np.ndarray | None = None,
     ) -> np.ndarray:
-        """Return a top-down grasp target adjusted for object shape and hand profile."""
+        """Return a top-down grasp target adjusted for object shape."""
         rs_env = getattr(self._env, "robosuite_env", None)
         shape = fallback_shape
         if shape is None and rs_env is not None and hasattr(rs_env, "_current_shape"):
@@ -282,59 +278,16 @@ class FrankaControlPrivilegedApi(ApiBase):
         bbox = np.asarray(bbox, dtype=np.float64).reshape(3)
 
         target = np.asarray(object_pos, dtype=np.float64).copy()
-        hand_name = self._hand_name.lower()
-        is_inspire = "inspire" in hand_name or "dex" in self._robot_name.lower()
-
         if shape == "box":
-            top_height = bbox[2] * 0.5
-            clearance = 0.01
-            if is_inspire:
-                clearance = 0.007
-            target[2] += top_height + clearance
+            target[2] += bbox[2] * 0.5 + 0.01
         elif shape == "cylinder":
-            top_height = bbox[2] * 0.5
-            clearance = 0.01
-            if is_inspire:
-                clearance = 0.006
-            target[2] += top_height + clearance
+            target[2] += bbox[2] * 0.5 + 0.01
         elif shape == "ball":
-            radius = bbox[2] * 0.5
-            clearance = 0.01
-            if is_inspire:
-                clearance = -0.002
-            target[2] += radius + clearance
+            target[2] += bbox[2] * 0.5 + 0.01
         else:
-            top_height = bbox[2] * 0.5
-            clearance = 0.01
-            if is_inspire:
-                clearance = 0.007
-            target[2] += top_height + clearance
+            target[2] += bbox[2] * 0.5 + 0.01
 
         return target
-
-    def _shape_aware_grasp_quaternion(self, *, fallback_shape: str | None = None) -> np.ndarray:
-        """Return a shape-aware grasp orientation for the current hand profile."""
-        rs_env = getattr(self._env, "robosuite_env", None)
-        shape = fallback_shape
-        if shape is None and rs_env is not None and hasattr(rs_env, "_current_shape"):
-            shape = str(rs_env._current_shape)
-        if shape is None:
-            shape = "box"
-
-        is_inspire = "inspire" in self._hand_name.lower() or "dex" in self._robot_name.lower()
-        if not is_inspire:
-            return np.array([0, 0, 1, 0], dtype=np.float64)
-
-        if shape == "box":
-            quat_xyzw = SciRotation.from_euler("xyz", [180.0, 0.0, 15.0], degrees=True).as_quat()
-        elif shape == "cylinder":
-            quat_xyzw = SciRotation.from_euler("xyz", [180.0, 0.0, 30.0], degrees=True).as_quat()
-        elif shape == "ball":
-            quat_xyzw = SciRotation.from_euler("xyz", [170.0, 0.0, 0.0], degrees=True).as_quat()
-        else:
-            quat_xyzw = SciRotation.from_euler("xyz", [180.0, 0.0, 15.0], degrees=True).as_quat()
-
-        return np.array([quat_xyzw[3], quat_xyzw[0], quat_xyzw[1], quat_xyzw[2]], dtype=np.float64)
 
     def goto_pose(
         self, position: np.ndarray, quaternion_wxyz: np.ndarray, z_approach: float = 0.0
@@ -385,93 +338,6 @@ class FrankaControlPrivilegedApi(ApiBase):
     def _inspire_closed_pose(self) -> np.ndarray:
         return np.array([1.5, 1.5, 1.5, 1.5, 3.0, 3.0], dtype=np.float64)
 
-    def _interpolate_inspire_pose(self, closed_fraction: float) -> np.ndarray:
-        open_pose = self._inspire_open_pose()
-        closed_pose = self._inspire_closed_pose()
-        t = float(np.clip(closed_fraction, 0.0, 1.0))
-        return open_pose + t * (closed_pose - open_pose)
-
-    def _inspire_wide_enclose_pose(self) -> np.ndarray:
-        """Wide opening intended to straddle medium objects before descent."""
-        return np.array([-1.5, -0.9, -0.9, -0.9, -2.2, 2.4], dtype=np.float64)
-
-    def _inspire_box_wrap_pose(self) -> np.ndarray:
-        """Moderate enclosure for box-like objects."""
-        return np.array([0.6, 0.9, 0.9, 0.9, 0.8, 2.8], dtype=np.float64)
-
-    def _inspire_cylinder_wrap_pose(self) -> np.ndarray:
-        """Slightly narrower wrap to hug cylindrical objects."""
-        return np.array([0.5, 1.0, 1.0, 1.0, 0.4, 2.7], dtype=np.float64)
-
-    def _inspire_ball_cup_pose(self) -> np.ndarray:
-        """Cup-like pose for round objects that benefits from more thumb opposition."""
-        return np.array([0.2, 1.2, 1.2, 1.2, 0.1, 2.3], dtype=np.float64)
-
-    def _hand_presets(self) -> dict[str, np.ndarray]:
-        if self._supports_dexterous_hand():
-            return {
-                "open": self._inspire_open_pose(),
-                "pregrasp": self._interpolate_inspire_pose(0.35),
-                "wide_enclose": self._inspire_wide_enclose_pose(),
-                "grasp_soft": self._interpolate_inspire_pose(0.7),
-                "box_wrap": self._inspire_box_wrap_pose(),
-                "cylinder_wrap": self._inspire_cylinder_wrap_pose(),
-                "ball_cup": self._inspire_ball_cup_pose(),
-                "close": self._inspire_closed_pose(),
-            }
-        return {
-            "open": np.array([1.0], dtype=np.float64),
-            "close": np.array([0.0], dtype=np.float64),
-        }
-
-    def get_hand_capabilities(self) -> dict[str, Any]:
-        """Return the currently configured hand-control affordances."""
-        presets = self._hand_presets()
-        return {
-            "robot_name": self._robot_name,
-            "hand_name": self._hand_name,
-            "action_dim": self._gripper_action_dim,
-            "dexterous": self._supports_dexterous_hand(),
-            "available_preshapes": list(presets.keys()),
-            "recommended_open_preshape": "open",
-            "recommended_close_preshape": "close",
-        }
-
-    def set_hand_joints(self, joints: list[float] | np.ndarray, steps: int = 40) -> None:
-        """Set explicit hand-actuation targets.
-
-        For Panda-like grippers, a single scalar is accepted.
-        For dexterous hands such as Inspire, pass one value per gripper action DoF.
-        """
-        joints_arr = np.asarray(joints, dtype=np.float64).reshape(-1)
-        if self._supports_dexterous_hand():
-            if joints_arr.size != self._gripper_action_dim:
-                raise ValueError(
-                    f"Expected {self._gripper_action_dim} hand joint values, got {joints_arr.size}"
-                )
-            _command_gripper(self._env, joints_arr, steps=steps)
-            return
-
-        if joints_arr.size != 1:
-            raise ValueError("Parallel-jaw grippers only accept a single scalar hand command")
-        self._env._set_gripper(float(np.clip(joints_arr[0], 0.0, 1.0)))
-        for _ in range(steps):
-            self._env._step_once()
-
-    def set_hand_preshape(self, preshape_name: str, steps: int = 40) -> None:
-        """Move the current hand to a named preshape."""
-        presets = self._hand_presets()
-        key = preshape_name.strip().lower()
-        if key not in presets:
-            raise ValueError(f"Unknown hand preshape: {preshape_name}. Available: {sorted(presets)}")
-        preset = presets[key]
-        if self._supports_dexterous_hand():
-            _command_gripper(self._env, preset, steps=steps)
-        else:
-            self._env._set_gripper(float(preset[0]))
-            for _ in range(steps):
-                self._env._step_once()
-
     def open_gripper(self) -> None:
         """Open gripper fully.
 
@@ -479,7 +345,9 @@ class FrankaControlPrivilegedApi(ApiBase):
             None
         """
         if self._supports_dexterous_hand():
-            self.set_hand_preshape("open", steps=40)
+            self._env._set_gripper_command(self._inspire_open_pose())
+            for _ in range(40):
+                self._env._step_once()
             return
         _open_gripper(self._env, steps=40)
 
@@ -490,7 +358,9 @@ class FrankaControlPrivilegedApi(ApiBase):
             None
         """
         if self._supports_dexterous_hand():
-            self.set_hand_preshape("close", steps=60)
+            self._env._set_gripper_command(self._inspire_closed_pose())
+            for _ in range(60):
+                self._env._step_once()
             return
         _close_gripper(self._env, steps=60)
 

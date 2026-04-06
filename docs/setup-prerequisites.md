@@ -167,20 +167,15 @@ python3 -u -m capx.envs.launch \
   --model "ollama/qwen2.5-coder:7b-instruct-q4_K_M"
 ```
 
-Example current Inspire smoke config:
+Example hand-configuration smoke test:
 
 ```bash
-python3 -u -m capx.envs.launch \
-  --config-path env_configs/shape_generalization/franka_qwen_shape_inspire_smoke.yaml \
-  --model "ollama/qwen2.5-coder:7b-instruct-q4_K_M" \
-  --total-trials 1 \
-  --num-workers 1 \
-  --temperature 0.3
+uv run pytest tests/test_hand_configs.py -q
 ```
 
 ## Current practical prerequisites for reproducing our local runs
 
-Before reproducing the current Panda / Inspire benchmark work, make sure all of the
+Before reproducing the current Panda benchmark work, or the minimal hand-configuration smoke path, make sure all of the
 following are true:
 
 1. The repo was cloned with submodules.

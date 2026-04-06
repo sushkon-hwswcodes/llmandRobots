@@ -2,6 +2,15 @@
 
 ## Testing
 
+### Hand configuration smoke
+
+```bash
+uv run pytest tests/test_hand_configs.py -q
+```
+
+This checks that the current non-Panda hand smoke profile can instantiate, reset, and step in Robosuite without treating it as an active benchmark path.
+
+
 ### Unit tests
 
 ```bash

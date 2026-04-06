@@ -121,15 +121,6 @@ def close_gripper(env, steps: int = 30) -> None:
         env._step_once()
 
 
-def command_gripper(env, command: np.ndarray | list[float] | tuple[float, ...], steps: int = 30) -> None:
-    """Send an explicit gripper command vector with stepping."""
-    if not hasattr(env, "_set_gripper_command"):
-        raise RuntimeError("Environment does not support explicit gripper command vectors")
-    env._set_gripper_command(command)
-    for _ in range(steps):
-        env._step_once()
-
-
 def open_gripper_arm1(env, steps: int = 30) -> None:
     """Open gripper fully for arm 1 with stepping."""
     if not hasattr(env, "_set_gripper_arm1"):

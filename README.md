@@ -194,6 +194,7 @@ uv run --no-sync --active capx/envs/launch.py \
 | [LIBERO-PRO Tasks](docs/libero-tasks.md) | Setup, running any of 130+ LIBERO tasks, suite reference |
 | [BEHAVIOR Tasks](docs/behavior-tasks.md) | Setup, R1Pro tasks, expected baselines, environment variables |
 | [Development](docs/development.md) | Testing, linting, LIBERO/GraspNet setup, checkpoints, known issues |
+| [Hand Configuration](docs/hand_configuration.md) | Minimal hand-swap fields and the current simulation smoke path |
 | [Real-World Franka Panda Bringup](docs/real-franka.md) | Bringup with robots_realtime, real-robot QuickStart |
 | [RL Training](docs/rl-training.md) | CaP-RL with GRPO/VeRL, sim-to-real transfer |
 | [Project Status](docs/status.md) | Recent benchmark milestones, current branch status, active local artifacts |
@@ -210,7 +211,7 @@ For the current benchmark work in this repo, the most relevant path is:
 4. Run Franka / Robosuite evaluations from the repo root
 
 If you want the exact prerequisites and commands for reproducing the current local
-Panda and Inspire-hand experiments, use
+Panda workflow, plus the minimal hand-configuration smoke path, use
 [Setup And Prerequisites](docs/setup-prerequisites.md).
 
 ---

@@ -1,51 +1,25 @@
 # Project Plan
 
-Last updated: 2026-04-05
+Last updated: 2026-04-06
 
 ## Immediate next steps
 
-1. Preserve the current Panda benchmark path as the reproducible baseline while hand-configuration work lands.
-2. Use the new hand-config plumbing to define the first non-Panda-hand candidate profile without changing existing benchmark YAML behavior.
-3. Standardize on `PandaDexRH` as the first five-finger simulation target, since Robosuite already provides the correct Inspire-hand mount composition for Panda.
-4. Keep the smoke config and future hand benchmarks aligned to that profile: `robot_name: PandaDexRH`, `robosuite_gripper_type: default`, and the existing Panda IK server settings.
-5. Keep the new dexterous-hand API narrow and backward-compatible: preserve `open_gripper()` / `close_gripper()` for Panda while making the Inspire smoke prompt use only `get_hand_capabilities()`, `set_hand_preshape(...)`, and `set_hand_joints([...])`.
-6. Use the updated `franka_qwen_shape_inspire_smoke.yaml` config to enforce a safer Inspire-hand grasp routine: shape-based preshape choice, two-stage descent, short test lift, one deterministic reinforcement grasp, and a straight-line script that does not define helpers or shadow APIs.
-7. The literal Inspire-hand prompt has now produced the intended real motion sequence, the first shape-aware `sample_grasp_pose(...)` change improved smoke reward from `0.000` to `0.033`, and the enclosing-pregrasp prompt made the model reliably choose `open`; lowering the final target too far regressed back to `0.000`, so the next geometry change should be more conservative or should add orientation changes instead of only more Z lowering.
-8. The known successful Inspire-hand smoke trial has now been turned into a near-template prompt, and it improved the smoke reward slightly to `0.035`; the next step is to use the newly added named Inspire-hand presets such as `wide_enclose`, `box_wrap`, `cylinder_wrap`, and `ball_cup` rather than asking the model to invent raw 6-value joint vectors.
-9. Keep the prompt template structure and only swap the named hand shape used before closure: `wide_enclose` before approach, then `box_wrap`, `cylinder_wrap`, or `ball_cup` at the grasp pose. The first named-preset smoke run stayed near `0.033`, and the first 3-trial orientation A/B restored the better non-regressed grasp height and produced `0.000`, `0.035`, and `0.035` rewards without any task completions, so the next gains should come from a small number of explicit pre-close waypoint / enclosure tests rather than more prompt wording changes.
-10. Add shape-specific debug configs when needed instead of overloading the generic prompt. The first such debug path should pin the low-level env to `fixed_shape: cylinder` and use a cylinder-only prompt so we can test whether “around and above, then around and at depth, then wrap” works better when the model is not asked to generalize across shapes at the same time.
-11. The first cylinder-only smoke run followed the object-specific sequence but still scored `0.000`, and the video suggested the palm center stayed directly above the cylinder during descent. The lateral-offset follow-up also scored `0.000` even though it executed the intended around-the-cylinder path cleanly. The simplified open/close retry benchmark also scored `0.000` across 3 trials, so prompt-level cylinder sequencing now looks exhausted; the next cylinder iteration should move into low-level control by changing `sample_grasp_pose(...)`, the cylinder grasp quaternion / target, or the actual Inspire hand command semantics rather than adding more prompt logic.
-10. Keep the clutter-failure review and YCB target-clutter follow-up as the next benchmark tasks once the hand path is stable.
+1. Keep Panda as the only active benchmark target until the local regression is understood.
+2. Compare the current Panda control path against the earlier `20/20` milestone and isolate the regression surface.
+3. Use oracle / deterministic smoke tests before relying on model benchmarks to judge control changes.
+4. Keep hand configuration support at the simulation-smoke level only.
+5. Start any future hand work from a fresh direction after Panda is stable again.
 
 ## Short-term goals
 
-1. Keep the already-solved Panda baseline (`20/20`) and shape/clutter results reproducible while making the hand path configurable.
-2. Add a first working five-finger hand profile as an opt-in configuration rather than a replacement.
-3. Characterize whether the first five-finger benchmark improves more from richer hand actions or from better approach / grasp-pose logic.
-4. Raise the green-target clutter task from `24/30` toward the shape-generalization level of `25/30` or better once the hand migration path is understood.
-5. Improve the first YCB bridge by replacing the temporary OBJ-for-collision fallback, which currently exists because MuJoCo would not load the provided YCB `collision.ply` files in this setup.
-6. Keep the first real-object clutter benchmark focused on graspable YCB objects so the main variable is cluttered target selection rather than impossible grasps.
-7. Improve the target-clutter grasp policy or success shaping so the current `9/30` result becomes a more stable real-object clutter baseline.
-
-## Medium-term goals
-
-1. Promote the shape-generalization and green-target clutter tasks into a more formal benchmark suite once failure modes are understood.
-2. Reuse the same evaluation harness to compare parallel-jaw Panda behavior against the first five-finger hand configuration on the same lift/clutter tasks.
-3. Keep collecting benchmark artifacts that are easy to audit: logs, saved code, overview videos, and montage summaries.
-4. Implement Phase 3 by replacing synthetic/generated shapes with real-world objects while keeping the evaluation protocol comparable.
-5. Extend Phase 3 from single-object lift into harder real-object variants after the base YCB lift is benchmarked.
-6. Extend Phase 3 from single-object lift into specific-target selection from real-object clutter once the base YCB lift and first clutter benchmark are characterized.
-
-## Planned phase sequence
-
-1. Phase 2: shape generalization over generated shapes.
-2. Phase 2.75: green-target selection in clutter.
-3. Phase 3: real-world objects instead of randomly generated shapes.
+1. Recover a trustworthy local Panda cube-lift baseline.
+2. Re-check clutter once Panda behavior is credible again.
+3. Preserve shape / clutter / YCB infrastructure that is not tied to the removed Inspire prompt experiments.
+4. Keep benchmark artifacts easy to audit: configs, code, logs, summaries, and videos.
 
 ## Decision rule for the next iteration
 
-- If the first five-finger hand can be instantiated with Panda and existing Robosuite tasks, prioritize that path over introducing a new arm stack.
-- If the five-finger hand only works with a different arm/URDF stack, pause before implementation and compare that migration cost against the value of benchmark continuity.
-- If the five-finger hand can run through richer hand actions without disturbing Panda, test that narrow API before widening the control surface further.
-- If the first orientation pass improves partial rewards but still produces no successful lifts, hold the prompt fixed and vary only one low-level geometry factor at a time: pre-close waypoint depth, final grasp height, or orientation.
-- If clutter failures remain dominated by near-success grasps after the hand path is stable, prioritize simulator reward/success shaping and grasp-pose affordances over prompt wording changes.
+- If a change touches shared Panda control behavior, test it with oracle or deterministic smoke code first.
+- If Panda local results stay low even with oracle code, prioritize low-level control and simulator drift over prompt tuning.
+- If a hand idea requires prompt-heavy workaround logic before Panda is stable, defer it.
+- If a hand profile can instantiate and step but not grasp reliably, treat that only as simulation readiness, not as an active benchmark path.
