@@ -60,8 +60,8 @@ def primitive_quaternion_wxyz(palm_face: str, middle_finger_direction: str) -> n
 
 
 INSPIRE_WRIST_PRIMITIVES_V1: dict[str, HandPrimitive] = {
-    "top_grasp_4": HandPrimitive(
-        name="top_grasp_4",
+    "top_forward": HandPrimitive(
+        name="top_forward",
         preset_library="inspire_right_allegro_v3",
         hand_preset="grasp_4",
         palm_face="down",
@@ -70,18 +70,18 @@ INSPIRE_WRIST_PRIMITIVES_V1: dict[str, HandPrimitive] = {
         approach_distance=0.08,
         description="Top-down four-finger close with the palm facing down and the middle finger pointing forward.",
     ),
-    "top_envelop": HandPrimitive(
-        name="top_envelop",
+    "top_left": HandPrimitive(
+        name="top_left",
         preset_library="inspire_right_allegro_v3",
         hand_preset="envelop",
         palm_face="down",
-        middle_finger_direction="forward",
+        middle_finger_direction="left",
         approach_direction="up",
         approach_distance=0.08,
-        description="Top-down staged envelop primitive: spread first, then broad close.",
+        description="Top-down staged envelop primitive with the palm facing down and the middle finger pointing left.",
     ),
-    "side_pinch_it": HandPrimitive(
-        name="side_pinch_it",
+    "side_left_down": HandPrimitive(
+        name="side_left_down",
         preset_library="inspire_right_allegro_v3",
         hand_preset="pinch_it",
         palm_face="left",
@@ -90,8 +90,8 @@ INSPIRE_WRIST_PRIMITIVES_V1: dict[str, HandPrimitive] = {
         approach_distance=0.08,
         description="Side-oriented index-thumb pinch with the palm facing left and the middle finger pointing down.",
     ),
-    "side_pinch_mt": HandPrimitive(
-        name="side_pinch_mt",
+    "side_right_down": HandPrimitive(
+        name="side_right_down",
         preset_library="inspire_right_allegro_v3",
         hand_preset="pinch_mt",
         palm_face="right",
