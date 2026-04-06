@@ -126,7 +126,7 @@ libero = [
 verl = { path = "capx/third_party/verl" }
 contact_graspnet_pytorch = { path = "capx/third_party/contact_graspnet_pytorch", editable = true }
 sam3 = { path = "capx/third_party/sam3", editable = true}
-nvidia-curobo = { path = "capx/third_party/curobo", editable = true}
+nvidia-curobo = [{ path = "capx/third_party/curobo", extra = "curobo", editable = true }]
 
 [tool.uv]
 environments = [
