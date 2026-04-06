@@ -105,6 +105,8 @@ def _run_trial_with_env(
     palm_face: str,
     finger_dir: str,
     seed: int,
+    *,
+    preset_name: str,
 ) -> dict[str, Any]:
     obs, _ = env.reset(seed=seed)
     del obs
@@ -114,7 +116,7 @@ def _run_trial_with_env(
         "middle_finger_direction": finger_dir,
         "orientation_name": orientation_name(palm_face, finger_dir),
         "seed": seed,
-        "preset": PRESET_BY_SHAPE[shape],
+        "preset": preset_name,
         "success": False,
         "reward": 0.0,
         "height_gain": 0.0,
@@ -138,7 +140,7 @@ def _run_trial_with_env(
         api.open_gripper()
         _fast_goto_pose(env, api, pre_position, quat)
         _fast_goto_pose(env, api, target_position, quat)
-        _play_hand_preset(env, PRESET_BY_SHAPE[shape])
+        _play_hand_preset(env, preset_name)
         _fast_goto_pose(env, api, lift_position, quat)
 
         final_pos, _, _ = api.get_object_pose("object", return_bbox_extent=True)
@@ -152,7 +154,13 @@ def _run_trial_with_env(
     return result
 
 
-def _write_outputs(output_dir: Path, trial_rows: list[dict[str, Any]], shapes: list[str], orientations: list[tuple[str, str]], trials_per_shape: int) -> None:
+def _write_outputs(
+    output_dir: Path,
+    trial_rows: list[dict[str, Any]],
+    shapes: list[str],
+    orientations: list[tuple[str, str]],
+    trials_per_shape: int,
+) -> None:
     by_shape: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in trial_rows:
         by_shape[row["shape"]].append(row)
@@ -253,13 +261,45 @@ def main() -> None:
         default="outputs/hand_orientation_screen_v1",
         help="Directory for JSON/CSV summaries.",
     )
+    parser.add_argument(
+        "--orientation",
+        action="append",
+        default=[],
+        help="Optional orientation filter formatted as palm_face:finger_dir, e.g. up:forward.",
+    )
+    parser.add_argument(
+        "--preset",
+        action="append",
+        default=[],
+        help="Optional preset override formatted as shape:preset, e.g. cylinder:grasp_3.",
+    )
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     shapes = list(args.shape) if args.shape else ["box", "cylinder", "ball"]
-    orientations = iter_all_wrist_orientation_pairs()
+    preset_by_shape = PRESET_BY_SHAPE.copy()
+    for item in args.preset:
+        if ":" not in item:
+            raise ValueError(f"Invalid --preset value {item!r}; expected shape:preset")
+        shape_name, preset_name = item.split(":", 1)
+        if shape_name not in preset_by_shape:
+            raise ValueError(f"Unknown shape {shape_name!r} in --preset")
+        preset_by_shape[shape_name] = preset_name
+
+    if args.orientation:
+        orientations = []
+        for item in args.orientation:
+            if ":" not in item:
+                raise ValueError(f"Invalid --orientation value {item!r}; expected palm:fingers")
+            palm_face, finger_dir = item.split(":", 1)
+            pair = (palm_face, finger_dir)
+            if pair not in iter_all_wrist_orientation_pairs():
+                raise ValueError(f"Unknown or non-orthogonal orientation {pair!r}")
+            orientations.append(pair)
+    else:
+        orientations = iter_all_wrist_orientation_pairs()
     trial_rows: list[dict[str, Any]] = []
 
     for shape_idx, shape in enumerate(shapes):
@@ -269,7 +309,15 @@ def main() -> None:
             for orient_idx, (palm_face, finger_dir) in enumerate(orientations):
                 for trial_idx in range(args.trials_per_shape):
                     seed = 1000 + shape_idx * 100 + orient_idx * 10 + trial_idx
-                    row = _run_trial_with_env(env, api, shape, palm_face, finger_dir, seed)
+                    row = _run_trial_with_env(
+                        env,
+                        api,
+                        shape,
+                        palm_face,
+                        finger_dir,
+                        seed,
+                        preset_name=preset_by_shape[shape],
+                    )
                     trial_rows.append(row)
                     _write_outputs(output_dir, trial_rows, shapes, orientations, args.trials_per_shape)
                     print(

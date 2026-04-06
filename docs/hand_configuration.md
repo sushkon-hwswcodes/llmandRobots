@@ -71,6 +71,13 @@ can restart from a smaller surface area.
   - `ball`: `palm_back__fingers_down` with `envelop`
   - `cylinder`: no wrist orientation succeeded with the current `pinch_mt`
     preset, which suggests preset quality is the larger bottleneck there
+- A smaller follow-up confirmation pass showed:
+  - `box` + `grasp_4` + `palm_up__fingers_forward`: `0/10` completed, so the
+    original `1/3` screen hit was not stable
+  - `ball` + `envelop` + `palm_back__fingers_down`: `1/10` completed, which is
+    weak but still the only currently repeatable synthetic win signal
+  - `cylinder`: `envelop` outperformed `grasp_3` and `grasp_4` on reward across
+    a small preset bake-off, but still produced `0` completed lifts
 - Any future hand grasp restart should begin with constrained primitives that include:
   - hand shape
   - wrist orientation
