@@ -64,6 +64,15 @@ For the Robosuite / Franka simulation workflow used in the current benchmarks:
 uv sync --extra robosuite --extra dev
 ```
 
+If `uv sync` fails while trying to inspect optional CUDA / cuRobo metadata on a
+machine where you only want the Robosuite baseline, use this editable-install
+fallback instead:
+
+```bash
+source .venv/bin/activate
+uv pip install -e '.[robosuite]' pytest pytest-timeout ruff mypy requests pillow
+```
+
 Optional extras you may want later:
 
 ```bash
@@ -77,9 +86,9 @@ uv sync --extra curobo
 Typical headless simulation settings used in this repo:
 
 ```bash
-export PYTHONPATH=/root/vlaTraining/cap-x
+export PATH=/root/.local/bin:$PATH
+export PYTHONPATH=/path/to/cap-x
 export MUJOCO_GL=osmesa
-export DISPLAY=:1
 export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 ```
 
@@ -87,8 +96,8 @@ Notes:
 
 - Many tests default to `MUJOCO_GL=egl`, but the current local smoke runs used
   `MUJOCO_GL=osmesa`.
-- `DISPLAY=:1` is only needed in setups like the current workstation where that
-  display is already available.
+- `DISPLAY=:1` is only needed on machines that already rely on an existing X
+  display; it is not required for the usual headless OSMesa path.
 
 ## LLM backend
 
@@ -98,8 +107,8 @@ workflow, that is Ollama.
 Install Ollama, pull a model, and start the server:
 
 ```bash
-ollama pull qwen2.5-coder:7b-instruct-q4_K_M
 ollama serve
+ollama pull qwen2.5-coder:7b-instruct-q4_K_M
 ```
 
 The server listens on `http://127.0.0.1:11434` by default.
@@ -116,6 +125,13 @@ python -m capx.serving.launch_pyroki_server \
   --port 8116 \
   --host 127.0.0.1
 ```
+
+Notes:
+
+- On first startup, PyRoKi may download robot description assets and build its
+  collision model, so port `8116` may take a minute or two to open.
+- Many evaluation configs auto-launch PyRoKi, but starting it once manually is a
+  useful sanity check when bringing up a new machine.
 
 ## Sanity checks before running evals
 
@@ -136,6 +152,10 @@ ollama list
 ```bash
 uv run pytest tests/test_environments.py -q
 ```
+
+This test file now focuses on the currently active Robosuite baseline and skips
+optional environment families (for example LIBERO / R1Pro) when they are not
+registered in the current install.
 
 ## Running the current Robosuite benchmark workflow
 
@@ -169,6 +189,15 @@ following are true:
 4. MuJoCo rendering works with `MUJOCO_GL=osmesa` on this machine.
 5. The Franka PyRoKi server can be auto-launched or reached on `127.0.0.1:8116`.
 6. You are running commands from the repo root with `PYTHONPATH` set correctly.
+
+## Current caveat
+
+The reachable vendored Robosuite submodule currently supports the Panda /
+cube-lift / cube-stack / spill-wipe / nut-assembly baseline path, but the
+shape-generalization registration path depends on a historical `lift_shape`
+module that is not present in the currently reachable upstream Robosuite refs.
+The simulator registry now skips that optional env instead of disabling all
+Robosuite env registration.
 
 ## Related docs
 

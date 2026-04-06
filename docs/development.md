@@ -8,6 +8,11 @@
 uv run pytest tests/test_environments.py -q
 ```
 
+This suite is intended as a practical smoke test for the currently installed
+environment family. Active Robosuite envs are exercised directly; optional env
+families are skipped when their low-level registrations are unavailable in the
+current install.
+
 Run a specific test:
 ```bash
 uv run pytest tests/test_environments.py::test_franka_pick_place_code_env -q
@@ -133,6 +138,10 @@ We vendor some upstream repos for reproducible, offline tests. Initialize submod
 ```bash
 git submodule update --init --recursive
 ```
+
+If a single optional Robosuite env import fails, it should not disable the
+entire Robosuite registry. The simulator registration path now isolates those
+failures so the active baseline envs still register.
 
 ## Sharp bits / known issues
 

@@ -205,8 +205,9 @@ uv run --no-sync --active capx/envs/launch.py \
 For the current benchmark work in this repo, the most relevant path is:
 
 1. Install the Robosuite environment with `uv sync --extra robosuite --extra dev`
-2. Start `ollama serve`
-3. Run Franka / Robosuite evaluations from the repo root
+2. Start `ollama serve` and pull `qwen2.5-coder:7b-instruct-q4_K_M`
+3. Ensure PyRoKi is reachable on `127.0.0.1:8116` (many configs auto-launch it, but first startup may take a couple of minutes)
+4. Run Franka / Robosuite evaluations from the repo root
 
 If you want the exact prerequisites and commands for reproducing the current local
 Panda and Inspire-hand experiments, use
