@@ -242,6 +242,18 @@ class FrankaControlPrivilegedApi(ApiBase):
         has_secondary = "cube_poses" in obs and "secondary" in obs["cube_poses"]
         is_primary = self._is_primary_object_name(name, has_secondary)
 
+        if getattr(rs_env, "prefer_center_grasp_pose", False):
+            if is_primary:
+                return (
+                    np.asarray(obs["cube_poses"]["primary"][:3], dtype=np.float64).copy(),
+                    np.array([0, 0, 1, 0], dtype=np.float64),
+                )
+            if "green" in name and "cube" in name:
+                return (
+                    np.asarray(obs["cube_poses"]["secondary"][:3], dtype=np.float64).copy(),
+                    np.array([0, 0, 1, 0], dtype=np.float64),
+                )
+
         # Preserve the historical Panda cube-lift behavior for plain cube envs.
         # Those envs do not expose shape metadata, and their earlier benchmarked
         # path sampled a grasp directly at the object center.

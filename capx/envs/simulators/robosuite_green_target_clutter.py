@@ -29,6 +29,7 @@ class LiftGreenTargetClutter(Lift):
         self.num_red_distractors = num_red_distractors
         self._current_shape = "box"
         self._current_size = np.zeros(3)
+        self.prefer_center_grasp_pose = True
         super().__init__(*args, **kwargs)
 
     def _make_random_object(self, name: str, rgba: list[float], material: CustomMaterial):
