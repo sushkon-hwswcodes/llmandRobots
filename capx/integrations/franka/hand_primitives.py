@@ -15,6 +15,15 @@ WORLD_DIRECTIONS: dict[str, np.ndarray] = {
     "down": np.array([0.0, 0.0, -1.0], dtype=np.float64),
 }
 
+OPPOSITE_DIRECTION: dict[str, str] = {
+    "forward": "back",
+    "back": "forward",
+    "left": "right",
+    "right": "left",
+    "up": "down",
+    "down": "up",
+}
+
 # Calibrated from the current PandaDexRH / InspireRightHand wrist frame:
 # - local +X aligns best with the palm-facing direction
 # - local -Y aligns best with the middle-finger pointing direction
@@ -57,6 +66,26 @@ def primitive_quaternion_wxyz(palm_face: str, middle_finger_direction: str) -> n
     rotation_matrix = world_basis @ local_basis.T
     quat_xyzw = SciRotation.from_matrix(rotation_matrix).as_quat()
     return np.array([quat_xyzw[3], quat_xyzw[0], quat_xyzw[1], quat_xyzw[2]], dtype=np.float64)
+
+
+def iter_all_wrist_orientation_pairs() -> list[tuple[str, str]]:
+    pairs: list[tuple[str, str]] = []
+    for palm_face in WORLD_DIRECTIONS:
+        for middle_finger_direction in WORLD_DIRECTIONS:
+            if palm_face == middle_finger_direction:
+                continue
+            if middle_finger_direction == OPPOSITE_DIRECTION[palm_face]:
+                continue
+            palm = WORLD_DIRECTIONS[palm_face]
+            finger = WORLD_DIRECTIONS[middle_finger_direction]
+            if abs(float(np.dot(palm, finger))) > 1e-6:
+                continue
+            pairs.append((palm_face, middle_finger_direction))
+    return pairs
+
+
+def orientation_name(palm_face: str, middle_finger_direction: str) -> str:
+    return f"palm_{palm_face}__fingers_{middle_finger_direction}"
 
 
 INSPIRE_WRIST_PRIMITIVES_V1: dict[str, HandPrimitive] = {

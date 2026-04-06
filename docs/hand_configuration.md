@@ -61,6 +61,16 @@ can restart from a smaller surface area.
   staged `envelop` is improved but still needs more tuning before it should be
   treated as settled.
 - The current harness keeps the wrist fixed, so it demonstrates articulation, not object pickup quality.
+- A full 24-orientation wrist screen was run against synthetic `box`, `cylinder`,
+  and `ball` lift tasks under:
+  - `outputs/hand_orientation_screen_v1_box/`
+  - `outputs/hand_orientation_screen_v1_cylinder/`
+  - `outputs/hand_orientation_screen_v1_ball/`
+- The strongest orientation candidates from that screen were:
+  - `box`: `palm_up__fingers_forward` with `grasp_4`
+  - `ball`: `palm_back__fingers_down` with `envelop`
+  - `cylinder`: no wrist orientation succeeded with the current `pinch_mt`
+    preset, which suggests preset quality is the larger bottleneck there
 - Any future hand grasp restart should begin with constrained primitives that include:
   - hand shape
   - wrist orientation
