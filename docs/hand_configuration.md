@@ -48,6 +48,24 @@ This profile is kept only as a simulation / instantiation smoke target for now.
 The previous prompt-level grasp experiments for that hand path were removed so we
 can restart from a smaller surface area.
 
+## Current paused state
+
+- The current Inspire path can instantiate, reset, step, and replay candidate hand command vectors.
+- Candidate hand preset videos were exported under `outputs/hand_preset_videos_candidate_v1/`.
+- Those candidate presets are not yet validated grasp primitives.
+- The current harness keeps the wrist fixed, so it demonstrates articulation, not object pickup quality.
+- Any future hand grasp restart should begin with constrained primitives that include:
+  - hand shape
+  - wrist orientation
+  - approach direction / offset
+  - optional close profile
+
+## Current external references
+
+- Allegro path: useful for its small named-grasp API and saved-pose workflow.
+- RH56DFX path: useful for its public grasp families (`line`, `plane`, `cylinder`) and geometric / force-control planning ideas.
+- Neither path is a direct drop-in preset library for this repo's current Robosuite Inspire setup, so the implementation here will still need local validation.
+
 ## What is still guaranteed
 
 - Panda benchmark configs remain the reference path.

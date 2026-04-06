@@ -28,6 +28,7 @@ Last updated: 2026-04-06
 - Keep hand configuration support only at the simulation / instantiation level for now
 - Keep the restored synthetic benchmark path stable while moving the same grasp semantics into YCB
 - Remove the old project-local Inspire prompt / preset benchmark direction and restart hand work from a smaller surface area later
+- Pause new hand-grasp implementation work until a constrained primitive interface is chosen
 
 ## Current local artifacts
 
@@ -35,6 +36,7 @@ Last updated: 2026-04-06
 - The shape-generalization env no longer depends on an unreachable upstream Robosuite module
 - The env registry now skips optional broken imports instead of disabling the whole Robosuite family
 - A dedicated hand-config smoke test now verifies that `PandaDexRH` can instantiate and step in simulation
+- A hand-preset articulation harness and candidate preset video set were generated for the current Inspire smoke path
 - The local shell helper on this machine exports `MANISKILL_ASSET_DIR=/root/.maniskill/data` for the YCB path
 
 ## Current local readout
@@ -58,3 +60,17 @@ Last updated: 2026-04-06
 - Decide whether the weak flat YCB packages need a small category-specific grasp bias or a slightly different preshape / orientation
 - Re-run the YCB benchmarks after any object-specific grasp refinement
 - Keep hand work deferred until the maintained Panda / shape / clutter / YCB path is stable
+
+## Paused hand-work checkpoint
+
+- The current Inspire hand sim path is validated only at the instantiation and articulation level, not as a reliable grasp benchmark path
+- Candidate named hand presets were added and exported as videos, but several looked too similar to count as validated distinct grasps
+- The current preset harness keeps the wrist vertical, so it validates finger articulation only, not full grasp primitives
+- The next hand iteration should combine hand shape with wrist orientation and approach geometry
+- Public prior art split found so far:
+  - Allegro provides a small named-grasp software interface plus saved custom poses
+  - RH56DFX public code provides grasp families and geometric / force-control planning rather than a static preset catalog
+- The most promising restart direction is a constrained primitive API:
+  - object class supplied before planning
+  - small menu such as `open`, `soft_close`, `close` or a few named primitives per class
+  - optional PPO-discovered class-conditioned presets later
