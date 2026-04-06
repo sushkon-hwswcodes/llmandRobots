@@ -74,18 +74,31 @@ def _render_rgb(env: FrankaRobosuiteCubeLiftLowLevel, camera_name: str) -> np.nd
     return np.flipud(frame)
 
 
+def _write_video(path: Path, frames: list[np.ndarray], fps: int = 10) -> None:
+    if not frames:
+        return
+    imageio.mimwrite(path, frames, fps=fps)
+
+
 def _apply_command(
     env: FrankaRobosuiteCubeLiftLowLevel,
     command: np.ndarray,
     *,
     settle_steps: int,
 ) -> dict[str, Any]:
+    robot_frames: list[np.ndarray] = []
+    front_frames: list[np.ndarray] = []
+
     env._set_gripper_command(command)
     for _ in range(settle_steps):
         env._step_once()
+        robot_frames.append(_render_rgb(env, "robot0_robotview"))
+        front_frames.append(_render_rgb(env, "frontview"))
     return {
         "joint_positions": _joint_positions(env),
         "site_positions": _site_positions(env),
+        "robot_frames": robot_frames,
+        "front_frames": front_frames,
     }
 
 
@@ -145,6 +158,8 @@ def main() -> None:
         imageio.imwrite(preset_dir / "before_frontview.png", before_front)
         imageio.imwrite(preset_dir / "after_robotview.png", after_robot)
         imageio.imwrite(preset_dir / "after_frontview.png", after_front)
+        _write_video(preset_dir / f"{preset_name}_robotview.mp4", [before_robot, *result["robot_frames"], after_robot])
+        _write_video(preset_dir / f"{preset_name}_frontview.mp4", [before_front, *result["front_frames"], after_front])
 
         payload = {
             "description": preset.description,
