@@ -458,6 +458,7 @@ class RobosuiteBaseEnv(BaseEnv):
     def snapshot_state(self) -> dict[str, Any]:
         return {
             "sim_state": np.array(self.robosuite_env.sim.get_state().flatten(), copy=True),
+            "robosuite_timestep": int(getattr(self.robosuite_env, "timestep", 0)),
             "step_count": int(self._step_count),
             "sim_step_count": int(self._sim_step_count),
             "current_joints": self._current_joints.copy(),
@@ -470,6 +471,8 @@ class RobosuiteBaseEnv(BaseEnv):
     def restore_state(self, snapshot: dict[str, Any]) -> None:
         self.robosuite_env.sim.set_state_from_flattened(snapshot["sim_state"])
         self.robosuite_env.sim.forward()
+        if hasattr(self.robosuite_env, "timestep"):
+            self.robosuite_env.timestep = int(snapshot.get("robosuite_timestep", 0))
         self._step_count = int(snapshot["step_count"])
         self._sim_step_count = int(snapshot["sim_step_count"])
         self._current_joints = np.asarray(snapshot["current_joints"], dtype=np.float64).copy()

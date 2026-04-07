@@ -388,6 +388,7 @@ class LiftYCBTargetClutter(Lift):
         self,
         *args,
         object_ids: list[str] | None = None,
+        distractor_ids: list[str] | None = None,
         num_distractors: int = 4,
         target_object_id: str | None = None,
         placement_x_range: tuple[float, float] = (-0.18, 0.18),
@@ -397,6 +398,7 @@ class LiftYCBTargetClutter(Lift):
         self.asset_root = _resolve_maniskill_asset_dir()
         self._ycb_metadata = _load_ycb_metadata(self.asset_root)
         self.object_ids = object_ids or list(_YCB_CANDIDATES)
+        self.distractor_ids = list(distractor_ids) if distractor_ids is not None else None
         self.target_object_id = target_object_id
         self.num_distractors = num_distractors
         self.placement_x_range = placement_x_range
@@ -450,11 +452,14 @@ class LiftYCBTargetClutter(Lift):
         else:
             target_idx = int(self.rng.integers(0, len(self.object_ids)))
             target_id = self.object_ids[target_idx]
-        distractor_pool = [obj_id for obj_id in self.object_ids if obj_id != target_id]
-        if len(distractor_pool) < self.num_distractors:
-            distractor_ids = list(self.rng.choice(distractor_pool, size=self.num_distractors, replace=True))
+        if self.distractor_ids is not None:
+            distractor_ids = list(self.distractor_ids)
         else:
-            distractor_ids = list(self.rng.choice(distractor_pool, size=self.num_distractors, replace=False))
+            distractor_pool = [obj_id for obj_id in self.object_ids if obj_id != target_id]
+            if len(distractor_pool) < self.num_distractors:
+                distractor_ids = list(self.rng.choice(distractor_pool, size=self.num_distractors, replace=True))
+            else:
+                distractor_ids = list(self.rng.choice(distractor_pool, size=self.num_distractors, replace=False))
 
         self.cube = self._make_named_ycb_object(target_id, "target")
         self._current_object_info = self._info_for_model(target_id)
@@ -529,6 +534,7 @@ class FrankaRobosuiteYCBTargetClutterLowLevel(RobosuiteBaseEnv):
         gripper_open_command: float = -1.0,
         gripper_closed_command: float = 1.0,
         object_ids: list[str] | None = None,
+        distractor_ids: list[str] | None = None,
         num_distractors: int = 4,
         target_object_id: str | None = None,
         placement_x_range: tuple[float, float] = (-0.18, 0.18),
@@ -573,6 +579,7 @@ class FrankaRobosuiteYCBTargetClutterLowLevel(RobosuiteBaseEnv):
             horizon=max_steps,
             reward_shaping=True,
             object_ids=clutter_candidates,
+            distractor_ids=distractor_ids,
             num_distractors=num_distractors,
             target_object_id=target_object_id,
             placement_x_range=placement_x_range,
