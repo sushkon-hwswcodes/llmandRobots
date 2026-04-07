@@ -6,11 +6,19 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from scipy.spatial.transform import Rotation as SciRotation
 from PIL import Image, ImageDraw, ImageFont
+from capx.third_party.robosuite.robosuite.utils.camera_utils import (
+    get_camera_transform_matrix,
+    project_points_from_world_to_camera,
+)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
+REPO_ROOT = SCRIPT_DIR.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from run_inspire_apple_pickup import _load_snapshot
 from run_inspire_apple_step2 import _build_env_with_retries
@@ -42,11 +50,35 @@ def _draw_path(img_path: Path, out_path: Path, green_pts: list[tuple[int, int]],
         d.ellipse((x - 8, y - 8, x + 8, y + 8), fill=(255, 255, 255, 255), outline=(0, 0, 0, 255), width=2)
         d.text((x + 10, y - 12), str(step_idx), fill=(255, 255, 255, 255), font=font, stroke_width=2, stroke_fill=(0, 0, 0, 255))
 
-    d.rounded_rectangle((12, 12, 388, 72), radius=10, fill=(0, 0, 0, 150))
-    d.text((24, 20), title, fill=(255, 255, 255, 255), font=title_font)
-    d.text((24, 48), "green: pre-contact  blue: post-grasp", fill=(220, 220, 220, 255), font=_font(16))
+    legend_top = img.size[1] - 76
+    d.rounded_rectangle((12, legend_top, 388, legend_top + 60), radius=10, fill=(0, 0, 0, 150))
+    d.text((24, legend_top + 8), title, fill=(255, 255, 255, 255), font=title_font)
+    d.text((24, legend_top + 36), "green: pre-contact  blue: post-grasp", fill=(220, 220, 220, 255), font=_font(16))
 
     Image.alpha_composite(img, overlay).save(out_path)
+
+
+def _project_waypoints(env, camera_name: str, waypoint_names: list[str], waypoints: dict[str, list[float]], image_size: tuple[int, int]) -> dict[int, tuple[int, int]]:
+    width, height = image_size
+    sim = env.robosuite_env.sim
+    world_to_camera = get_camera_transform_matrix(sim, camera_name, height, width)
+    pts_robot = np.asarray([waypoints[name] for name in waypoint_names], dtype=np.float64)
+    base_wxyz_xyz = np.asarray(env.base_link_wxyz_xyz, dtype=np.float64)
+    base_quat_wxyz = base_wxyz_xyz[:4]
+    base_xyz = base_wxyz_xyz[4:]
+    base_rot = SciRotation.from_quat([
+        base_quat_wxyz[1],
+        base_quat_wxyz[2],
+        base_quat_wxyz[3],
+        base_quat_wxyz[0],
+    ])
+    pts = base_rot.apply(pts_robot) + base_xyz
+    pixels_rc = project_points_from_world_to_camera(pts, world_to_camera, height, width)
+    labels: dict[int, tuple[int, int]] = {}
+    for idx, pix in enumerate(pixels_rc, start=1):
+        row, col = int(pix[0]), int(pix[1])
+        labels[idx] = (col, row)
+    return labels
 
 
 def main() -> None:
@@ -75,30 +107,14 @@ def main() -> None:
         '8_retreat': [float(apple[0] - 0.08), float(apple[1] + 0.02), 0.34],
     }
 
-    # Visual overlays are hand-tuned for scene_01; world_waypoints are authoritative.
-    robot_labels = {
-        1: (257, 44),
-        2: (257, 70),
-        3: (280, 120),
-        4: (270, 215),
-        5: (262, 300),
-        6: (257, 380),
-        7: (257, 250),
-        8: (220, 120),
-    }
-    front_labels = {
-        1: (259, 146),
-        2: (259, 98),
-        3: (278, 102),
-        4: (271, 132),
-        5: (266, 198),
-        6: (262, 286),
-        7: (266, 150),
-        8: (228, 110),
-    }
+    waypoint_names = list(waypoints.keys())
+    robot_image_path = scene_dir / 'scene_robotview.png'
+    front_image_path = scene_dir / 'scene_frontview.png'
+    robot_labels = _project_waypoints(env, 'robot0_robotview', waypoint_names, waypoints, Image.open(robot_image_path).size)
+    front_labels = _project_waypoints(env, 'frontview', waypoint_names, waypoints, Image.open(front_image_path).size)
 
     _draw_path(
-        scene_dir / 'scene_robotview.png',
+        robot_image_path,
         scene_dir / 'scene_robotview_planned_path.png',
         [robot_labels[i] for i in [1, 2, 3, 4, 5, 6]],
         [robot_labels[i] for i in [6, 7, 8]],
@@ -106,7 +122,7 @@ def main() -> None:
         'Scene 01 Planned Palm Path',
     )
     _draw_path(
-        scene_dir / 'scene_frontview.png',
+        front_image_path,
         scene_dir / 'scene_frontview_planned_path.png',
         [front_labels[i] for i in [1, 2, 3, 4, 5, 6]],
         [front_labels[i] for i in [6, 7, 8]],
@@ -123,7 +139,7 @@ def main() -> None:
         },
         'world_waypoints_xyz': waypoints,
         'notes': {
-            'image_overlays': 'Conceptual drawing for scene_01 inspection.',
+            'image_overlays': 'Projected from world_waypoints through the simulator camera models.',
             'world_waypoints': 'Authoritative path that later step runners should follow exactly.',
         },
     }
