@@ -13,6 +13,12 @@ from capx.integrations.franka.common import (
     close_gripper as _close_gripper,
     open_gripper as _open_gripper,
 )
+from capx.integrations.franka.hand_presets import get_hand_preset_library
+from capx.integrations.franka.hand_primitives import (
+    WORLD_DIRECTIONS,
+    get_hand_primitive_library,
+    primitive_quaternion_wxyz,
+)
 from capx.integrations.motion.pyroki import init_pyroki
 
 
@@ -63,6 +69,16 @@ class FrankaControlPrivilegedApi(ApiBase):
             "close_gripper": self.close_gripper,
             # "home_pose": self.home_pose,
         }
+        if self._supports_dexterous_hand():
+            base_functions["list_hand_presets"] = self.list_hand_presets
+            base_functions["set_hand_preset"] = self.set_hand_preset
+            base_functions["list_hand_primitives"] = self.list_hand_primitives
+            base_functions["sample_hand_primitive_pose"] = self.sample_hand_primitive_pose
+            base_functions["sample_hand_primitive_pregrasp_pose"] = self.sample_hand_primitive_pregrasp_pose
+            base_functions["sample_hand_primitive_align_pose"] = self.sample_hand_primitive_align_pose
+            base_functions["execute_hand_primitive_soft_close"] = self.execute_hand_primitive_soft_close
+            base_functions["execute_hand_primitive_close"] = self.execute_hand_primitive_close
+            base_functions["execute_hand_primitive"] = self.execute_hand_primitive
         # if self.multi_turn:
         #     base_functions["breakpoint_code_block"] = self.breakpoint_code_block
         return base_functions
@@ -376,6 +392,100 @@ class FrankaControlPrivilegedApi(ApiBase):
 
     def _inspire_closed_pose(self) -> np.ndarray:
         return np.array([1.5, 1.5, 1.5, 1.5, 3.0, 3.0], dtype=np.float64)
+
+    @staticmethod
+    def _support_radius(extent_xyz: np.ndarray, direction: np.ndarray) -> float:
+        half_extents = 0.5 * np.asarray(extent_xyz, dtype=np.float64).reshape(3)
+        direction = np.asarray(direction, dtype=np.float64).reshape(3)
+        return float(np.abs(direction) @ half_extents)
+
+    def list_hand_presets(self) -> list[str]:
+        if not self._supports_dexterous_hand():
+            return ["open", "close"]
+        return sorted(get_hand_preset_library(self._hand_name).keys())
+
+    def set_hand_preset(self, preset_name: str) -> None:
+        if not self._supports_dexterous_hand():
+            raise ValueError("Hand presets are only available for dexterous hands.")
+
+        self._execute_hand_preset_steps(preset_name)
+
+    def _execute_hand_preset_steps(self, preset_name: str, library_name: str | None = None) -> None:
+        library_key = self._hand_name if library_name is None else library_name
+        preset = get_hand_preset_library(library_key)[preset_name]
+        sequence = preset.sequence if len(preset.sequence) > 0 else (preset.command,)
+        stage_steps = preset.stage_steps if len(preset.stage_steps) == len(sequence) else tuple(30 for _ in sequence)
+        for command, steps in zip(sequence, stage_steps, strict=True):
+            self._env._set_gripper_command(command)
+            for _ in range(int(steps)):
+                self._env._step_once()
+
+    def list_hand_primitives(self) -> list[str]:
+        if not self._supports_dexterous_hand():
+            return []
+        return sorted(get_hand_primitive_library(self._hand_name).keys())
+
+    def sample_hand_primitive_pose(self, primitive_name: str, object_name: str = "object") -> tuple[np.ndarray, np.ndarray]:
+        if not self._supports_dexterous_hand():
+            raise ValueError("Hand primitives are only available for dexterous hands.")
+
+        primitive = get_hand_primitive_library(self._hand_name)[primitive_name]
+        quat = primitive_quaternion_wxyz(primitive.palm_face, primitive.middle_finger_direction)
+        if primitive.use_sampled_grasp_position:
+            grasp_pos, _ = self.sample_grasp_pose(object_name)
+            pos = np.asarray(grasp_pos, dtype=np.float64).copy()
+            return pos, quat
+
+        obj_pos, _, bbox = self.get_object_pose(object_name, return_bbox_extent=True)
+        obj_pos = np.asarray(obj_pos, dtype=np.float64)
+        bbox = np.asarray(bbox if bbox is not None else np.array([0.05, 0.05, 0.05]), dtype=np.float64)
+        palm_dir = np.asarray(WORLD_DIRECTIONS[primitive.palm_face], dtype=np.float64)
+        radius = self._support_radius(bbox, palm_dir)
+        pos = obj_pos - palm_dir * (radius + 0.025)
+        return pos, quat
+
+    def sample_hand_primitive_pregrasp_pose(
+        self, primitive_name: str, object_name: str = "object"
+    ) -> tuple[np.ndarray, np.ndarray]:
+        if not self._supports_dexterous_hand():
+            raise ValueError("Hand primitives are only available for dexterous hands.")
+
+        primitive = get_hand_primitive_library(self._hand_name)[primitive_name]
+        grasp_pos, quat = self.sample_hand_primitive_pose(primitive_name, object_name)
+        approach_dir = np.asarray(WORLD_DIRECTIONS[primitive.approach_direction], dtype=np.float64)
+        pregrasp_pos = np.asarray(grasp_pos, dtype=np.float64) + approach_dir * float(primitive.approach_distance)
+        return pregrasp_pos, quat
+
+    def sample_hand_primitive_align_pose(
+        self, primitive_name: str, object_name: str = "object"
+    ) -> tuple[np.ndarray, np.ndarray]:
+        if not self._supports_dexterous_hand():
+            raise ValueError("Hand primitives are only available for dexterous hands.")
+
+        primitive = get_hand_primitive_library(self._hand_name)[primitive_name]
+        grasp_pos, quat = self.sample_hand_primitive_pose(primitive_name, object_name)
+        approach_dir = np.asarray(WORLD_DIRECTIONS[primitive.approach_direction], dtype=np.float64)
+        align_pos = np.asarray(grasp_pos, dtype=np.float64) + approach_dir * float(primitive.align_distance)
+        return align_pos, quat
+
+    def execute_hand_primitive_soft_close(self, primitive_name: str) -> None:
+        if not self._supports_dexterous_hand():
+            raise ValueError("Hand primitives are only available for dexterous hands.")
+        primitive = get_hand_primitive_library(self._hand_name)[primitive_name]
+        if primitive.soft_close_preset is None:
+            return
+        self._execute_hand_preset_steps(primitive.soft_close_preset, primitive.preset_library)
+        for _ in range(8):
+            self._env._step_once()
+
+    def execute_hand_primitive_close(self, primitive_name: str) -> None:
+        self.execute_hand_primitive(primitive_name)
+
+    def execute_hand_primitive(self, primitive_name: str) -> None:
+        if not self._supports_dexterous_hand():
+            raise ValueError("Hand primitives are only available for dexterous hands.")
+        primitive = get_hand_primitive_library(self._hand_name)[primitive_name]
+        self._execute_hand_preset_steps(primitive.hand_preset, primitive.preset_library)
 
     def open_gripper(self) -> None:
         """Open gripper fully.

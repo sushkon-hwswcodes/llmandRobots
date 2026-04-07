@@ -1,0 +1,108 @@
+# Inspire-hand LLM smoke test with constrained wrist+hand primitives on a fixed cylinder shape.
+
+env:
+  _target_: capx.envs.tasks.franka.franka_lift.FrankaLiftCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level: franka_robosuite_shape_lift_low_level
+    low_level_kwargs:
+      robot_name: PandaDexRH
+      hand_name: inspire_right
+      ik_robot_name: panda_description
+      ik_target_link_name: panda_hand
+      eef_body_name: gripper0_right_eef
+      tcp_offset: [0.0, 0.0, -0.107]
+      fixed_shape: cylinder
+    privileged: true
+    enable_sim_preview: true
+    sim_preview_object_displacement_threshold: 0.015
+    apis:
+      - FrankaControlPrivilegedApi
+    prompt: |
+      You are controlling a Franka arm with a dexterous Inspire-style right hand.
+      Goal: pick up the red object and lift it into the air.
+
+      Important:
+      - Use the dexterous-hand primitives instead of inventing raw hand joint values.
+      - First call list_hand_primitives() to see the allowed primitive names.
+      - For this cylinder task, prefer this exact sequence first:
+        1. shape_info = get_object_shape()
+        2. print(list_hand_primitives())
+        3. primitive_name = "cylinder_wrap_up_forward"
+        4. pregrasp_pos, grasp_quat = sample_hand_primitive_pregrasp_pose(primitive_name, "object")
+        5. align_pos, grasp_quat = sample_hand_primitive_align_pose(primitive_name, "object")
+        6. grasp_pos, grasp_quat = sample_hand_primitive_pose(primitive_name, "object")
+        7. goto_pose(pregrasp_pos, grasp_quat)
+        8. goto_pose(align_pos, grasp_quat)
+        9. goto_pose(grasp_pos, grasp_quat)
+        10. execute_hand_primitive_soft_close(primitive_name)
+        11. execute_hand_primitive_close(primitive_name)
+        12. goto_pose(lift_pos, grasp_quat)   # use only +0.06 z on the first try
+      - Approach in three stages: pregrasp, align, then grasp.
+      - The align pose should be just outside contact; do not skip it.
+      - Do not call close_gripper() directly. Use execute_hand_primitive_soft_close() then execute_hand_primitive_close().
+      - After reaching the final grasp pose, do not add extra motion before the soft close.
+      - Do not invent a different strategy on the first attempt.
+      - Keep the hand closed after grasping. Do not reopen it.
+
+      Keep the program short.
+      Use the shape info only for reasoning.
+      ONLY write executable Python code. Do not use code fences.
+
+      Example:
+      import numpy as np
+      print(list_hand_primitives())
+      shape_info = get_object_shape()
+      primitive_name = "cylinder_wrap_up_forward"
+      pregrasp_pos, grasp_quat = sample_hand_primitive_pregrasp_pose(primitive_name, "object")
+      align_pos, grasp_quat = sample_hand_primitive_align_pose(primitive_name, "object")
+      grasp_pos, grasp_quat = sample_hand_primitive_pose(primitive_name, "object")
+      goto_pose(pregrasp_pos, grasp_quat)
+      goto_pose(align_pos, grasp_quat)
+      goto_pose(grasp_pos, grasp_quat)
+      execute_hand_primitive_soft_close(primitive_name)
+      execute_hand_primitive_close(primitive_name)
+      lift_pos = grasp_pos.copy()
+      lift_pos[2] += 0.06
+      goto_pose(lift_pos, grasp_quat)
+
+    multi_turn_prompt: |
+      The following code blocks were just executed:
+      ```python
+      {executed_code}
+      ```
+      The current console stdout is:
+      ```
+      {console_stdout}
+      ```
+      The current console stderr is:
+      ```
+      {console_stderr}
+      ```
+      If there were errors, regenerate with corrected code.
+      If the task is not complete, do not say FINISH.
+      If stderr contains SIM_PREVIEW_REJECTED or reports large dry-run object displacement, you MUST REGENERATE and not FINISH.
+      In that case:
+      - keep the same primitive unless you have already tried it
+      - rewrite the approach so it is gentler
+      - insert one or two interpolated waypoints between align_pos and grasp_pos
+      - resample the grasp pose after reaching pregrasp if helpful
+      - keep soft_close -> close -> lift
+      If grasping still failed without preview rejection, you may switch once from "cylinder_wrap_up_forward" to "cylinder_power_up_forward".
+      Please respond with EXACTLY ONE of the following:
+      - The word 'REGENERATE' followed immediately by new Python code in a fenced code block (```python...```) if you want to modify the code.
+      - The word 'FINISH' if the task appears to be complete
+
+api_servers:
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+record_video: true
+output_dir: ./outputs/qwen_inspire_cylinder_primitives_smoke
+use_legacy_multi_turn_decision_prompt: true
+
+trials: 1
+num_workers: 1

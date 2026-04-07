@@ -453,6 +453,38 @@ class RobosuiteBaseEnv(BaseEnv):
         )
         return frame[::-1]
 
+    # ------------------------- Snapshot / Restore -------------------------
+
+    def snapshot_state(self) -> dict[str, Any]:
+        return {
+            "sim_state": np.array(self.robosuite_env.sim.get_state().flatten(), copy=True),
+            "step_count": int(self._step_count),
+            "sim_step_count": int(self._sim_step_count),
+            "current_joints": self._current_joints.copy(),
+            "gripper_fraction": float(self._gripper_fraction),
+            "gripper_command_override": (
+                None if self._gripper_command_override is None else self._gripper_command_override.copy()
+            ),
+        }
+
+    def restore_state(self, snapshot: dict[str, Any]) -> None:
+        self.robosuite_env.sim.set_state_from_flattened(snapshot["sim_state"])
+        self.robosuite_env.sim.forward()
+        self._step_count = int(snapshot["step_count"])
+        self._sim_step_count = int(snapshot["sim_step_count"])
+        self._current_joints = np.asarray(snapshot["current_joints"], dtype=np.float64).copy()
+        self._gripper_fraction = float(snapshot["gripper_fraction"])
+        gripper_override = snapshot["gripper_command_override"]
+        self._gripper_command_override = (
+            None if gripper_override is None else np.asarray(gripper_override, dtype=np.float64).copy()
+        )
+        self.gripper_link_wxyz_xyz = np.concatenate(
+            [
+                self.robosuite_env.sim.data.xquat[self.gripper_link_idx],
+                self.robosuite_env.sim.data.xpos[self.gripper_link_idx],
+            ]
+        )
+
     # ------------------------- Viser Debugging -------------------------
 
     def _update_viser_server(self) -> None:

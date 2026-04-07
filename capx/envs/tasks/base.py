@@ -54,6 +54,8 @@ class CodeExecEnvConfig:
     privileged: bool = False
     enable_render: bool = True
     viser_debug: bool = False
+    enable_sim_preview: bool = False
+    sim_preview_object_displacement_threshold: float = 0.015
 
 
 class SimpleExecutor:
@@ -155,7 +157,7 @@ class CodeExecutionEnvBase(Env):
             docs.append(f"\n{text.strip()}")
         return f"{self._task_prompt}\nAPIs:\n" + "\n".join(docs)
 
-    def _exec_user_code(self, code: str) -> dict[str, Any]:
+    def _exec_user_code(self, code: str, *, echo_to_console: bool = True) -> dict[str, Any]:
         obs = self._get_observation()
         # Update dynamic obs while retaining previously defined variables
         self._exec_globals["obs"] = obs
@@ -167,20 +169,20 @@ class CodeExecutionEnvBase(Env):
                 self._exec_globals[fn_name] = fn
 
         stdout_buffer = io.StringIO()
-        tee_out = Tee(sys.stdout, stdout_buffer)
         stderr_buffer = io.StringIO()
-        tee_err = Tee(sys.stderr, stderr_buffer)
+        stdout_stream = Tee(sys.stdout, stdout_buffer) if echo_to_console else stdout_buffer
+        stderr_stream = Tee(sys.stderr, stderr_buffer) if echo_to_console else stderr_buffer
         ok = True
         try:
             with (
-                contextlib.redirect_stdout(tee_out),
-                contextlib.redirect_stderr(tee_err),
+                contextlib.redirect_stdout(stdout_stream),
+                contextlib.redirect_stderr(stderr_stream),
             ):
                 exec(code, self._exec_globals, self._exec_globals)
         except BaseException:  # defensive; propagate minimal info
             ok = False
             # Always print full traceback to the redirected stderr (tee -> console and buffer)
-            traceback.print_exc(file=tee_err)
+            traceback.print_exc(file=stderr_stream)
 
         return {
             "ok": ok,
@@ -208,6 +210,92 @@ class CodeExecutionEnvBase(Env):
             for fn_name, fn in api.functions().items():
                 g[fn_name] = fn
         self._exec_globals = g
+
+    def _extract_primary_object_position(self, obs: dict[str, Any]) -> np.ndarray | None:
+        cube_poses = obs.get("cube_poses")
+        if isinstance(cube_poses, dict) and "primary" in cube_poses:
+            pose = np.asarray(cube_poses["primary"], dtype=np.float64).reshape(-1)
+            if pose.size >= 3:
+                return pose[:3].copy()
+        cube_pos = obs.get("cube_pos")
+        if cube_pos is not None:
+            pose = np.asarray(cube_pos, dtype=np.float64).reshape(-1)
+            if pose.size >= 3:
+                return pose[:3].copy()
+        return None
+
+    def _format_preview_feedback(self, preview: dict[str, Any]) -> str:
+        lines = ["SIM_PREVIEW_REJECTED"]
+        if preview.get("exec_stderr"):
+            lines.append("Preview execution stderr:")
+            lines.append(preview["exec_stderr"].strip())
+        obj_delta_cm = 100.0 * float(preview.get("object_displacement_m", 0.0))
+        reward = float(preview.get("reward", 0.0))
+        task_completed = bool(preview.get("task_completed", False))
+        lines.append(
+            f"Dry-run object displacement: {obj_delta_cm:.1f} cm; "
+            f"preview reward: {reward:.3f}; task_completed: {task_completed}"
+        )
+        lines.append(
+            "Revise the program so the object stays nearly still during approach before closing the hand."
+        )
+        return "\n".join(lines)
+
+    def _run_sim_preview(self, code: str) -> dict[str, Any] | None:
+        if not self.cfg.enable_sim_preview:
+            return None
+        if not hasattr(self.low_level_env, "snapshot_state") or not hasattr(self.low_level_env, "restore_state"):
+            return None
+
+        obs_before = self._get_observation()
+        object_before = self._extract_primary_object_position(obs_before)
+        snapshot = self.low_level_env.snapshot_state()
+        saved_globals = dict(self._exec_globals)
+        saved_record_frames = getattr(self.low_level_env, "_record_frames", None)
+        saved_record_wrist = getattr(self.low_level_env, "_record_wrist_camera", None)
+
+        try:
+            if saved_record_frames is not None:
+                self.low_level_env._record_frames = False
+            if saved_record_wrist is not None:
+                self.low_level_env._record_wrist_camera = False
+
+            exec_result = self._exec_user_code(code, echo_to_console=False)
+            obs_after = self._get_observation()
+            object_after = self._extract_primary_object_position(obs_after)
+            reward = float(self.compute_reward())
+            task_completed = bool(self.low_level_env.task_completed()) if hasattr(self.low_level_env, "task_completed") else False
+            if object_before is not None and object_after is not None:
+                object_displacement_m = float(np.linalg.norm(object_after - object_before))
+            else:
+                object_displacement_m = 0.0
+            reject_execution = (
+                object_displacement_m > float(self.cfg.sim_preview_object_displacement_threshold)
+                and not task_completed
+            ) or (not exec_result["ok"])
+            return {
+                "ok": exec_result["ok"],
+                "exec_stdout": exec_result["stdout"],
+                "exec_stderr": exec_result["stderr"],
+                "reward": reward,
+                "task_completed": task_completed,
+                "object_displacement_m": object_displacement_m,
+                "reject_execution": reject_execution,
+            }
+        finally:
+            self.low_level_env.restore_state(snapshot)
+            self._exec_globals = dict(saved_globals)
+            self._exec_globals["obs"] = obs_before
+            self._exec_globals["env"] = self.low_level_env
+            self._exec_globals["APIS"] = self._apis
+            self._exec_globals["INPUTS"] = obs_before
+            for api in self._apis.values():
+                for fn_name, fn in api.functions().items():
+                    self._exec_globals[fn_name] = fn
+            if saved_record_frames is not None:
+                self.low_level_env._record_frames = saved_record_frames
+            if saved_record_wrist is not None:
+                self.low_level_env._record_wrist_camera = saved_record_wrist
 
     def _build_low_level(
         self,
@@ -283,6 +371,24 @@ class CodeExecutionEnvBase(Env):
         Subclasses can override hooks to customize inputs and helper bindings.
         """
         self._step_count += 1
+        preview = self._run_sim_preview(action)
+        if preview is not None and preview["reject_execution"]:
+            obs = self._get_observation()
+            reward = self.compute_reward()
+            task_completed = self.low_level_env.task_completed() if hasattr(self.low_level_env, "task_completed") else None
+            truncated = getattr(self.low_level_env, "_sim_step_count", 0) >= getattr(
+                self.low_level_env, "max_steps", 999999
+            )
+            info = {
+                "sandbox_rc": 0,
+                "stdout": "",
+                "stderr": self._format_preview_feedback(preview),
+                "task_prompt": self._task_prompt,
+                "task_completed": task_completed,
+                "preview": preview,
+            }
+            return obs, reward, False, bool(truncated), info
+
         exec_result = self._exec_user_code(action)
         obs = self._get_observation()
         # Force viser 3D view update after code execution so the scene
@@ -311,6 +417,7 @@ class CodeExecutionEnvBase(Env):
             "stderr": exec_result["stderr"],
             "task_prompt": self._task_prompt,
             "task_completed": task_completed,
+            "preview": preview,
         }
         return obs, reward, bool(terminated), bool(truncated), info
 

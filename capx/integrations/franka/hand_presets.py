@@ -177,6 +177,7 @@ INSPIRE_RIGHT_ALLEGRO_V2_PRESETS: dict[str, HandPreset] = {
 
 
 INSPIRE_RIGHT_ALLEGRO_V3_PRESETS: dict[str, HandPreset] = {
+    "soft_close": INSPIRE_RIGHT_CANDIDATE_PRESETS["soft_close"],
     "pinch_it": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS["pinch_it"],
     "pinch_mt": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS["pinch_mt"],
     "grasp_4": INSPIRE_RIGHT_ALLEGRO_V2_PRESETS["grasp_4"],

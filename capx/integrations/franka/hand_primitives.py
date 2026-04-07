@@ -42,6 +42,9 @@ class HandPrimitive:
     approach_direction: str
     approach_distance: float
     description: str
+    use_sampled_grasp_position: bool = False
+    align_distance: float = 0.02
+    soft_close_preset: str | None = "soft_close"
 
 
 def _normalized(vec: np.ndarray) -> np.ndarray:
@@ -130,3 +133,108 @@ INSPIRE_WRIST_PRIMITIVES_V1: dict[str, HandPrimitive] = {
         description="Side-oriented middle-thumb pinch with the palm facing right and the middle finger pointing down.",
     ),
 }
+
+
+INSPIRE_LLM_PRIMITIVES_V1: dict[str, HandPrimitive] = {
+    "box_power_up_forward": HandPrimitive(
+        name="box_power_up_forward",
+        preset_library="inspire_right_allegro_v3",
+        hand_preset="grasp_4",
+        palm_face="up",
+        middle_finger_direction="forward",
+        approach_direction="up",
+        approach_distance=0.08,
+        description="Box-oriented grasp using the best wrist direction from the screening pass.",
+        use_sampled_grasp_position=True,
+        align_distance=0.02,
+        soft_close_preset="soft_close",
+    ),
+    "box_wrap_up_forward": HandPrimitive(
+        name="box_wrap_up_forward",
+        preset_library="inspire_right_allegro_v3",
+        hand_preset="envelop",
+        palm_face="up",
+        middle_finger_direction="forward",
+        approach_direction="up",
+        approach_distance=0.08,
+        description="Box-oriented wrap variant using the same wrist direction as the best screen.",
+        use_sampled_grasp_position=True,
+        align_distance=0.02,
+        soft_close_preset="soft_close",
+    ),
+    "cylinder_wrap_up_forward": HandPrimitive(
+        name="cylinder_wrap_up_forward",
+        preset_library="inspire_right_allegro_v3",
+        hand_preset="envelop",
+        palm_face="up",
+        middle_finger_direction="forward",
+        approach_direction="up",
+        approach_distance=0.08,
+        description="Cylinder-oriented wrap grasp using the best weak signal from the screen.",
+        use_sampled_grasp_position=True,
+        align_distance=0.015,
+        soft_close_preset="soft_close",
+    ),
+    "cylinder_power_up_forward": HandPrimitive(
+        name="cylinder_power_up_forward",
+        preset_library="inspire_right_allegro_v3",
+        hand_preset="grasp_4",
+        palm_face="up",
+        middle_finger_direction="forward",
+        approach_direction="up",
+        approach_distance=0.08,
+        description="Cylinder-oriented power grasp variant with the same wrist direction.",
+        use_sampled_grasp_position=True,
+        align_distance=0.015,
+        soft_close_preset="soft_close",
+    ),
+    "ball_wrap_back_down": HandPrimitive(
+        name="ball_wrap_back_down",
+        preset_library="inspire_right_allegro_v3",
+        hand_preset="envelop",
+        palm_face="back",
+        middle_finger_direction="down",
+        approach_direction="forward",
+        approach_distance=0.08,
+        description="Ball-oriented wrap grasp with palm facing back and fingers pointing down.",
+        align_distance=0.02,
+        soft_close_preset="soft_close",
+    ),
+    "ball_power_down_forward": HandPrimitive(
+        name="ball_power_down_forward",
+        preset_library="inspire_right_allegro_v3",
+        hand_preset="grasp_4",
+        palm_face="down",
+        middle_finger_direction="forward",
+        approach_direction="up",
+        approach_distance=0.08,
+        description="Ball-oriented top grasp with the palm facing down and fingers pointing forward.",
+        align_distance=0.02,
+        soft_close_preset="soft_close",
+    ),
+    "ball_pinch_left_down": HandPrimitive(
+        name="ball_pinch_left_down",
+        preset_library="inspire_right_allegro_v3",
+        hand_preset="pinch_it",
+        palm_face="left",
+        middle_finger_direction="down",
+        approach_direction="right",
+        approach_distance=0.08,
+        description="Ball-oriented side pinch with palm left and fingers down.",
+        align_distance=0.02,
+        soft_close_preset="soft_close",
+    ),
+}
+
+
+HAND_PRIMITIVE_LIBRARIES: dict[str, dict[str, HandPrimitive]] = {
+    "inspire_right_llm_v1": INSPIRE_LLM_PRIMITIVES_V1,
+    "inspire_left_llm_v1": INSPIRE_LLM_PRIMITIVES_V1,
+}
+
+
+def get_hand_primitive_library(hand_name: str) -> dict[str, HandPrimitive]:
+    key = f"{str(hand_name).strip().lower()}_llm_v1"
+    if key not in HAND_PRIMITIVE_LIBRARIES:
+        raise KeyError(f"No hand primitive library registered for hand_name={hand_name!r}")
+    return HAND_PRIMITIVE_LIBRARIES[key]
