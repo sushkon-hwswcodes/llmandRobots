@@ -1,0 +1,66 @@
+# Usage: python -m capx.envs.launch --config-path env_configs/human_oracle_code/real_objects/franka_robosuite_ycb_target_clutter_11_attempt1.yaml
+
+env:
+  _target_: capx.envs.tasks.franka.franka_lift.FrankaLiftCodeEnv
+  cfg:
+    _target_: capx.envs.tasks.base.CodeExecEnvConfig
+    low_level: franka_robosuite_ycb_target_clutter_low_level
+    low_level_kwargs:
+      robot_name: Panda
+      hand_name: panda
+      ik_robot_name: panda_description
+      ik_target_link_name: panda_hand
+      eef_body_name: gripper0_right_eef
+      tcp_offset: [0.0, 0.0, -0.107]
+      target_object_id: 005_tomato_soup_can
+      num_distractors: 10
+      placement_x_range: [-0.28, 0.28]
+      placement_y_range: [-0.20, 0.20]
+      object_ids:
+        - 002_master_chef_can
+        - 003_cracker_box
+        - 004_sugar_box
+        - 005_tomato_soup_can
+        - 007_tuna_fish_can
+        - 008_pudding_box
+        - 009_gelatin_box
+        - 010_potted_meat_can
+        - 013_apple
+        - 014_lemon
+        - 015_peach
+        - 016_pear
+        - 017_orange
+        - 018_plum
+        - 053_mini_soccer_ball
+        - 061_foam_brick
+        - 062_dice
+        - 077_rubiks_cube
+    privileged: true
+    apis:
+      - FrankaControlPrivilegedApi
+    oracle_code: |
+      import numpy as np
+
+      object_info = get_object_shape()
+      grasp_pos, grasp_quat = sample_grasp_pose("object")
+      open_gripper()
+      goto_pose(grasp_pos, grasp_quat, z_approach=0.12)
+      goto_pose(grasp_pos, grasp_quat)
+      close_gripper()
+      lift_pos = grasp_pos.copy()
+      lift_pos[2] += 0.10
+      goto_pose(lift_pos, grasp_quat)
+
+api_servers:
+  - _target_: capx.serving.launch_pyroki_server.main
+    port: 8116
+    host: 127.0.0.1
+    robot: panda_description
+    target_link: panda_hand
+
+record_video: true
+output_dir: ./outputs/oracle_ycb_target_clutter_11_attempt1
+
+trials: 1
+num_workers: 1
+use_oracle_code: true

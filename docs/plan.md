@@ -1,12 +1,13 @@
 # Project Plan
 
-Last updated: 2026-04-06
+Last updated: 2026-04-07
 
 ## Immediate next steps
 
 1. Keep the recovered Panda / shape / clutter path stable while extending the same grasp semantics into YCB.
 2. Use oracle / deterministic smoke tests before relying on model benchmarks to judge shared control changes.
 3. Re-run YCB single-object and YCB clutter at larger trial counts.
+4. Keep the new fixed-scene `10 + 1` YCB clutter oracle path available for targeted pickup debugging.
 4. Keep hand configuration support at the simulation-smoke level only.
 5. Start any future hand work from a fresh direction after the maintained benchmark path is stable again.
 6. Defer any new dexterous-hand implementation until the restart interface is narrowed to constrained primitives instead of vague prompt control.

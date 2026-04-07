@@ -1,6 +1,6 @@
 # Project Status
 
-Last updated: 2026-04-06
+Last updated: 2026-04-07
 
 ## Current branch state
 
@@ -47,6 +47,16 @@ Last updated: 2026-04-06
 - YCB single-object lift: `13/20`, average reward `0.750`
 - YCB target clutter: `12/30`, average reward `0.402`
 - Current YCB clutter result is above the earlier recorded `9/30`
+
+## Fixed-scene YCB clutter checkpoint
+
+- Added a configurable fixed-target YCB clutter path that can place `10` random distractors plus `1` pre-identified target object
+- Current stable scene uses target `005_tomato_soup_can` with `10` distractors drawn from a smaller tabletop-safe YCB pool
+- Scene render helper added at `scripts/render_ycb_target_clutter_scene.py`
+- On the fixed `11`-object scene:
+  - attempt 1: single-shot sampled grasp failed
+  - attempt 2: a retry loop with re-sampled grasp poses succeeded
+  - attempt 3: a more staged pregrasp / midpoint loop failed
 
 ## Current YCB object breakdown
 
